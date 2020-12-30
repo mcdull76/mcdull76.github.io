@@ -177,6 +177,8 @@
     let selectResources = 0;
     let finalTimeTravel = false;
 
+    const diceValue = [2, 3, 3, 4, 4, 5]
+
     const states = {};
     const statePos = [{x: 146, y: 106}, {x: 304, y: 106}, {x: 476, y: 106}, {x: 625, y: 106},
         {x: 146, y: 460}, {x: 304, y: 460}, {x: 476, y: 460}, {x: 625, y: 460},
@@ -378,10 +380,10 @@
 
     function button1Pressed() {
         if (phase.number === 5) {
-            dice = Math.floor(Math.random() * 6) + 1;
+            dice = diceValue[Math.floor(Math.random() * 6)];
             actionText.text = "Chronobot rolled a " + dice.toString() + "\n This means:\n\n";
             actionText.visible = true;
-            action = tokens[dice - 1].state.name;
+            action = tokens[dice - 2].state.name;
             performAction();
         } else if (phase.number === 6) {
             const btVp = btSquareCounter.number + btTriangleCounter.number + btCircleCounter.number
@@ -603,7 +605,7 @@
     function acceptAction() {
         action = 0;
         icons.forEach(icon => icon.visible = false);
-        tokens[dice - 1].advance();
+        tokens[dice - 2].advance();
         button1.visible = true;
         button1.label.text = 'Next\nBot Action';
         actionText.text = "";
@@ -770,8 +772,8 @@
         board.x = 0;
         board.y = 0;
 
-        for (let i = 1; i <= 4; i++) {
-            const newToken = new Token(i, PIXI.Texture.from('images/t' + (i+1).toString() + '.png'), states[stateStart[i - 1]]);
+        for (let i = 2; i <= 5; i++) {
+            const newToken = new Token(i, PIXI.Texture.from('images/t' + i.toString() + '.png'), states[stateStart[i - 2]]);
             tokens.push(newToken);
             board.addChild(newToken);
         }
