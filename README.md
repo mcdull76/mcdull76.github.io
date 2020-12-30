@@ -13,6 +13,6 @@ This is an <strong>unofficial</strong> implementation for the solo-mode bot for 
 
 ## Implementation
 
-This implementation modify from <a href=https://github.com/profdrdre/chronobot>profdrdre/chronobot</a>.
+This implementation modify from <a href=https://github.com/profdrdre/chronobot>profdrdre/chronobot</a>.<BR>
 This implementation uses the <a href=https://www.pixijs.com/>pixi.js</a> javascript library. 
   
