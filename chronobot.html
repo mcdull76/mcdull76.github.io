@@ -40,12 +40,10 @@
     <div class = "selections">
     <select class="myselect" id="Key" onchange="keySelected()">
       <option value="none">---</option>
-      <option value="t1">Position Token 1</option>
       <option value="t2">Position Token 2</option>
       <option value="t3">Position Token 3</option>
       <option value="t4">Position Token 4</option>
       <option value="t5">Position Token 5</option>
-      <option value="t6">Position Token 6</option>
       <option value="rn"># Neutronium</option>
       <option value="ru"># Uranium</option>
       <option value="rg"># Gold</option>
@@ -180,16 +178,18 @@
     let finalTimeTravel = false;
 
     const states = {};
-    const statePos = [{x: 95, y: 112}, {x: 254, y: 112}, {x: 415, y: 112},
-        {x: 95, y: 464}, {x: 255, y: 464}, {x: 415, y: 464}, {x: 573, y: 464},
-        {x: 415, y: 625}, {x: 255, y: 625}, {x: 95, y: 625}, {x: 573, y: 625},
-        {x: 95, y: 848}, {x: 255, y: 848}];
+    const statePos = [{x: 146, y: 106}, {x: 304, y: 106}, {x: 476, y: 106}, {x: 625, y: 106},
+        {x: 146, y: 460}, {x: 304, y: 460}, {x: 476, y: 460}, {x: 625, y: 460},
+        {x: 625, y: 622}, {x: 476, y: 622}, {x: 304, y: 622}, {x: 146, y: 622}];
 
-    const stateTransition = {1: 2, 2: 3, 3: 1, 4: 5, 5: 6, 6: 7, 7: 8, 8: 9, 9: 10, 10: 4, 11: 8, 12: 13, 13: 12};
-    const stateStart = [1, 4, 7, 8, 11, 12];
+    const stateTransition = {1: 2, 2: 3, 3: 4, 4: 1,
+     5: 6, 6: 7, 7: 8, 8: 9,
+     9: 10, 10: 11, 11: 12, 12: 5};
+
+    const stateStart = [8, 1, 6, 12];
 
 
-    for (let i = 1; i <= 13; i++) {
+    for (let i = 1; i <= 12; i++) {
         states[i] = new State(i, statePos[i - 1]);
     }
     for (const [key, value] of Object.entries(states)) {
@@ -198,7 +198,7 @@
 
     const tokens = [];
 
-    const workerPositions = [{x: 709, y: 601}, {x: 819, y: 601}, {x: 929, y: 601}, {x: 1037, y: 601}]
+    const workerPositions = [{x: 974, y: 34}, {x: 974, y: 167}, {x: 974, y: 302}, {x: 974, y: 436}]
 
     const genius_texture = PIXI.Texture.from('images/genius.png');
     const admin_texture = PIXI.Texture.from('images/admin.png');
@@ -209,7 +209,7 @@
     const engineerToken = new WorkerToken(engineer_texture, workerPositions[2], 0);
     const scientistToken = new WorkerToken(scientist_texture, workerPositions[3], 0);
 
-    const resourcePositions = [{x: 735, y: 460}, {x: 869, y: 460}, {x: 1005, y: 460}, {x: 1137, y: 460}]
+    const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
     const uranium_texture = PIXI.Texture.from('images/uranium.png');
     const gold_texture = PIXI.Texture.from('images/gold.png');
@@ -219,16 +219,17 @@
     const goldToken = new ResourceToken(gold_texture, resourcePositions[2], 0);
     const titaniumToken = new ResourceToken(titanium_texture, resourcePositions[3], 0);
 
-
+// remove supply, no longer have supply in v2.0 
     const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
     const supplyTransitions = {0: 1, 1: 2, 2: 3, 3: 3};
     const supplyToken = new SlideToken(PIXI.Texture.from('images/supply.png'), 0, supplyPositions, supplyTransitions);
     const supplyNeed = [5, 6, 7, 7];
     const supplyPoints = [0,2,5,8];
+// remove supple end
 
     const timetravelPositions = {
-        0: {x: 542, y: 226}, 1: {x: 608, y: 191}, 2: {x: 674, y: 191}, 3: {x: 742, y: 191},
-        4: {x: 808, y: 191}, 5: {x: 876, y: 191}, 6: {x: 942, y: 191}
+        0: {x: 858, y: 719}, 1: {x: 926, y: 719}, 2: {x: 992, y: 719}, 3: {x: 1060, y: 719},
+        4: {x: 1126, y: 719}, 5: {x: 1194, y: 719}, 6: {x: 1260, y: 719}
     };
     const timetravelTransitions = {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 6};
     const timetravelToken = new SlideToken(PIXI.Texture.from('images/timetravel.png'), 0,
@@ -237,24 +238,23 @@
 
 
   const paradoxTokens = [];
-    const paradoxPositions = [{x: 714, y: 92}, {x: 864, y: 155}, {x: 851, y: 92}]
+    const paradoxPositions = [{x: 1345, y: 521}, {x: 1417, y: 672}, {x: 1345, y: 660}]
 
-    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), {x: 750, y: 859}, 0, true, 3);
+    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), {x: 675, y: 861}, 0, true, 3);
     powerPlantBack.text.position = {x: 85, y: 170};
-    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), {x: 930, y: 859}, 0, true, 3);
+    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), {x: 791, y: 861}, 0, true, 3);
     factoryBack.text.position = {x: 85, y: 170};
-    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), {x: 1108, y: 859}, 0, true, 3);
+    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), {x: 907, y: 861}, 0, true, 3);
     habitatBack.text.position = {x: 85, y: 170};
-    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), {x: 1286, y: 859}, 0, true, 3);
+    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), {x: 1086, y: 861}, 0, true, 3);
     labBack.text.position = {x: 85, y: 170};
-    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), {x: 1010, y: 47}, 0, true, 3);
+    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), {x: 1291, y: 861}, 0, true, 3);
     anomalyBack.text.position = {x: 85, y: 170};
-    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), {
-        x: 361,
-        y: 858
-    }, 0, true, 2);
+
+    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), {x: 169, y: 859}, 0, true, 3);
     superProjectBack.text.position = {x: 175, y: 165};
-    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), {x: 1226, y: 45}, 0, true, 6);
+
+    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), {x: 1125, y: 43}, 0, true, 6);
     exoSuitBack.text.position = {x: 105, y: 95};
 
     const powerPlantIcon = new PIXI.Sprite(PIXI.Texture.from('images/powerplantIcon.png'));
@@ -272,10 +272,11 @@
 
    const cogWheelIcon = new PIXI.Sprite(PIXI.Texture.from('images/cogwheel.png'));
    cogWheelIcon.on('pointerdown',editRequested );
-   cogWheelIcon.x = 10;
-   cogWheelIcon.y = 1010;
+   cogWheelIcon.x = 1412;
+   cogWheelIcon.y = 8;
    cogWheelIcon.interactive = true;
 
+// WORK TILL HERE
 
   const points = new Counter({x: 140, y: 185}, 0, 999);
     const water = new Counter({x: 140, y: 265}, 0, 999);
@@ -769,14 +770,14 @@
         board.x = 0;
         board.y = 0;
 
-        for (let i = 1; i <= 6; i++) {
-            const newToken = new Token(i, PIXI.Texture.from('images/t' + i.toString() + '.png'), states[stateStart[i - 1]]);
+        for (let i = 1; i <= 4; i++) {
+            const newToken = new Token(i, PIXI.Texture.from('images/t' + (i+1).toString() + '.png'), states[stateStart[i - 1]]);
             tokens.push(newToken);
             board.addChild(newToken);
         }
 
         for (let j = 1; j <= 3; j++) {
-             const newToken = new ParadoxToken(PIXI.Texture.from('images/paradox.png'), paradoxPositions[j - 1], 0, false, 1);
+             const newToken = new ParadoxToken(PIXI.Texture.from('images/paradox90.png'), paradoxPositions[j - 1], 0, false, 1);
              if (j === 2) newToken.angle = 180;
              paradoxTokens.push(newToken);
              board.addChild(newToken);
