@@ -720,7 +720,7 @@
 	        actionText.text += "\n\n Took the " + researchItem[researchDice] + "\nBreakthrough Token";
 	        researchCounter[researchDice].increase(1);
 
-			for( i = 0; i < researchCounter.count; i++ ) {
+			for ( i = 0; i < researchCounter.length; i++ ) {
 				researchCounter[i].visible = true;
 			}
 
