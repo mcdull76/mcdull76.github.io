@@ -136,8 +136,8 @@
                 button1.label.text="Continue";
                 button1.settings.onTap = () => acceptAction();
             } else if (action === 5){
-                if (selectResources === 0) selectResources +=1;
-                else {
+            	selectResources +=1;
+                if (selectResources >= 2) {}
                     neutroniumToken.interactive = false;
                     uraniumToken.interactive = false;
                     goldToken.interactive = false;
