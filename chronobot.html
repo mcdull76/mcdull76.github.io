@@ -314,10 +314,13 @@
     const phase = new Counter({x: 220, y: 110}, 1, 6);
     const btCircleCounter = new Counter({x: 90, y: 925}, 0, 9);
     btCircleCounter.scale.set(.7);
+    btCircleCounter.visible = false;
     const btTriangleCounter = new Counter({x: 90, y: 959}, 0, 9);
     btTriangleCounter.scale.set(.7);
+    btTriangleCounter.visible = false;
     const btSquareCounter = new Counter({x: 90, y: 993}, 0, 9);
     btSquareCounter.scale.set(.7);
+    btSquareCounter.visible = false;
     const researchCounter = [btCircleCounter,btTriangleCounter,btSquareCounter];
     // warp token count of each era. warpTokensLog[era.number -1]
     const warpTokensLog = [];
@@ -716,6 +719,13 @@
 	        const researchItem = ["Circle", "Triangle", "Square"];
 	        actionText.text += "\n\n Took the " + researchItem[researchDice] + "\nBreakthrough Token";
 	        researchCounter[researchDice].increase(1);
+
+			for( i = 0; i < researchCounter.count; i++ ) {
+				researchCounter[i].visible = true;
+			}
+
+			breakthroughBack.visible = true;
+
 	        button1.label.text = "Continue";
 	        button1.settings.onTap = () => acceptAction();        	    	
         }
