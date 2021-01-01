@@ -281,7 +281,11 @@
     const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), {x: 1291, y: 861}, 0, true, 3);
     anomalyBack.text.position = {x: 85, y: 170};
 
-    const breakthroughBack = new BreakthroughToken(PIXI.Texture.from('images/BreakthroughIcon.png'), {x: 16, y: 891}, 0);
+    const breakthroughBack = new PIXI.Sprite(PIXI.Texture.from('images/BreakthroughIcon.png'));
+    breakthroughBack.x = 16;
+    breakthroughBack.y = 891;
+    breakthroughBack.visible = false;
+
 
     const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), {x: 169, y: 859}, 0, true, 3);
     superProjectBack.text.position = {x: 175, y: 165};

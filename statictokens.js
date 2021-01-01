@@ -133,20 +133,4 @@ class ParadoxToken extends StaticToken {
     }
 }
 
-class BreakthroughToken extends StaticToken {
-
-    constructor(texture, pos, status) {
-        super(texture, pos, status, true, 1);
-
-        this.counter = false;
-
-        this.tokenChanger = () => {
-            this.alpha += this.delta;
-            if (Math.abs(this.targetAlpha - this.alpha) < Math.abs(this.delta)) {
-                this.alpha = this.targetAlpha;
-                automa.ticker.remove(this.tokenChanger);
-            }            
-        }
-    }
-}
 
