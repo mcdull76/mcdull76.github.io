@@ -281,6 +281,8 @@
     const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), {x: 1291, y: 861}, 0, true, 3);
     anomalyBack.text.position = {x: 85, y: 170};
 
+    const breakthroughBack = new BreakthroughToken(PIXI.Texture.from('images/BreakthroughIcon.png'), {x: 16, y: 891}, 0);
+
     const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), {x: 169, y: 859}, 0, true, 3);
     superProjectBack.text.position = {x: 175, y: 165};
 
@@ -310,11 +312,11 @@
     const water = new Counter({x: 140, y: 265}, 0, 999);
     const era = new Counter({x: 220, y: 52}, 1, 10);
     const phase = new Counter({x: 220, y: 110}, 1, 6);
-    const btCircleCounter = new Counter({x: 70, y: 333}, 0, 9);
+    const btCircleCounter = new Counter({x: 90, y: 925}, 0, 9);
     btCircleCounter.scale.set(.7);
-    const btTriangleCounter = new Counter({x: 142, y: 333}, 0, 9);
+    const btTriangleCounter = new Counter({x: 90, y: 959}, 0, 9);
     btTriangleCounter.scale.set(.7);
-    const btSquareCounter = new Counter({x: 215, y: 333}, 0, 9);
+    const btSquareCounter = new Counter({x: 90, y: 993}, 0, 9);
     btSquareCounter.scale.set(.7);
     const researchCounter = [btCircleCounter,btTriangleCounter,btSquareCounter];
     // warp token count of each era. warpTokensLog[era.number -1]
@@ -709,20 +711,17 @@
             }
         }
         if( action === 12) {
-        	researchAction();
+        	// current steps are not correct. Need to show each shape count in the BreakthroughToken.
+	        let researchDice = Math.floor(Math.random() * 3);
+	        const researchItem = ["Circle", "Triangle", "Square"];
+	        actionText.text += "\n\n Took the " + researchItem[researchDice] + "\nBreakthrough Token";
+	        researchCounter[researchDice].increase(1);
+	        button1.label.text = "Continue";
+	        button1.settings.onTap = () => acceptAction();        	    	
         }
         button0.visible = false;
         if (action !== 5) button1.visible = true;
 
-    }
-
-    function researchAction() {
-        let researchDice = Math.floor(Math.random() * 3);
-        const researchItem = ["Circle", "Triangle", "Square"];
-        actionText.text += "\n\n Took the " + researchItem[researchDice] + "\nBreakthrough Token";
-        researchCounter[researchDice].increase(1);
-        button1.label.text = "Continue";
-        button1.settings.onTap = () => acceptAction();        	    	
     }
 
     function failedAction() {
@@ -736,7 +735,8 @@
     function spaceOccupied() {
     	if( action === 10 ) {
     		actionText.text += "No Genius.\n";
-			researchAction();
+			action = 12;
+			performAction();
     	} else {
     		failedAction();
     	}
@@ -851,6 +851,9 @@
         board.addChild(exoSuitBack);
         board.addChild(cogWheelIcon);
 
+        board.addChild(btCircleCounter);
+        board.addChild(btTriangleCounter);
+        board.addChild(btSquareCounter);
 
         panel.addChild(actionText);
         buttonPanel.addChild(button2);
@@ -863,9 +866,6 @@
         panel.addChild(era);
         panel.addChild(phase);
 
-        panel.addChild(btCircleCounter);
-        panel.addChild(btTriangleCounter);
-        panel.addChild(btSquareCounter);
 
         panel.addChild(powerPlantIcon);
         panel.addChild(factoryIcon);
