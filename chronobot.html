@@ -128,14 +128,14 @@
         }
 
         checkIfReady(){
-            if (action === 9) {
+            if (action === 7) {
                 adminToken.interactive = false;
                 engineerToken.interactive = false;
                 scientistToken.interactive = false;
                 geniusToken.interactive = false;
                 button1.label.text="Continue";
                 button1.settings.onTap = () => acceptAction();
-            } else if (action === 7){
+            } else if (action === 5){
                 if (selectResources === 0) selectResources +=1;
                 else {
                     neutroniumToken.interactive = false;
@@ -447,7 +447,7 @@
         }
         if (number === 3) { 
         	// Superproject
-            actionText.text += "Bot wants to construct\nSuperproject";
+            actionText.text += "Bot wants to construct\nSuperproject\n\n";
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -487,7 +487,7 @@
         }
         if (number === 5) {  
         	// Mine
-            actionText.text += "Mine Action";
+            actionText.text += "Mine Action\n";
             button0.visible = true;
             button0.label.text = "Mine Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -537,8 +537,8 @@
         	When using the Recruit Genius/Research Action, perform a Recruit Action only if a Genius is available.
         	If no Genius is available, perform a Research Action instead.
         	*/
-            actionText.text += "Bot wants to recruit\nGenius"
-            button0.label.text = "Recruit Spot\nFree\nGenius Available";
+            actionText.text += "Bot wants to recruit\nGenius\n\n"
+            button0.label.text = "Recruit Spot Free\n and Genius Available";
             button0.settings.onTap = () => spaceFree();
             button0.visible = true;
             button1.label.text = "Genius NOT available";
@@ -559,7 +559,7 @@
 
         if (number === 12) {
         	// Research
-            actionText.text += "Research Action";
+            actionText.text += "Research Action\n\n";
             button0.visible = true;
             button0.label.text = "Research Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -610,7 +610,7 @@
         }
         if (action === 3) {
        		// Need to insert code to ask for Superproject VP
-            actionText.text += "\n\nTake Superproject\nfor Chronobot";
+            actionText.text += "Take Superproject\nfor Chronobot";
             superProjectBack.add(1);
             button1.label.text = "Continue";
             button1.settings.onTap = () => acceptAction();
