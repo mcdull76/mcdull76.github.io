@@ -123,6 +123,7 @@
                 for(let j=1;j<=3;j++){
                     paradoxTokens[j-1].remove();
                 }
+                actionText.text += "Gain an Anomaly\n"
                 anomalyBack.add();
 
             	if( warptileNumber < maxWarpTile) {
@@ -139,17 +140,10 @@
             }
         }
 
-        checkIfReady(){
-            if (action === 7) {
-                adminToken.interactive = false;
-                engineerToken.interactive = false;
-                scientistToken.interactive = false;
-                geniusToken.interactive = false;
-                button1.label.text="Continue";
-                button1.settings.onTap = () => acceptAction();
-            } else if (action === 5){
+        checkIfReady() {
+			if (action === 5){
             	selectResources +=1;
-                if (selectResources >= 2) {}
+                if (selectResources >= 2) {
                     neutroniumToken.interactive = false;
                     uraniumToken.interactive = false;
                     goldToken.interactive = false;
@@ -158,6 +152,25 @@
                     button1.visible = true;
                     button1.settings.onTap = () => acceptAction();
                 }
+            } else if (action === 7) {
+                adminToken.interactive = false;
+                engineerToken.interactive = false;
+                scientistToken.interactive = false;
+                geniusToken.interactive = false;
+                //+1vp
+                points.increase(1);
+                actionText.text += "\nRecruit bonus\n+1 VP\n"
+
+                button1.label.text="Continue";
+                button1.settings.onTap = () => acceptAction();
+            } else if (action === 10) {
+                geniusToken.interactive = false;
+                //+1vp
+                points.increase(1);
+                actionText.text += "\nRecruit bonus\n+1 VP\n"
+
+                button1.label.text="Continue";
+                button1.settings.onTap = () => acceptAction();            	
             }
         }
     }
