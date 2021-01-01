@@ -292,7 +292,7 @@
     const btSquareCounter = new Counter({x: 215, y: 333}, 0, 9);
     btSquareCounter.scale.set(.7);
     const researchCounter = [btCircleCounter,btTriangleCounter,btSquareCounter];
-    // warp token count of each era. warpToekns[era.number -1]
+    // warp token count of each era. warpTokensLog[era.number -1]
     const warpTokensLog = [];
 
     actionText = new PIXI.Text("action to do \n sddf ", {
@@ -723,7 +723,6 @@
 
             let draw = paradoxDieValue[Math.floor(Math.random() * 6)];
             if (draw > warptileNumber) draw = warptileNumber;
-            warpToekns.push(draw);
             warptileNumber -= draw;
 			warpTokensLog.push(draw);
             actionText.text = "Chronobot selects \n " + draw.toString() + "\n warp tile(s)";
