@@ -124,6 +124,18 @@
                     paradoxTokens[j-1].remove();
                 }
                 anomalyBack.add();
+
+            	if( warptileNumber < maxWarpTile) {
+	            	// indexOfMaxValue will return 1+ as 0 is handled by the prevous if statement
+	            	let indexOfMaxValue = warpTokensLog.indexOf(Math.max(...warpTokensLog));
+	            	if( indexOfMaxValue < era.number - 1 ) {
+	            		// have warp tile in the past
+		            	actionText.text += "Remove Warp tile\nfrom Era " + (indexOfMaxValue + 1) + "\n";
+		            	warpTokensLog[indexOfMaxValue] -= 1;
+		                warptileNumber += 1;
+		            }
+	            }
+
             }
         }
 
@@ -343,6 +355,11 @@
             phase.set(2);
             button2Pressed();
         } else if (phase.number === 2) {
+        	/*
+        	use the button to perform digital roll
+        	click the roll button to roll the paradox die and assign token
+        	need to keep track of paradox token amount and skip rolling is take Anomaly and remove one warp token 
+        	*/
             actionText.text = "Chronobot rolls\n for Paradoxes last \n add Paradoxes\n on board by tapping\n ";
             actionText.visible = true;
             for (let j = 1; j <= 3; j++) {
@@ -599,7 +616,7 @@
         if (action === 1) {
            if (habitatBack.number < habitatBack.limit) {
            		// Need to insert code to ask for construction VP
-	            actionText.text += "Take Habitat\nfor Chronobot";
+	            actionText.text += "\nTake Habitat\nfor Chronobot";
 	            habitatBack.add(1);
 	            button1.label.text = "Continue";
 	            button1.settings.onTap = () => acceptAction();
@@ -610,14 +627,14 @@
         }
         if (action === 3) {
        		// Need to insert code to ask for Superproject VP
-            actionText.text += "Take Superproject\nfor Chronobot";
+            actionText.text += "\nTake Superproject\nfor Chronobot";
             superProjectBack.add(1);
             button1.label.text = "Continue";
             button1.settings.onTap = () => acceptAction();
         }
         if (action === 5) {
         	// Mine
-            actionText.text += "\n\nTake Resources by\ntapping on board";
+            actionText.text += "\nTake Resources by\ntapping on board";
             neutroniumToken.interactive = true;
             uraniumToken.interactive = true;
             goldToken.interactive = true;
@@ -628,7 +645,7 @@
         if (action === 6) {
 			if (powerPlantBack.number < powerPlantBack.limit) {
            		// Need to insert code to ask for construction VP
-	            actionText.text += "\n\nTake Power Plant\nfor Chronobot";
+	            actionText.text += "\nTake Power Plant\nfor Chronobot";
 	            powerPlantBack.add(1);
 	            button1.label.text = "Continue";
 	            button1.settings.onTap = () => acceptAction();
@@ -639,7 +656,7 @@
         }
         if (action === 7) {
         	// Recurit
-            actionText.text += "\n\nTake Worker by\ntapping on board";
+            actionText.text += "\nTake Worker by\ntapping on board";
             adminToken.interactive = true;
             engineerToken.interactive = true;
             scientistToken.interactive = true;
@@ -650,7 +667,7 @@
         if (action === 8) {
 			if (factoryBack.number < factoryBack.limit) {
            		// Need to insert code to ask for construction VP
-	            actionText.text += "\n\nTake Factory\nfor Chronobot";
+	            actionText.text += "\nTake Factory\nfor Chronobot";
 	            factoryBack.add(1);
 	            button1.label.text = "Continue";
 	            button1.settings.onTap = () => acceptAction();
@@ -661,7 +678,7 @@
         }
         if (action === 10) {
         	// Recruit Genius / Research
-            actionText.text += "\n\nTake Genius by\ntapping on board";
+            actionText.text += "\nTake Genius by\ntapping on board";
             geniusToken.interactive = true;
             button1.label.text = "No Genius\nAvailable";
             button1.settings.onTap = () => spaceOccupied();
@@ -669,7 +686,7 @@
         if( action === 11) {
             if (labBack.number < labBack.limit) {
            		// Need to insert code to ask for construction VP
-				actionText.text += "\n\nTake Lab\nfor Chronobot";
+				actionText.text += "\nTake Lab\nfor Chronobot";
 				labBack.add(1);
 				button1.label.text = "Continue";
 				button1.settings.onTap = () => acceptAction();
@@ -689,7 +706,7 @@
     function researchAction() {
         let researchDice = Math.floor(Math.random() * 3);
         const researchItem = ["Circle", "Triangle", "Square"];
-        actionText.text += "\n\n Took the\n" + researchItem[researchDice] + "\nBreakthrough Token";
+        actionText.text += "\n\n Took the " + researchItem[researchDice] + "\nBreakthrough Token";
         researchCounter[researchDice].increase(1);
         button1.label.text = "Continue";
         button1.settings.onTap = () => acceptAction();        	    	
