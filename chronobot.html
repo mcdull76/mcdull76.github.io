@@ -183,9 +183,9 @@
     const aiDiceValue = [2, 3, 3, 4, 4, 5];
 
     const states = {};
-    const statePos = [{x: 146, y: 106}, {x: 304, y: 106}, {x: 473, y: 106}, {x: 625, y: 106},
-        {x: 146, y: 460}, {x: 304, y: 460}, {x: 473, y: 460}, {x: 625, y: 460},
-        {x: 625, y: 622}, {x: 473, y: 622}, {x: 304, y: 622}, {x: 146, y: 622}];
+    const statePos = [{x: 146, y: 106}, {x: 304, y: 106}, {x: 464, y: 106}, {x: 625, y: 106},
+        {x: 146, y: 460}, {x: 304, y: 460}, {x: 464, y: 460}, {x: 625, y: 460},
+        {x: 625, y: 622}, {x: 464, y: 622}, {x: 304, y: 622}, {x: 146, y: 622}];
 
     const stateTransition = {1: 2, 2: 3, 3: 4, 4: 1,
      5: 6, 6: 7, 7: 8, 8: 9,
@@ -409,7 +409,7 @@
         if (number === 1) {  
         	// Take Habitat
  			// ask if space is free
-            actionText.text += "Bot wants to construct\na Habitat\n\n";
+            actionText.text += "Bot wants to construct\na Habitat\n\n\n";
             habitatIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -424,15 +424,22 @@
                 failedAction();
             } else {
             	if( warptileNumber < maxWarpTile) {
+	            	// indexOfMaxValue will return 1+ as 0 is handled by the prevous if statement
 	            	let indexOfMaxValue = warpTokensLog.indexOf(Math.max(...warpTokensLog));
-	            	actionText.text += "Remove Warp tile\nfrom Era" + (indexOfMaxValue + 1) + "\n";
-	            	warpTokensLog[indexOfMaxValue] -= 1
-	                warptileNumber += 1
-	                actionText.text += "Chronobot advanced\n time travel\n";
-	                timetravelToken.advance();            		
+	            	if( indexOfMaxValue < era.number - 1 ) {
+	            		// have warp tile in the past
+		            	actionText.text += "Remove Warp tile\nfrom Era " + (indexOfMaxValue + 1) + "\n";
+		            	warpTokensLog[indexOfMaxValue] -= 1;
+		                warptileNumber += 1;
+		                actionText.text += "Chronobot advanced\n time travel\n";
+		                timetravelToken.advance();
+		            } else {
+		            	actionText.text += "No Warp tile\nin the past\n";
+		            	failedAction();
+		            }
             	} else {
-            		actionText.text += "No Warp tiles\n";
-            		failedAction()
+            		actionText.text += "No Warp tile\n";
+            		failedAction();
             	}
             }
             button1.label.text = "Continue";
@@ -490,7 +497,7 @@
         if (number === 6) { 
         	// Take Power Plant
 			// ask if space is free
-            actionText.text += "Bot wants to construct\na Power Plant\n\n";
+            actionText.text += "Bot wants to construct\na Power Plant\n\n\n";
             powerPlantIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -500,7 +507,7 @@
         }
         if (number === 7) {
         	// Recruit
-            actionText.text += "Recruit Action"
+            actionText.text += "Recruit Action\n"
             button0.visible = true;
             button0.label.text = "Recruit Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -510,7 +517,7 @@
         if (number === 8) {  
         	// Take Factory
 			// ask if space is free
-            actionText.text += "Bot wants to construct\na Factory\n\n";
+            actionText.text += "Bot wants to construct\na Factory\n\n\n";
             factoryIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -533,6 +540,7 @@
             actionText.text += "Bot wants to recruit\nGenius"
             button0.label.text = "Recruit Spot\nFree\nGenius Available";
             button0.settings.onTap = () => spaceFree();
+            button0.visible = true;
             button1.label.text = "Genius NOT available";
             button1.setting.onTap = () => spaceOccupied()
         }
@@ -540,7 +548,7 @@
         if (number === 11) {
          	// Take Lab
 			// ask if space is free
-            actionText.text += "Bot wants to construct\na Lab\n\n"
+            actionText.text += "Bot wants to construct\na Lab\n\n\n"
             labIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -591,7 +599,7 @@
         if (action === 1) {
            if (habitatBack.number < habitatBack.limit) {
            		// Need to insert code to ask for construction VP
-	            actionText.text += "\n\nTake Habitat\nfor Chronobot";
+	            actionText.text += "Take Habitat\nfor Chronobot";
 	            habitatBack.add(1);
 	            button1.label.text = "Continue";
 	            button1.settings.onTap = () => acceptAction();
