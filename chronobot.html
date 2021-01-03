@@ -650,7 +650,6 @@
         }
         if (action === 3) {
         	if( superProjectBack.number < superProjectBack.limit ) {
-
 	        	// get most breakthrough shape array and the max count of that shape(s)
 	        	let maxValue = 0;
 	        	let maxIndexArray = [];
@@ -671,13 +670,13 @@
 	        		let randomShape = maxIndexArray[ Math.floor(Math.random() * maxIndexArray.length) ];
 			        researchCounter[ randomShape ].decrease(1);
 			        actionText.text += "Remove " + researchItem[randomShape] + " Breakthrough";
-	        	}
 
-	       		// Need to insert code to ask for Superproject VP       		
-	            actionText.text += "Take Superproject\n";
-	            superProjectBack.add(1);
-	            button1.label.text = "Continue";
-	            button1.settings.onTap = () => acceptAction();
+		       		// Need to insert code to ask for Superproject VP       		
+		            actionText.text += "Take Superproject\n";
+		            superProjectBack.add(1);
+		            button1.label.text = "Continue";
+		            button1.settings.onTap = () => acceptAction();
+	        	}
 			} else {
                 actionText.text += "max. Superproject\nreached\n";
                 failedAction();
