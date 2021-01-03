@@ -634,7 +634,7 @@
     }
 
     function spaceFree() {
-    	actionText.text += "Place Exosuit!\n"
+    	actionText.text += "Place Exosuit!\n";
         exoSuitBack.remove(1);
         if (action === 1) {
            if (habitatBack.number < habitatBack.limit) {
@@ -644,7 +644,7 @@
 	            button1.label.text = "Continue";
 	            button1.settings.onTap = () => acceptAction();
             } else {
-                actionText.text += "max. Habitats\nreached\n"
+                actionText.text += "max. Habitats\nreached\n";
                 failedAction();
 			}
         }
@@ -665,12 +665,12 @@
 	        	}
 	        	// remove breakthrough and perform action
 	        	if( maxValue === 0 ) {
-	        		actionText.text += "No Breakthrough\n"
+	        		actionText.text += "No Breakthrough\n";
 	        		failedAction();
 	        	} else {
 	        		let randomShape = Math.floor(Math.random() * maxIndexArray.length;
 			        researchCounter[ randomShape ].decrease(1);
-			        actionText.text += "Remove " + researchItem[randomShape] + " Breakthrough"
+			        actionText.text += "Remove " + researchItem[randomShape] + " Breakthrough";
 	        	}
 
 	       		// Need to insert code to ask for Superproject VP       		
@@ -679,7 +679,7 @@
 	            button1.label.text = "Continue";
 	            button1.settings.onTap = () => acceptAction();
 			} else {
-                actionText.text += "max. Superproject\nreached\n"
+                actionText.text += "max. Superproject\nreached\n";
                 failedAction();
 			}
         }
