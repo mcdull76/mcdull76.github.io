@@ -668,7 +668,7 @@
 	        		actionText.text += "No Breakthrough\n";
 	        		failedAction();
 	        	} else {
-	        		let randomShape = Math.floor(Math.random() * maxIndexArray.length);
+	        		let randomShape = maxIndexArray[ Math.floor(Math.random() * maxIndexArray.length) ];
 			        researchCounter[ randomShape ].decrease(1);
 			        actionText.text += "Remove " + researchItem[randomShape] + " Breakthrough";
 	        	}
