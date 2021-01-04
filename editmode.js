@@ -1,11 +1,9 @@
 const modalS = document.getElementById("myModal2");
 const options =
-    {   "t1": [1,2,3],
-        "t2":[4,5,6,7,8,9,10],
-        "t3":[4,5,6,7,8,9,10],
-        "t4":[4,5,6,7,8,9,10],
-        "t5":[4,5,6,7,8,9,10,11],
-        "t6":[12,13],
+    {   "t2":[5,6,7,8,9,10,11,12],
+        "t3":[1,2,3,4],
+        "t4":[5,6,7,8,9,10,11,12],
+        "t5":[5,6,7,8,9,10,11,12],
         "rn":[0,1,2,3,4,5],
         "ru":[0,1,2,3,4,5],
         "rg":[0,1,2,3,4,5],
@@ -22,26 +20,24 @@ const options =
         "bs":[0,1,2],
         "exo":[0,1,2,3,4,5,6],
         "xt":[0,1,2,3,4,5,6],
-        "xs":[0,1,2,3],
         "hc":[0,1,2,3,4,5,6,7],
         "hs":[0,1,2,3,4,5,6,7],
         "ht":[0,1,2,3,4,5,6,7]
     };
 
 const stateNames =
-    {   1: "Construct Powerplant",
-        2: "Advance on Time Travel Track",
-        3: "Remove Anomaly",
-        4: "Supply Action",
-        5: "Construct Lab",
-        6: "Research",
-        7: "Mine",
+    {   1: "Construct Habitat",
+        2: "Time Travel",
+        3: "Construct Superproject",
+        4: "Remove Anomaly",
+        5: "Mine",
+        6: "Construct Power Plant",
+        7: "Recruit",
         8: "Construct Factory",
-        9: "Recruit",
-        10: "Construct Habitat",
-        11: "Start 5 (2 Water)",
-        12: "Start 6 (2 Water)",
-        13: "Construct Superproject"};
+        9: "Reboot",
+        10: "Recruit Genius / Research",
+        11: "Construct Lab",
+        12: "Research"};
 
 
 
@@ -132,9 +128,6 @@ function valueSelected(){
             break;
         case "xt":
             timetravelToken.set(parseInt(selector2.value));
-            break;
-        case "xs":
-            supplyToken.set(parseInt(selector2.value));
             break;
         default:  // numbertoken
             const tokenNumber =  parseInt(selector1.value.charAt(1))-1;

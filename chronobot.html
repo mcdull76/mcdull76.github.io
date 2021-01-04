@@ -189,7 +189,7 @@
     automa.stage.scale.y=global_scaling;
 
     let loader = PIXI.Loader.shared;
-    loader.add('images/board-modified.jpg')
+    loader.add('images/Chronobot-2.0-board.png')
     loader.add('images/sidepanel-up.png')
     loader.add('images/sidepanel-down.png')
     loader.onComplete.add(startAutoma);
@@ -305,6 +305,17 @@
         icons[i].y = 550;
         icons[i].visible = false;
     }
+
+    const advancePath = new PIXI.Sprite(PIXI.Texture.from('images/advancePath.png'));
+    advancePath.x = 505;
+    advancePath.y = 501;
+    advancePath.visible = false;
+
+    const normalPath = new PIXI.Sprite(PIXI.Texture.from('images/normalPath.png'));
+    normalPath.x = 505;
+    normalPath.y = 501;
+    normalPath.visible = false;
+
 
 	const cogWheelIcon = new PIXI.Sprite(PIXI.Texture.from('images/cogwheel.png'));
 	cogWheelIcon.on('pointerdown',editRequested );
@@ -487,7 +498,7 @@
             button1.settings.onTap = () => acceptAction();
         }
         if (number === 3) { 
-            actionText.text += "Bot wants to construct\nSuperproject\n\n";
+            actionText.text += "CONSTRUCT\nSUPERPROJECT\n";
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -766,7 +777,7 @@
     }
 
     function failedAction() {
-    	actionText.text += "\nAction Failed\n+ 1 VP";
+    	actionText.text += "Action Failed\n+ 1 VP\n";
     	points.increase(1);
         button0.visible = false;
         button1.label.text = "Continue";
@@ -896,6 +907,9 @@
         board.addChild(btCircleCounter);
         board.addChild(btTriangleCounter);
         board.addChild(btSquareCounter);
+
+        board.addChild(advancePath);
+        board.addChild(normalPath);
 
         panel.addChild(actionText);
         buttonPanel.addChild(button2);
