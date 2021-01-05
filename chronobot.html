@@ -688,13 +688,14 @@
 	        	let maxIndexArray = [];
 	        	for( i = researchCounter.length - 1; i >= 0; i-- ) {
 	        		if ( researchCounter[i].number > maxValue ) {
-	        			let maxIndexArray = [];
+	        			maxIndexArray = [];
 	        			maxIndexArray.push(i);
 	        			maxValue = researchCounter[i].number
 	        		} else if ( researchCounter[i].number === maxValue ) {
 	        			maxIndexArray.push(i);
 	        		}
 	        	}
+	        	debugger;
 	        	// remove breakthrough and perform action
 	        	if( maxValue === 0 ) {
 	        		actionText.text += "No Breakthrough\n";
@@ -702,7 +703,7 @@
 	        	} else {
 	        		let randomShape = maxIndexArray[ Math.floor(Math.random() * maxIndexArray.length) ];
 			        researchCounter[ randomShape ].decrease(1);
-			        actionText.text += "Remove " + researchItem[randomShape] + " Breakthrough";
+			        actionText.text += "Remove a\n" + researchItem[randomShape] + " Breakthrough\n";
 
 		       		// Need to insert code to ask for Superproject VP       		
 		            actionText.text += "Take Superproject\n";
