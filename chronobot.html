@@ -268,7 +268,7 @@
     const uraniumToken = new ResourceToken(uranium_texture, resourcePositions[1], 0);
     const goldToken = new ResourceToken(gold_texture, resourcePositions[2], 0);
     const titaniumToken = new ResourceToken(titanium_texture, resourcePositions[3], 0);
-
+    const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
 /*
 // remove supply, no longer have supply in v2.0 
     const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
@@ -541,23 +541,34 @@
             if (anomalyBack.number === 0) {
                 actionText.text += "No Anomalies\n";
                 failedAction();
-            } else if (water.number >= 2 && (neutroniumToken.number >= 1 ||
-                uraniumToken.number + goldToken.number + titaniumToken.number >= 2)) {
-                if (uraniumToken.number + goldToken.number + titaniumToken.number <= 1)  // have to par with n
-                    neutroniumToken.remove();
-                else
-                    for (let j = 1; j <= 2; j++) {
-                        if (titaniumToken.number > 0) {
-                            titaniumToken.remove();
-                        }
-                        else if (goldToken.number > 0) {
-                            goldToken.remove();
-                        }
-                        else { 
-                        	uraniumToken.remove();
-                        }
-                    }
-                water.decrease(2);
+            } else if ( neutroniumToken.number >= 1 ||
+                uraniumToken.number + goldToken.number + titaniumToken.number >= 2) {
+            	let removedResource = 0;
+
+            	const resourcesToBeRemove = [];
+            	let maxCount = 0;
+
+            	while ( removedResource < 2 ) {
+	            	for( var i = resourcesTokens.length; i >= 0; i-- ) {
+	            		if( resourcesTokens[i].number > maxCount ) {
+	            			resourcesToBeRemove = [];
+	            			resourcesToBeRemove.push( resourcesTokens[i] );
+	            			maxCount = resourcesTokens[i].number;
+	            		} else if( resourcesTokens[i].number === maxCount ) {
+	            			resourcesToBeRemove.push( resourcesTokens[i] );
+	            		}
+	            	}
+
+	        		let randomResourceToBeRemove = resourcesToBeRemove[ Math.floor(Math.random() * resourcesToBeRemove.length) ];
+
+					randomResourceToBeRemove.remove();
+					removedResource += 1;
+
+					if ( randomResourceToBeRemove === neutroniumToken ) {
+						removedResource += 1;
+					}
+				}
+
                 actionText.text += "Chronobot removed\n Anomaly";
                 anomalyBack.remove();
             } else {
