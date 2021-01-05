@@ -210,9 +210,10 @@
     automa.stage.scale.y=global_scaling;
 
     let loader = PIXI.Loader.shared;
-    loader.add('images/Chronobot-2.0-board.png')
-    loader.add('images/sidepanel-up.png')
-    loader.add('images/sidepanel-down.png')
+    loader.add('images/BG-The-World.png');
+    loader.add('images/Chronobot-2.0-board.png');
+    loader.add('images/sidepanel-up.png');
+    loader.add('images/sidepanel-down.png');
     loader.onComplete.add(startAutoma);
     loader.load();
 
@@ -883,11 +884,14 @@
         buttonPanel.x = 1480;
         buttonPanel.y = 700;
 
-        const board_texture = loader.resources['images/Chronobot-2.0-board.png'].texture;
-        const board = new Board(board_texture);
+        const background_image = loader.resources['images/BG-The-World.png'].texture;
+        const board = new Board(background_image);
         board.x = 0;
         board.y = 0;
 
+        const board_texture = loader.resources['images/Chronobot-2.0-board.png'].texture;
+
+        board.addChild(board_texture)
         board.addChild(advancePath);
         board.addChild(normalPath);
 

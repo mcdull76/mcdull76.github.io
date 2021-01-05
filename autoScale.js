@@ -22,9 +22,8 @@ function autoScale() {
 	automa.width = defaultW * global_scaling;
 	automa.height = defaultH * global_scaling;
 
+	automa.renderer.resize(automa.width, automa.height);
+
     automa.stage.scale.x=global_scaling;
     automa.stage.scale.y=global_scaling;
-
-	automa.renderer.resize(automa.width, automa.height);
-	//automa.resize();
 }
