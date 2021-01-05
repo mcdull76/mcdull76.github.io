@@ -161,9 +161,11 @@ function valueSelected(){
         case "t3":
         case "t4":
         case "t5":
-            const tokenNumber =  parseInt(selector1.value.charAt(1))-1;
-            while (parseInt(selector2.value)!==tokens[tokenNumber].state.name)
-            tokens[tokenNumber].advance();
+            const tokenNumber =  parseInt(selector1.value.charAt(1)) - 2;
+            while (parseInt(selector2.value)!==tokens[tokenNumber].state.name) {
+                tokens[tokenNumber].advance();
+                if( tokens[tokenNumber].state.name === parseInt(selector2.value) + 1) break; // avoid infinite loop
+            }
             break;
         default:
             break;
