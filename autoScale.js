@@ -9,18 +9,18 @@ function updateScale( ) {
 	let scale = parseFloat(split[1]);
 
 
-	const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-	const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+	const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+	const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
 	if (split.length === 1) global_scaling = Math.min( vw/defaultW, vh/defaultH ); //Default
 
 }
 
 function autoScale() {
-	updateScale()
+	updateScale();
 
 	automa.width = defaultW * global_scaling;
-	automa.height = defaultH * global_scaling
+	automa.height = defaultH * global_scaling;
 
-	automa.renderer.resize()
+	automa.renderer.resize(automa.width, automa.height);
 }
