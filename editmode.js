@@ -40,6 +40,8 @@ const stateNames =
         12: "Research"};
 
 function toggleSkipReboot() {
+    skipReboot = ! skipReboot;
+
     // advance token if it is at Reboot
     for (var i = 0; i < tokens.length; i++) {
         if( tokens[i].state.name === 9 ) {
@@ -58,7 +60,6 @@ function toggleSkipReboot() {
         states[8].setNext( states[9] );
     }
 
-    skipReboot = ! skipReboot;
 }
 
 function keySelected(){
