@@ -39,7 +39,27 @@ const stateNames =
         11: "Construct Lab",
         12: "Research"};
 
+function toggleSkipReboot() {
+    // advance token if it is at Reboot
+    for (var i = 0; i < tokens.length; i++) {
+        if( tokens[i].state.name === 9 ) {
+            tokens[i].advance();
+        }
 
+    }
+    // update the board graphic
+    advancePath.visible = skipReboot;
+    normalPath.visible = ! skipReboot;
+
+    // set the correct token stateTransition
+    if( skipReboot ) {
+        states[8].setNext( states[10] );
+    } else {
+        states[8].setNext( states[9] );
+    }
+
+    skipReboot = ! skipReboot;
+}
 
 function keySelected(){
     const selector1 = document.getElementById("Key");
@@ -55,8 +75,17 @@ function keySelected(){
         }
     else options[selected].forEach(element => { const opt = document.createElement('option');
         opt.value = element;
-        if (selected.charAt(0) === "t") opt.innerHTML = stateNames[parseInt(element)];
-        else opt.innerHTML = element;
+        if (selected.charAt(0) === "t") {
+            if (skipReboot) {
+                if( parseInt(element) !== 9 ) {
+                    opt.innerHTML = stateNames[parseInt(element)];
+                }
+            } else {
+                opt.innerHTML = stateNames[parseInt(element)];
+            }
+        } else {
+            opt.innerHTML = element;
+        }
         selector2.appendChild(opt);
         } );
     selector2.disabled = false;

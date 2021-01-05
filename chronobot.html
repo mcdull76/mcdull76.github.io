@@ -68,8 +68,12 @@
       <option value="water">Water</option>
     </select>
       &emsp;
-      <select class= "myselect" id="Value" disabled>
+    <select class= "myselect" id="Value" disabled>
     </select>
+    </div>
+    <div class="">
+    	<input type="checkbox" name="skipReboot" onclick="toggleSkipReboot()">
+    	<label>Skip Reboot</label><BR>
     </div>
     <div style="text-align: right">
       <button name="cancel" class="button" onclick="modalS.style.display = 'none'" >Cancel</button>
@@ -211,17 +215,15 @@
     const statePos = [{x: 146, y: 106}, {x: 304, y: 106}, {x: 464, y: 106}, {x: 625, y: 106},
         {x: 146, y: 460}, {x: 304, y: 460}, {x: 464, y: 460}, {x: 625, y: 460},
         {x: 625, y: 622}, {x: 464, y: 622}, {x: 304, y: 622}, {x: 146, y: 622}];
-
     const stateTransition = {1: 2, 2: 3, 3: 4, 4: 1,
      5: 6, 6: 7, 7: 8, 8: 9,
      9: 10, 10: 11, 11: 12, 12: 5};
-
     const stateStart = [8, 1, 6, 12];
-
 
     for (let i = 1; i <= 12; i++) {
         states[i] = new State(i, statePos[i - 1]);
     }
+
     for (const [key, value] of Object.entries(states)) {
         value.setNext(states[stateTransition[key]])
     }
@@ -306,15 +308,17 @@
         icons[i].visible = false;
     }
 
+    const skipReboot = false;
+
     const advancePath = new PIXI.Sprite(PIXI.Texture.from('images/advancePath.png'));
     advancePath.x = 505;
     advancePath.y = 501;
-    advancePath.visible = false;
+    advancePath.visible = skipReboot;
 
     const normalPath = new PIXI.Sprite(PIXI.Texture.from('images/normalPath.png'));
     normalPath.x = 505;
     normalPath.y = 501;
-    normalPath.visible = false;
+    normalPath.visible = ! skipReboot;
 
 
 	const cogWheelIcon = new PIXI.Sprite(PIXI.Texture.from('images/cogwheel.png'));
