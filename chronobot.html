@@ -11,6 +11,7 @@
     <script src="slidetokens.js"></script>
     <script src="counter.js"></script>
     <script src="button.js"></script>
+    <script src="autoScale.js"></script>
     <title>Chronobot</title>
 </head>
 
@@ -105,16 +106,10 @@
 <script src="infotext.js"></script>
 <script>
 
-	const split = window.location.href.split("scale=");
-	let scale = parseFloat(split[1]);
-	const defaultW = 1480+250;
-	const defaultH = 1080;
-	const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-	const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+    const global_steps = 30;
 
-  if (split.length === 1) scale = Math.min( vw/defaultW, vh/defaultH ); //Default
-  const global_scaling = scale,
-          global_steps = 30;
+	autoScale()
+
 
     class Board extends PIXI.Sprite{
 
@@ -489,7 +484,7 @@
         if (number === 1) {  
         	// Take Habitat
  			// ask if space is free
-            actionText.text += "Bot wants to construct\na Habitat\n\n\n";
+            actionText.text += "Construct a Habitat\n\n\n";
             habitatIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -596,7 +591,7 @@
         if (number === 8) {  
         	// Take Factory
 			// ask if space is free
-            actionText.text += "Bot wants to construct\na Factory\n\n\n";
+            actionText.text += "Construct a Factory\n\n\n";
             factoryIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -616,7 +611,7 @@
         	When using the Recruit Genius/Research Action, perform a Recruit Action only if a Genius is available.
         	If no Genius is available, perform a Research Action instead.
         	*/
-            actionText.text += "Bot wants to recruit\nGenius\n\n"
+            actionText.text += "Recruit Genius\n\n"
             button0.label.text = "Recruit Spot Free\n and Genius Available";
             button0.settings.onTap = () => spaceFree();
             button0.visible = true;
@@ -627,7 +622,7 @@
         if (number === 11) {
          	// Take Lab
 			// ask if space is free
-            actionText.text += "Bot wants to construct\na Lab\n\n\n"
+            actionText.text += "Construct a Lab\n\n\n"
             labIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -822,7 +817,6 @@
     	}
     }
 
-
     function waitForUser() {
         button2.settings.onTap = () => button2Pressed();
         actionText.visible = false;
@@ -884,10 +878,10 @@
         panel.interactive = true;
         //panel.hitArea = new PIXI.Rectangle(10,150,240,700);
         panel.on('pointerdown', helpAsked);
-        panel.x = 1482;
+        panel.x = 1480;
         panel.y = 0;
         const buttonPanel = new PIXI.Sprite(loader.resources['images/sidepanel-down.png'].texture);
-        buttonPanel.x = 1482;
+        buttonPanel.x = 1480;
         buttonPanel.y = 700;
 
         const board_texture = loader.resources['images/Chronobot-2.0-board.png'].texture;
@@ -910,7 +904,6 @@
              paradoxTokens.push(newToken);
              board.addChild(newToken);
         }
-
 
         board.addChild(geniusToken);
         board.addChild(adminToken);
