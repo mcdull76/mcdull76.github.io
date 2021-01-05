@@ -871,6 +871,9 @@
         board.x = 0;
         board.y = 0;
 
+        board.addChild(advancePath);
+        board.addChild(normalPath);
+
         for (let i = 2; i <= 5; i++) {
             const newToken = new Token(i, PIXI.Texture.from('images/t' + i.toString() + '.png'), states[stateStart[i - 2]]);
             tokens.push(newToken);
@@ -911,9 +914,6 @@
         board.addChild(btCircleCounter);
         board.addChild(btTriangleCounter);
         board.addChild(btSquareCounter);
-
-        board.addChild(advancePath);
-        board.addChild(normalPath);
 
         panel.addChild(actionText);
         buttonPanel.addChild(button2);
