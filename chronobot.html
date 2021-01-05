@@ -459,11 +459,18 @@
 
     function button1Pressed() {
         if (phase.number === 5) {
-            dice = aiDiceValue[Math.floor(Math.random() * 6)];
-            actionText.text = "Chronobot rolled a " + dice.toString() + "\n This means:\n\n";
-            actionText.visible = true;
-            action = tokens[dice - 2].state.name;
-            performAction();
+	        if (exoSuitBack.number > 0) {
+	            dice = aiDiceValue[Math.floor(Math.random() * 6)];
+	            actionText.text = "Chronobot rolled a " + dice.toString() + "\n This means:\n\n";
+	            actionText.visible = true;
+	            action = tokens[dice - 2].state.name;
+	            performAction();
+	        } else if (!finalTimeTravel) {
+                action = 2;
+                finalTimeTravel = true;
+                performAction();
+	            
+			}
         } else if (phase.number === 6) {
             const btVp = btSquareCounter.number + btTriangleCounter.number + btCircleCounter.number
                 + 2*  Math.min(btSquareCounter.number,btTriangleCounter.number,btCircleCounter.number);
@@ -484,7 +491,7 @@
         if (number === 1) {  
         	// Take Habitat
  			// ask if space is free
-            actionText.text += "Construct a Habitat\n\n\n";
+            actionText.text += "CONSTRUCT a HABITAT\n\n\n";
             habitatIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -494,6 +501,7 @@
         }
         if (number === 2) {  
         	// Time travel
+        	actionText.text += "TIME TRAVEL\n"
             if (timetravelToken.state === 6) {
                 actionText.text += "time travel maxed\n";
                 failedAction();
@@ -654,12 +662,7 @@
         botActions += 1;
         if (botActions >= 3) button2.enable();
         if (exoSuitBack.number === 0) {
-            if (!finalTimeTravel){
-                action = 2;
-                finalTimeTravel = true;
-                performAction();
-            }
-            else {
+            if (finalTimeTravel) {                
                 finalTimeTravel = false;
                 button1.disable();
                 button2.enable();
@@ -669,6 +672,8 @@
 
     function spaceFree() {
     	actionText.text += "Place Exosuit!\n";
+        exoSuitBack.remove();
+
         if (action === 1) {
            if (habitatBack.number < habitatBack.limit) {
            		// Need to insert code to ask for construction VP
@@ -782,7 +787,7 @@
         if( action === 12) {
         	// current steps are not correct. Need to show each shape count in the BreakthroughToken.
 	        let researchDice = Math.floor(Math.random() * 3);
-	        actionText.text += "\n\n Took the " + researchItem[researchDice] + "\nBreakthrough Token";
+	        actionText.text += "Took the " + researchItem[researchDice] + "\nBreakthrough Token";
 	        researchCounter[researchDice].increase(1);
 
 			for ( i = 0; i < researchCounter.length; i++ ) {
@@ -794,8 +799,6 @@
 	        button1.label.text = "Continue";
 	        button1.settings.onTap = () => acceptAction();        	    	
         }
-
-        exoSuitBack.remove(1);
 
         button0.visible = false;
         if (action !== 5) button1.visible = true;
@@ -813,6 +816,7 @@
     function spaceOccupied() {
     	if( action === 10 ) {
     		actionText.text += "No Genius.\n";
+	        exoSuitBack.add();
 			action = 12;
 			performAction();
     	} else {
