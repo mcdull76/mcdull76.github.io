@@ -105,9 +105,14 @@
 <script src="infotext.js"></script>
 <script>
 
-  const split = window.location.href.split("scale=");
-  let scale = parseFloat(split[1]);
-  if (split.length === 1) scale = 0.68; //Default
+	const split = window.location.href.split("scale=");
+	let scale = parseFloat(split[1]);
+	const defaultW = 1480+250;
+	const defaultH = 1080;
+	const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+	const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+  if (split.length === 1) scale = Math.min( vw/defaultW, vh/defaultH ); //Default
   const global_scaling = scale,
           global_steps = 30;
 
@@ -201,8 +206,8 @@
 
     const automa = new PIXI.Application({
         view: canvas,
-        width: (1482+ 250) * global_scaling,
-        height: 1080 * global_scaling,
+        width: defaultW * global_scaling,
+        height: defaultH * global_scaling,
         resolution: 1,
         autoDensity: true
     });
