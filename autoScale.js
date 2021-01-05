@@ -21,4 +21,6 @@ function autoScale() {
 
 	automa.width = defaultW * global_scaling;
 	automa.height = defaultH * global_scaling
+
+	automa.resizeTo()
 }
