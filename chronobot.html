@@ -69,9 +69,24 @@
     <select class= "myselect" id="Value" disabled>
     </select>
     </div>
+    <div>
+    	<label>INCREASING THE DIFFICULTY</label>
+    </div>
     <div class="">
     	<input type="checkbox" name="skipReboot" id="skipReboot">
     	<label>Skip Reboot</label><BR>
+    </div>
+    <div class="">
+    	<label>The Chronobot takes one additional turn after you have passed.</label>
+    </div>
+    <div>
+    	<label>Minimum number of Chronobot's Actions: </label>
+    	<select class="myselect" id="MinActionValue" onchange="">
+    		<option value="3">3</option>
+    		<option value="4">4</option>
+    		<option value="5">5</option>
+    		<option value="6">6</option>
+    	</select>
     </div>
     <div style="text-align: right">
       <button name="cancel" class="button" onclick="modalS.style.display = 'none'" >Cancel</button>
