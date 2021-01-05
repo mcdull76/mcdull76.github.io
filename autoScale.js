@@ -4,7 +4,7 @@ const defaultH = 1080;
 
 window.onresize = autoScale;
 
-function autoScale( ) {
+function updateScale( ) {
 	const split = window.location.href.split("scale=");
 	let scale = parseFloat(split[1]);
 
@@ -16,4 +16,9 @@ function autoScale( ) {
 
 }
 
+function autoScale() {
+	updateScale()
 
+	automa.width = defaultW * global_scaling;
+	automa.height = defaultH * global_scaling
+}
