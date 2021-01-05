@@ -53,7 +53,6 @@
       <option value="we"># Engineers</option>
       <option value="ws"># Scientists</option>
       <option value="xt">Position Time Travel Track</option>
-      <option value="xs">Position Supply Track</option>
       <option value="exo"># Exosuits</option>
       <option value="bp"># Power Plants</option>
       <option value="bf"># Factories</option>
@@ -65,7 +64,6 @@
       <option value="ht"># Breakthroughs Triangle</option>
       <option value="hs"># Breakthroughs Square</option>
       <option value="points">Points</option>
-      <option value="water">Water</option>
     </select>
       &emsp;
     <select class= "myselect" id="Value" disabled>
@@ -251,6 +249,7 @@
     const goldToken = new ResourceToken(gold_texture, resourcePositions[2], 0);
     const titaniumToken = new ResourceToken(titanium_texture, resourcePositions[3], 0);
 
+/*
 // remove supply, no longer have supply in v2.0 
     const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
     const supplyTransitions = {0: 1, 1: 2, 2: 3, 3: 3};
@@ -258,6 +257,7 @@
     const supplyNeed = [5, 6, 7, 7];
     const supplyPoints = [0,2,5,8];
 // remove supple end
+*/
 
     const timetravelPositions = {
         0: {x: 858, y: 719}, 1: {x: 926, y: 719}, 2: {x: 992, y: 719}, 3: {x: 1060, y: 719},
@@ -449,9 +449,8 @@
                 + 2*  Math.min(btSquareCounter.number,btTriangleCounter.number,btCircleCounter.number);
             actionText.text = "Game ended\n with "+btVp.toString()+" VPs \nfor Breakthrough tiles,\n" +
                     timeTravelPoints[timetravelToken.state]+ " Time Travel VPs\n"+
-                    "and " +supplyPoints[supplyToken.state]+ " Supply VPs\n"+
           " we have " +
-                (btVp+ points.number+timeTravelPoints[timetravelToken.state]+supplyPoints[supplyToken.state]).toString() +
+                (btVp + points.number + timeTravelPoints[timetravelToken.state]).toString() +
           " VPs\n on the board.\n\n Add VP for buildings\nfor final score!";
             actionText.visible = true;
             button1.visible = false;
@@ -898,7 +897,6 @@
         board.addChild(goldToken);
         board.addChild(titaniumToken);
 
-        board.addChild(supplyToken);
         board.addChild(timetravelToken);
 
         board.addChild(powerPlantBack);

@@ -97,9 +97,6 @@ function valueSelected(){
         case "points":
             points.set(parseInt(selector2.value));
             break;
-        case "water":
-            water.set(parseInt(selector2.value));
-            break;
         case "rn":
             neutroniumToken.set(parseInt(selector2.value));
             break;
