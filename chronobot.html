@@ -612,10 +612,10 @@
         	If no Genius is available, perform a Research Action instead.
         	*/
             actionText.text += "Recruit Genius\n\n"
-            button0.label.text = "Recruit Spot Free\n and Genius Available";
+            button0.label.text = "Recruit Spot\nFree";
             button0.settings.onTap = () => spaceFree();
             button0.visible = true;
-            button1.label.text = "Genius NOT available";
+            button1.label.text = "Recruit Spot\nOccupied";
             button1.settings.onTap = () => spaceOccupied();
         }
 
@@ -669,7 +669,6 @@
 
     function spaceFree() {
     	actionText.text += "Place Exosuit!\n";
-        exoSuitBack.remove(1);
         if (action === 1) {
            if (habitatBack.number < habitatBack.limit) {
            		// Need to insert code to ask for construction VP
@@ -794,6 +793,9 @@
 	        button1.label.text = "Continue";
 	        button1.settings.onTap = () => acceptAction();        	    	
         }
+
+        exoSuitBack.remove(1);
+
         button0.visible = false;
         if (action !== 5) button1.visible = true;
 
