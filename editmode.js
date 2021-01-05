@@ -157,10 +157,16 @@ function valueSelected(){
         case "xt":
             timetravelToken.set(parseInt(selector2.value));
             break;
-        default:  // numbertoken
+        case "t2":  // numbertoken
+        case "t3":
+        case "t4":
+        case "t5":
             const tokenNumber =  parseInt(selector1.value.charAt(1))-1;
             while (parseInt(selector2.value)!==tokens[tokenNumber].state.name)
             tokens[tokenNumber].advance();
+            break;
+        default:
+            break;
     }
 
     // skip Reboot
