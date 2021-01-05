@@ -884,13 +884,11 @@
         buttonPanel.x = 1480;
         buttonPanel.y = 700;
 
-        const background_image = loader.resources['images/BG-The-World.png'].texture;
-        const board = new Board(background_image);
+        const board = new Board(loader.resources['images/BG-The-World.png'].texture);
         board.x = 0;
         board.y = 0;
 
-        const board_texture = loader.resources['images/Chronobot-2.0-board.png'].texture;
-        const action_frame = new PIXI.Sprite(board_texture);
+        const action_frame = new PIXI.Sprite(loader.resources['images/Chronobot-2.0-board.png'].texture);
 
         board.addChild(action_frame)
         board.addChild(advancePath);
