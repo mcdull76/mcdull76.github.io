@@ -170,7 +170,7 @@ function valueSelected(){
     }
 
     // skip Reboot
-    if( skipReboot !== document.getElementById("skipReboot").value ) {
+    if( skipReboot !== document.getElementById("skipReboot").checked ) {
         skipReboot = ! skipReboot;
         toggleSkipReboot();
     }
