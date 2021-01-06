@@ -548,6 +548,8 @@
                 failedAction();
             } else if ( neutroniumToken.number >= 1 ||
                 uraniumToken.number + goldToken.number + titaniumToken.number >= 2) {
+                actionText.text += "Chronobot removed\n Anomaly by discards:\n";
+
             	let removedResource = 0;
 
             	let resourcesToBeRemove = [];
@@ -577,12 +579,26 @@
 					randomResourceToBeRemove.remove();
 					removedResource += 1;
 
+					switch( randomResourceToBeRemove ) {
+						case neutroniumToken:
+							actionText.text += "Neutronium\n";
+							break;
+						case uraniumToken:
+							actionText.text += "Uranium\n";
+							break;
+						case goldToken:
+							actionText.text += "Gold\n";
+							break;
+						case titaniumToken:
+							actionText.text += "Titanium\n"
+							break;
+					}
+
 					if ( randomResourceToBeRemove === neutroniumToken ) {
 						removedResource += 1;
 					}
 				}
 
-                actionText.text += "Chronobot removed\n Anomaly";
                 anomalyBack.remove();
             } else {
                 actionText.text += "No Ressources\nto remove Anomaly\n";
