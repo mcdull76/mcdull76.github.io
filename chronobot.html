@@ -182,7 +182,6 @@
                     titaniumToken.interactive = false;
                     button1.label.text="Continue";
                     button1.visible = true;
-					validateResources()
                     button1.settings.onTap = () => acceptAction();
                 }
             } else if (action === 7) {
@@ -605,7 +604,6 @@
         	// Mine
 
         	// BUG: 3 resources have 1+, pick the last resource, +5vp, then I cannot pick the second resource.
-        	// BUG: How to pick only one resource.
 
             actionText.text += "Mine Action\n";
             button0.visible = true;
@@ -690,6 +688,15 @@
     }
 
     function acceptAction() {
+    	switch ( action ) {
+    		case 5: //Mine
+				validateResources();
+				break;
+			case 7: //Recurit
+				validateWorkers();
+				break;
+    	}
+
         action = 0;
         icons.forEach(icon => icon.visible = false);
         if (!finalTimeTravel) tokens[dice - 2].advance();
