@@ -471,7 +471,6 @@
 	            action = tokens[dice - 2].state.name;
 	            performAction();
 	        } else if (!finalTimeTravel) {
-	        	dice = 0;
                 action = 2;
                 finalTimeTravel = true;
                 performAction();
@@ -679,7 +678,7 @@
     function acceptAction() {
         action = 0;
         icons.forEach(icon => icon.visible = false);
-        tokens[dice - 2].advance();
+        if (!finalTimeTravel) tokens[dice - 2].advance();
         button1.visible = true;
         button1.label.text = 'Next\nBot Action';
         actionText.text = "";
