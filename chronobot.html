@@ -71,6 +71,11 @@
     </select>
     </div>
     <BR>
+    <div><label>MODULE</label></div><BR>
+    <div>
+    	<input type="checkbox" name="VarAnomalies" id="VarAnomalies">
+    	<label>Variable Anomalies</label>
+    </div>
     <div>
     	<label>INCREASING THE DIFFICULTY</label>
     </div>
@@ -560,7 +565,7 @@
 	            			resourcesToBeRemove.push( resourcesTokens[i] );
 	            			maxCount = resourcesTokens[i].number;
 	            		} else if( resourcesTokens[i].number === maxCount ) {
-	            			if !( removedResource > 0 && resourcesTokens[i] === neutroniumToken ) {
+	            			if (!( removedResource > 0 && resourcesTokens[i] === neutroniumToken )) {
 	            				//exclude Neutronium
 		            			resourcesToBeRemove.push( resourcesTokens[i] );
 		            		}
