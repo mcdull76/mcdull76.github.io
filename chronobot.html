@@ -564,7 +564,7 @@
 	            			resourcesToBeRemove = [];
 	            			resourcesToBeRemove.push( resourcesTokens[i] );
 	            			maxCount = resourcesTokens[i].number;
-	            		} else if( resourcesTokens[i].number === maxCount ) {
+	            		} else if( tempNumber === maxCount ) {
 	            			if (!( removedResource > 0 && resourcesTokens[i] === neutroniumToken )) {
 	            				//exclude Neutronium
 		            			resourcesToBeRemove.push( resourcesTokens[i] );
