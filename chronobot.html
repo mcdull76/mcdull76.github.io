@@ -259,20 +259,20 @@
     const admin_texture = PIXI.Texture.from('images/admin.png');
     const engineer_texture = PIXI.Texture.from('images/engineer.png');
     const scientist_texture = PIXI.Texture.from('images/scientist.png');
-    const geniusToken = new WorkerToken(genius_texture, workerPositions[0], 0);
-    const adminToken = new WorkerToken(admin_texture, workerPositions[1], 0);
-    const engineerToken = new WorkerToken(engineer_texture, workerPositions[2], 0);
-    const scientistToken = new WorkerToken(scientist_texture, workerPositions[3], 0);
+    const geniusToken = new WorkerToken(genius_texture, "Genius", workerPositions[0], 0);
+    const adminToken = new WorkerToken(admin_texture, "Administrator", workerPositions[1], 0);
+    const engineerToken = new WorkerToken(engineer_texture, "Engineer", workerPositions[2], 0);
+    const scientistToken = new WorkerToken(scientist_texture, "Scientist", workerPositions[3], 0);
 
     const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
     const uranium_texture = PIXI.Texture.from('images/uranium.png');
     const gold_texture = PIXI.Texture.from('images/gold.png');
     const titanium_texture = PIXI.Texture.from('images/titanium.png');
-    const neutroniumToken = new ResourceToken(neutronium_texture, resourcePositions[0], 0);
-    const uraniumToken = new ResourceToken(uranium_texture, resourcePositions[1], 0);
-    const goldToken = new ResourceToken(gold_texture, resourcePositions[2], 0);
-    const titaniumToken = new ResourceToken(titanium_texture, resourcePositions[3], 0);
+    const neutroniumToken = new ResourceToken(neutronium_texture, "Neutronium", resourcePositions[0], 0);
+    const uraniumToken = new ResourceToken(uranium_texture, "Uranium", resourcePositions[1], 0);
+    const goldToken = new ResourceToken(gold_texture, "Gold", resourcePositions[2], 0);
+    const titaniumToken = new ResourceToken(titanium_texture, "Titanium", resourcePositions[3], 0);
     const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
 /*
 // remove supply, no longer have supply in v2.0 
@@ -297,15 +297,15 @@
   	const paradoxTokens = [];
     const paradoxPositions = [{x: 1345, y: 521}, {x: 1417, y: 672}, {x: 1345, y: 660}]
 
-    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), {x: 549, y: 861}, 0, true, 3);
+    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), "Power Plant", {x: 549, y: 861}, 0, true, 3);
     powerPlantBack.text.position = {x: 85, y: 170};
-    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), {x: 728, y: 861}, 0, true, 3);
+    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), "Factory", {x: 728, y: 861}, 0, true, 3);
     factoryBack.text.position = {x: 85, y: 170};
-    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), {x: 907, y: 861}, 0, true, 3);
+    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), "Habitat", {x: 907, y: 861}, 0, true, 3);
     habitatBack.text.position = {x: 85, y: 170};
-    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), {x: 1086, y: 861}, 0, true, 3);
+    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), "Lab", {x: 1086, y: 861}, 0, true, 3);
     labBack.text.position = {x: 85, y: 170};
-    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), {x: 1291, y: 861}, 0, true, 3);
+    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), "-2", {x: 1291, y: 861}, 0, true, 3);
     anomalyBack.text.position = {x: 85, y: 170};
 
     const breakthroughBack = new PIXI.Sprite(PIXI.Texture.from('images/BreakthroughIcon.png'));
@@ -314,10 +314,10 @@
     breakthroughBack.visible = false;
 
 
-    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), {x: 169, y: 859}, 0, true, 3);
+    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), "Superproject", {x: 169, y: 859}, 0, true, 3);
     superProjectBack.text.position = {x: 175, y: 165};
 
-    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), {x: 1125, y: 43}, 0, true, 6);
+    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), "Exosuit", {x: 1125, y: 43}, 0, true, 6);
     exoSuitBack.text.position = {x: 105, y: 95};
 
     const powerPlantIcon = new PIXI.Sprite(PIXI.Texture.from('images/powerplantIcon.png'));
@@ -574,27 +574,14 @@
 	            		}
 	            	}
 
-	        		let randomResourceToBeRemove = resourcesToBeRemove[ Math.floor(Math.random() * resourcesToBeRemove.length) ];
+	        		let discardResource = resourcesToBeRemove[ resourcesToBeRemove.length - 1 ];
 
-					randomResourceToBeRemove.remove();
+					discardResource.remove();
 					removedResource += 1;
 
-					switch( randomResourceToBeRemove ) {
-						case neutroniumToken:
-							actionText.text += "Neutronium\n";
-							break;
-						case uraniumToken:
-							actionText.text += "Uranium\n";
-							break;
-						case goldToken:
-							actionText.text += "Gold\n";
-							break;
-						case titaniumToken:
-							actionText.text += "Titanium\n"
-							break;
-					}
+					actionText.text += discardResource.name + "\n";
 
-					if ( randomResourceToBeRemove === neutroniumToken ) {
+					if ( discardResource === neutroniumToken ) {
 						removedResource += 1;
 					}
 				}
@@ -809,6 +796,7 @@
             actionText.text += "Take Genius by\ntapping on board\n";
             geniusToken.interactive = true;
             button1.label.text = "No Genius\nAvailable";
+            action = 10.5;
             button1.settings.onTap = () => spaceOccupied();
         }
         if( action === 11) {
@@ -853,7 +841,7 @@
     }
 
     function spaceOccupied() {
-    	if( action === 10 ) {
+    	if( action === 10.5 ) {
     		actionText.text += "No Genius.\n";
 	        exoSuitBack.add();
 			action = 12;

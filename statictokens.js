@@ -1,11 +1,11 @@
 class StaticToken extends PIXI.Sprite {
 
-    constructor(texture, pos, status, counter, limit) {
+    constructor(texture, name, pos, status, counter, limit) {
         super(texture);
 
         this.limit = limit;
 
-
+        this.name = name;
         this.x = pos.x;
         this.y = pos.y;
         this.counter = counter;
@@ -68,8 +68,8 @@ class StaticToken extends PIXI.Sprite {
 
 class WorkerToken extends StaticToken {
 
-    constructor(texture, pos, status) {
-        super(texture,pos,status, true, 25);
+    constructor(texture, name, pos, status) {
+        super(texture, name, pos,status, true, 25);
 
         this.text.x = 40;
         this.text.y = 95;
@@ -92,8 +92,8 @@ class WorkerToken extends StaticToken {
 
 class ResourceToken extends StaticToken {
 
-    constructor(texture, pos, status) {
-        super(texture,pos,status, true, 25);
+    constructor(texture, name, pos, status) {
+        super(texture, name, pos, status, true, 25);
 
         this.text.x = 26;
         this.text.y = 67;
@@ -118,7 +118,7 @@ class ResourceToken extends StaticToken {
 class ParadoxToken extends StaticToken {
 
     constructor(texture, pos, status) {
-        super(texture,pos,status, true, 25);
+        super(texture, "Paradox", pos, status, true, 25);
 
         this.counter = false;
 
@@ -132,5 +132,6 @@ class ParadoxToken extends StaticToken {
         }
     }
 }
+
 
 
