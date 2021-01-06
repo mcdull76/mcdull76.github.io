@@ -471,6 +471,7 @@
 	            action = tokens[dice - 2].state.name;
 	            performAction();
 	        } else if (!finalTimeTravel) {
+	        	dice = 0;
                 action = 2;
                 finalTimeTravel = true;
                 performAction();
@@ -550,7 +551,7 @@
                 uraniumToken.number + goldToken.number + titaniumToken.number >= 2) {
             	let removedResource = 0;
 
-            	const resourcesToBeRemove = [];
+            	let resourcesToBeRemove = [];
             	let maxCount = 0, tempNumber = 0;
 
             	while ( removedResource < 2 ) {
