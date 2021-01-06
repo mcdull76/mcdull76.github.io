@@ -546,16 +546,24 @@
             	let removedResource = 0;
 
             	const resourcesToBeRemove = [];
-            	let maxCount = 0;
+            	let maxCount = 0, tempNumber = 0;
 
             	while ( removedResource < 2 ) {
-	            	for( var i = resourcesTokens.length; i >= 0; i-- ) {
-	            		if( resourcesTokens[i].number > maxCount ) {
+	            	for( var i = 0; i < resourcesTokens.length; i++ ) {
+	            		tempNumber = resourcesTokens[i].number;
+	            		//each Neutronium cube is equal to 2 non-Neutronium cubes when calculating priority and discarding
+	            		if ( resourcesTokens[i] === neutroniumToken ) {
+	            			tempNumber += tempNumber; 
+	            		}
+	            		if( tempNumber > maxCount ) {
 	            			resourcesToBeRemove = [];
 	            			resourcesToBeRemove.push( resourcesTokens[i] );
 	            			maxCount = resourcesTokens[i].number;
 	            		} else if( resourcesTokens[i].number === maxCount ) {
-	            			resourcesToBeRemove.push( resourcesTokens[i] );
+	            			if !( removedResource > 0 && resourcesTokens[i] === neutroniumToken ) {
+	            				//exclude Neutronium
+		            			resourcesToBeRemove.push( resourcesTokens[i] );
+		            		}
 	            		}
 	            	}
 
