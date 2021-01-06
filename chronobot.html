@@ -128,7 +128,7 @@
                 adminToken.remove();
                 geniusToken.remove();
                 points.increase(5);
-                actionText.text += "\n\nComplete Worker Set\nAdded 5 VP "
+                actionText.text += "\nComplete Worker Set\nAdded 5 VP "
             }
         }
 
@@ -139,7 +139,7 @@
                 goldToken.remove();
                 titaniumToken.remove();
                 points.increase(5);
-                actionText.text += "\n\nComplete Resource\nSet -> Added 5 VP "
+                actionText.text += "\nComplete Resource\nSet -> Added 5 VP "
             }
         }
 
@@ -166,10 +166,16 @@
             }
         }
 
-        checkIfReady() {
+        checkIfReady(targetToken) {
+        	actionText.text += "took " + targetToken.name + "\n";
 			if (action === 5){
+            	debugger;
             	selectResources +=1;
-                if (selectResources >= 2) {
+            	if (selectResources === 1) {
+                    button1.label.text="Continue (1)";
+                    button1.visible = true;
+                    button1.settings.onTap = () => acceptAction();            		
+            	} else if (selectResources >= 2) {
                     neutroniumToken.interactive = false;
                     uraniumToken.interactive = false;
                     goldToken.interactive = false;
@@ -596,6 +602,10 @@
         }
         if (number === 5) {  
         	// Mine
+
+        	// BUG: 3 resources have 1+, pick the last resource, +5vp, then I cannot pick the second resource.
+        	// BUG: How to pick only one resource.
+
             actionText.text += "Mine Action\n";
             button0.visible = true;
             button0.label.text = "Mine Spot\nFree";
