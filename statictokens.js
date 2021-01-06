@@ -86,7 +86,7 @@ class WorkerToken extends StaticToken {
 
     set(value){
         StaticToken.prototype.set.call(this,value);
-        Board.prototype.checkIfReady();
+        Board.prototype.checkIfReady(this);
     }
 }
 
@@ -110,7 +110,7 @@ class ResourceToken extends StaticToken {
 
     set(value){
         StaticToken.prototype.set.call(this,value);
-        Board.prototype.checkIfReady();
+        Board.prototype.checkIfReady(this);
     }
 
 }
