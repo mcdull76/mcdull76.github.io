@@ -98,7 +98,15 @@ class ResourceToken extends StaticToken {
         this.text.x = 26;
         this.text.y = 67;
 
-    }
+        this.tokenChanger = () => {
+            this.alpha += this.delta;
+            if (Math.abs(this.targetAlpha - this.alpha) < Math.abs(this.delta)) {
+                this.alpha = this.targetAlpha;
+                automa.ticker.remove(this.tokenChanger);
+                Board.prototype.validateResources();
+            }
+        }
+   }
 
     set(value){
         StaticToken.prototype.set.call(this,value);

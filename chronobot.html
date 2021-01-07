@@ -121,6 +121,34 @@
             super(texture);
         }
 
+        let setCollectionComplete = false;
+
+        validateWorkers(){
+            if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0) {
+            	this.setCollectionComplete = true;
+                scientistToken.remove();
+                engineerToken.remove();
+                adminToken.remove();
+                geniusToken.remove();
+                points.increase(5);
+                actionText.text += "\n\nComplete Worker Set\nAdded 5 VP "
+            }
+            this.setCollectionComplete = false;
+        }
+
+        validateResources(){
+            if (neutroniumToken.number>0 && uraniumToken.number>0 && goldToken.number>0 && titaniumToken.number>0) {
+            	this.setCollectionComplete = true;
+                neutroniumToken.remove();
+                uraniumToken.remove();
+                goldToken.remove();
+                titaniumToken.remove();
+                points.increase(5);
+                actionText.text += "\n\nComplete Resource\nSet -> Added 5 VP "
+            }
+            this.setCollectionComplete = false;
+        }
+
         validateParadoxes(){
             if (paradoxTokens[0].number>0 && paradoxTokens[1].number>0 &&
                 paradoxTokens[2].number>0 && anomalyBack.number<3){
@@ -147,7 +175,7 @@
         checkIfReady(targetToken) {
         	actionText.text += "took " + targetToken.name + "\n";
 			if (action === 5){
-            	selectResources +=1;
+				if ( ! this.setCollectionComplete ) selectResources +=1;
             	if (selectResources === 1) {
                     button1.label.text="Continue (1)";
                     button1.visible = true;
@@ -664,38 +692,7 @@
 
     }
 
-    function validateWorkers() {
-        if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0){
-            scientistToken.remove();
-            engineerToken.remove();
-            adminToken.remove();
-            geniusToken.remove();
-            points.increase(5);
-            actionText.text += "\nComplete Worker Set\nAdded 5 VP "
-        }
-    }
-
-    function validateResources() {
-        if (neutroniumToken.number>0 && uraniumToken.number>0 && goldToken.number>0 && titaniumToken.number>0){
-            neutroniumToken.remove();
-            uraniumToken.remove();
-            goldToken.remove();
-            titaniumToken.remove();
-            points.increase(5);
-            actionText.text += "\nComplete Resource\nSet -> Added 5 VP "
-        }
-    }
-
     function acceptAction() {
-    	switch ( action ) {
-    		case 5: //Mine
-				validateResources();
-				break;
-			case 7: //Recurit
-				validateWorkers();
-				break;
-    	}
-
         action = 0;
         icons.forEach(icon => icon.visible = false);
         if (!finalTimeTravel) tokens[dice - 2].advance();
