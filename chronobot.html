@@ -426,6 +426,15 @@
     button1.visible = false;
     button0.visible = false;
 
+    let targetIcon;
+    function blowUpIcon() {
+    	if( targetIcon.scale >= 2 ) {
+    		targetIcon.scale.set( 1.5 );
+    	} else {
+ 		   	targetIcon.scale.set( targetIcon.scale + 0.05 );
+ 		}
+    }
+
     function button2Pressed() {
 
         button1.enable();
@@ -511,8 +520,10 @@
         if (number === 1) {  
         	// Take Habitat
  			// ask if space is free
-            actionText.text += "CONSTRUCT\na HABITAT\n\n\n";
+            actionText.text += "CONSTRUCT\na HABITAT\n";
             habitatIcon.visible = true;
+            targetIcon = habitatIcon;
+            automa.ticker.add(blowUpIcon);
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -698,7 +709,8 @@
 
     function acceptAction() {
         action = 0;
-        icons.forEach(icon => icon.visible = false);
+        icons.forEach(icon => icon.visible = false);        
+        automa.ticker.remove(blowUpIcon)
         if (!finalTimeTravel) tokens[dice - 2].advance();
         button1.visible = true;
         button1.label.text = 'Next\nBot Action';
