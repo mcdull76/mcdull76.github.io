@@ -342,7 +342,7 @@
 
     const icons = [powerPlantIcon,factoryIcon,habitatIcon,labIcon];
     for (let i=0; i<=3; i++) {
-    	icons[x].scale.set(0.8)
+    	icons[i].scale.set(0.8);
         icons[i].x = 598 + i * 179;
         icons[i].y = 924;
         icons[i].visible = false;
@@ -943,7 +943,7 @@
 
         const action_frame = new PIXI.Sprite(loader.resources['images/Chronobot-2.0-board.png'].texture);
 
-        board.addChild(action_frame)
+        board.addChild(action_frame);
         board.addChild(advancePath);
         board.addChild(normalPath);
 
