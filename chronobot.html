@@ -119,9 +119,9 @@
 
         constructor(texture) {
             super(texture);
+	        this.setCollectionComplete = false;
         }
 
-        this.setCollectionComplete = false;
 
         validateWorkers(){
             if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0) {
