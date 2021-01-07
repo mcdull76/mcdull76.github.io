@@ -341,11 +341,12 @@
     const labIcon = new PIXI.Sprite(PIXI.Texture.from('images/labIcon.png'));
 
     const icons = [powerPlantIcon,factoryIcon,habitatIcon,labIcon];
-    for (let i=0; i<=3; i++){
-        icons[i].scale.set(.8);
-        icons[i].x = 100;
-        icons[i].y = 550;
+    for (let i=0; i<=3; i++) {
+    	icons[x].scale.set(0.8)
+        icons[i].x = 598 + i * 179;
+        icons[i].y = 924;
         icons[i].visible = false;
+        icons[i].anchor.set(0.5);
     }
 
     let skipReboot = false;
@@ -510,7 +511,7 @@
         if (number === 1) {  
         	// Take Habitat
  			// ask if space is free
-            actionText.text += "CONSTRUCT a HABITAT\n\n\n";
+            actionText.text += "CONSTRUCT\na HABITAT\n\n\n";
             habitatIcon.visible = true;
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
@@ -996,10 +997,10 @@
         panel.addChild(phase);
 
 
-        panel.addChild(powerPlantIcon);
-        panel.addChild(factoryIcon);
-        panel.addChild(habitatIcon);
-        panel.addChild(labIcon);
+        board.addChild(powerPlantIcon);
+        board.addChild(factoryIcon);
+        board.addChild(habitatIcon);
+        board.addChild(labIcon);
 
 
         automa.stage.addChild(board);
