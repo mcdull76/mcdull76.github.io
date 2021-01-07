@@ -115,8 +115,6 @@ class Token extends PIXI.Container {
             }
         }
 
-
-
     }
 
     resize(size){
