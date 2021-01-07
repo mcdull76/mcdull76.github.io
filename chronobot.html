@@ -428,10 +428,10 @@
 
     let targetIcon;
     function blowUpIcon() {
-    	if( targetIcon.scale >= 2 ) {
+    	if( targetIcon.scale.x >= 2 ) {
     		targetIcon.scale.set( 1.5 );
     	} else {
- 		   	targetIcon.scale.set( targetIcon.scale + 0.05 );
+ 		   	targetIcon.scale.set( targetIcon.scale.x + 0.05 );
  		}
     }
 
