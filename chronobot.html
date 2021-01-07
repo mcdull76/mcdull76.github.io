@@ -121,28 +121,6 @@
             super(texture);
         }
 
-        validateWorkers(){
-            if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0){
-                scientistToken.remove();
-                engineerToken.remove();
-                adminToken.remove();
-                geniusToken.remove();
-                points.increase(5);
-                actionText.text += "\nComplete Worker Set\nAdded 5 VP "
-            }
-        }
-
-        validateResources(){
-            if (neutroniumToken.number>0 && uraniumToken.number>0 && goldToken.number>0 && titaniumToken.number>0){
-                neutroniumToken.remove();
-                uraniumToken.remove();
-                goldToken.remove();
-                titaniumToken.remove();
-                points.increase(5);
-                actionText.text += "\nComplete Resource\nSet -> Added 5 VP "
-            }
-        }
-
         validateParadoxes(){
             if (paradoxTokens[0].number>0 && paradoxTokens[1].number>0 &&
                 paradoxTokens[2].number>0 && anomalyBack.number<3){
@@ -686,13 +664,35 @@
 
     }
 
+    validateWorkers() {
+        if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0){
+            scientistToken.remove();
+            engineerToken.remove();
+            adminToken.remove();
+            geniusToken.remove();
+            points.increase(5);
+            actionText.text += "\nComplete Worker Set\nAdded 5 VP "
+        }
+    }
+
+    validateResources(){
+        if (neutroniumToken.number>0 && uraniumToken.number>0 && goldToken.number>0 && titaniumToken.number>0){
+            neutroniumToken.remove();
+            uraniumToken.remove();
+            goldToken.remove();
+            titaniumToken.remove();
+            points.increase(5);
+            actionText.text += "\nComplete Resource\nSet -> Added 5 VP "
+        }
+    }
+
     function acceptAction() {
     	switch ( action ) {
     		case 5: //Mine
-				board.validateResources();
+				validateResources();
 				break;
 			case 7: //Recurit
-				board.validateWorkers();
+				validateWorkers();
 				break;
     	}
 
