@@ -664,7 +664,7 @@
 
     }
 
-    validateWorkers() {
+    function validateWorkers() {
         if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0){
             scientistToken.remove();
             engineerToken.remove();
@@ -675,7 +675,7 @@
         }
     }
 
-    validateResources(){
+    function validateResources() {
         if (neutroniumToken.number>0 && uraniumToken.number>0 && goldToken.number>0 && titaniumToken.number>0){
             neutroniumToken.remove();
             uraniumToken.remove();
