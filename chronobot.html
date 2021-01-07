@@ -173,9 +173,11 @@
         }
 
         checkIfReady(targetToken) {
-        	actionText.text += "took " + targetToken.name + "\n";
 			if (action === 5){
-				if ( ! this.setCollectionComplete ) selectResources +=1;
+				if ( ! this.setCollectionComplete ) {
+		        	actionText.text += "took " + targetToken.name + "\n";
+					selectResources +=1;
+				}
             	if (selectResources === 1) {
                     button1.label.text="Continue (1)";
                     button1.visible = true;
@@ -190,6 +192,7 @@
                     button1.settings.onTap = () => acceptAction();
                 }
             } else if (action === 7) {
+	        	actionText.text += "took " + targetToken.name + "\n";
                 adminToken.interactive = false;
                 engineerToken.interactive = false;
                 scientistToken.interactive = false;
@@ -201,6 +204,7 @@
                 button1.label.text="Continue";
                 button1.settings.onTap = () => acceptAction();
             } else if (action === 10) {
+	        	actionText.text += "took " + targetToken.name + "\n";
                 geniusToken.interactive = false;
                 //+1vp
                 points.increase(1);
