@@ -35,24 +35,25 @@ class StaticToken extends PIXI.Sprite {
         }
 
         this.getAttention = () => {
-            if( this.icon.scale.x >= 2 ) {
-                this.icon.scale.set( 1.4 );
-                this.icon.visible = false;
-            } else {
-                this.icon.scale.set( this.icon.scale.x + 0.05 );
-                this.icon.visible = true;
+            if( this.icon.scale.x >= 2.2 && this.delta > 0) {
+                this.delta = -0.05;
+            } else if( this.icon.scale.x < 1 && this.delta <= 0) {
+                this.delta = 0.01;
             }
-
+            this.icon.scale.set( this.icon.scale.x + this.delta );
         }
     }
 
     attentionOn() {
+        this.delta = 0.01;
         automa.ticker.add(this.getAttention);
+        this.icon.visible = true;
     }
 
     attentionOff() {
         this.icon.visible = false;
         automa.ticker.remove(this.getAttention);
+        this.icon.visible = false
     }
 
     toogle() {
