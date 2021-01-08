@@ -317,15 +317,19 @@
     const factoryIcon = new PIXI.Sprite(PIXI.Texture.from('images/factoryIcon.png'));
     const habitatIcon = new PIXI.Sprite(PIXI.Texture.from('images/habitatIcon.png'));
     const labIcon = new PIXI.Sprite(PIXI.Texture.from('images/labIcon.png'));
-
     const icons = [powerPlantIcon,factoryIcon,habitatIcon,labIcon];
     for (let i=0; i<=3; i++) {
-    	icons[i].scale.set(1.2);
         icons[i].x = 636 + i * 179;
         icons[i].y = 959;
         icons[i].visible = false;
         icons[i].anchor.set(0.5);
     }
+    const superprojectIcon = new PIXI.Sprite(PIXI.Texture.from('images/SuperprojectIcon.png'))
+    superprojectIcon.x = 344;
+    superprojectIcon.y = 959;
+    superprojectIcon.visible = false;
+    superprojectIcon.anchor.set(0.5);
+
 
     const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), powerPlantIcon, "Power Plant", {x: 549, y: 861}, 0, true, 3);
     powerPlantBack.text.position = {x: 85, y: 170};
@@ -344,7 +348,7 @@
     breakthroughBack.visible = false;
 
 
-    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), noIcon, "Superproject", {x: 169, y: 859}, 0, true, 3);
+    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), superprojectIcon, "Superproject", {x: 169, y: 859}, 0, true, 3);
     superProjectBack.text.position = {x: 175, y: 165};
 
     const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), noIcon, "Exosuit", {x: 1125, y: 43}, 0, true, 6);
@@ -552,6 +556,7 @@
         }
         if (number === 3) { 
             actionText.text += "CONSTRUCT\nSUPERPROJECT\n";
+            superProjectBack.attentionOn();
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -735,6 +740,7 @@
 			}
         }
         if (action === 3) {
+        	superProjectBack.attentionOff();
         	if( superProjectBack.number < superProjectBack.limit ) {
 	        	// get most breakthrough shape array and the max count of that shape(s)
 	        	let maxValue = 0;
