@@ -626,8 +626,8 @@
         if (number === 6) { 
         	// Take Power Plant
 			// ask if space is free
-            actionText.text += "Bot wants to construct\na Power Plant\n\n\n";
-            powerPlantIcon.visible = true;
+            actionText.text += "Construct\na Power Plant\n";
+            powerPlantBack.attentionOn();
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -646,8 +646,8 @@
         if (number === 8) {  
         	// Take Factory
 			// ask if space is free
-            actionText.text += "Construct a Factory\n\n\n";
-            factoryIcon.visible = true;
+            actionText.text += "Construct\na Factory\n";
+            factoryBack.attentionOn();
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -666,7 +666,7 @@
         	When using the Recruit Genius/Research Action, perform a Recruit Action only if a Genius is available.
         	If no Genius is available, perform a Research Action instead.
         	*/
-            actionText.text += "Recruit Genius\n\n"
+            actionText.text += "Recruit Genius\n"
             button0.label.text = "Recruit Spot\nFree";
             button0.settings.onTap = () => spaceFree();
             button0.visible = true;
@@ -677,8 +677,8 @@
         if (number === 11) {
          	// Take Lab
 			// ask if space is free
-            actionText.text += "Construct a Lab\n\n\n"
-            labIcon.visible = true;
+            actionText.text += "Construct a Lab\n";
+			labBack.attentionOn();
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -688,7 +688,7 @@
 
         if (number === 12) {
         	// Research
-            actionText.text += "Research Action\n\n";
+            actionText.text += "Research Action\n";
             button0.visible = true;
             button0.label.text = "Research Spot\nFree";
             button0.settings.onTap = () => spaceFree();
