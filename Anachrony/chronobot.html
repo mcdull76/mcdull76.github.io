@@ -445,11 +445,8 @@
         	click the roll button to roll the paradox die and assign token
         	need to keep track of paradox token amount and skip rolling is take Anomaly and remove one warp token 
         	*/
-            actionText.text += "PARADOX PHASE\n";
-            for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
-                actionText.text += "Era " + i+1 + ": " + warpTokensLog[i] + " warp token(s)\n";
-            }
-            actionText.text = "\nChronobot rolls\n for Paradoxes last \n add Paradoxes\n on board by tapping\n ";
+            actionText.text = "PARADOX PHASE\n";
+            actionText.text += "Chronobot rolls\n for Paradoxes last \n add Paradoxes\n on board by tapping\n ";
             actionText.visible = true;
             for (let j = 1; j <= 3; j++) {
                 paradoxTokens[j - 1].interactive = true;
@@ -460,7 +457,7 @@
         } else if (phase.number === 3) {
             let exoNumber = 6;
             if (era.number > 4) exoNumber = 4;
-            actionText.text = "Chronobot \n charged up  \n " + exoNumber.toString() + " exosuits\n Charge yours!";
+            actionText.text = "POWER UP PHASE\n\nChronobot\ncharged up \n" + exoNumber.toString() + " exosuits\n Charge yours!";
             actionText.visible = true;
 
             exoSuitBack.set(exoNumber);
@@ -468,7 +465,11 @@
             button2.settings.onTap = () => waitForUser();
 
         } else if (phase.number === 4) {
-            actionText.text = "Select your warp tiles!";
+            actionText.text = "WARP PHASE\n";
+            for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
+                actionText.text += "Era " + i+1 + ": " + warpTokensLog[i] + " warp token(s)\n";
+            }
+            actionText.text += "\nSelect your warp tiles!";
             actionText.visible = true;
 
             button2.label.text = "Done";
