@@ -821,7 +821,7 @@
          	}	
         }
         if (action === 10) {
-        	// Recruit Genius / Research
+        	// Recurit Genius / Research
             actionText.text += "Take Genius by\ntapping on board\n";
             geniusToken.interactive = true;
             button1.label.text = "No Genius\nAvailable";
@@ -871,6 +871,11 @@
     }
 
     function spaceOccupied() {
+        if( action === 10 ) {
+            actionText.text += "No Recurit Space\n";
+            action = 12;
+            performAction();
+        }
     	if( action === 10.5 ) {
     		actionText.text += "No Genius.\n";
 	        exoSuitBack.add();
@@ -1013,6 +1018,7 @@
         board.addChild(factoryIcon);
         board.addChild(habitatIcon);
         board.addChild(labIcon);
+        board.addChild(superprojectIcon);
 
 
         automa.stage.addChild(board);
