@@ -39,7 +39,7 @@ class StaticToken extends PIXI.Sprite {
                 this.icon.scale.set( 1.4 );
                 this.icon.visible = false;
             } else {
-                this.icon.scale.set( targetIcon.scale.x + 0.05 );
+                this.icon.scale.set( this.icon.scale.x + 0.05 );
                 this.icon.visible = true;
             }
 
