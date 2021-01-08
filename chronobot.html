@@ -779,6 +779,7 @@
             button1.visible = false;
         }
         if (action === 6) {
+	       	powerPlantBack.attentionOff();
 			if (powerPlantBack.number < powerPlantBack.limit) {
            		// Need to insert code to ask for construction VP
 	            actionText.text += "Take Power Plant\n";
@@ -801,6 +802,7 @@
             button1.settings.onTap = () => spaceOccupied();
         }
         if (action === 8) {
+	       	factoryBack.attentionOff();
 			if (factoryBack.number < factoryBack.limit) {
            		// Need to insert code to ask for construction VP
 	            actionText.text += "Take Factory\n";
@@ -821,6 +823,7 @@
             button1.settings.onTap = () => spaceOccupied();
         }
         if( action === 11) {
+	       	labBack.attentionOff();
             if (labBack.number < labBack.limit) {
            		// Need to insert code to ask for construction VP
 				actionText.text += "Take Lab\n";
