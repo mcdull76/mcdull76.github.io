@@ -203,7 +203,7 @@
 
                 button1.label.text="Continue";
                 button1.settings.onTap = () => acceptAction();
-            } else if (action === 10) {
+            } else if (action === 10 || action === 10.5) {
 	        	actionText.text += "took " + targetToken.name + "\n";
                 geniusToken.interactive = false;
                 //+1vp
@@ -445,7 +445,11 @@
         	click the roll button to roll the paradox die and assign token
         	need to keep track of paradox token amount and skip rolling is take Anomaly and remove one warp token 
         	*/
-            actionText.text = "Chronobot rolls\n for Paradoxes last \n add Paradoxes\n on board by tapping\n ";
+            actionText.text += "PARADOX PHASE\n";
+            for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
+                actionText.text += "Era " + i+1 + ": " + warpTokensLog[i] + " warp token(s)\n";
+            }
+            actionText.text = "\nChronobot rolls\n for Paradoxes last \n add Paradoxes\n on board by tapping\n ";
             actionText.visible = true;
             for (let j = 1; j <= 3; j++) {
                 paradoxTokens[j - 1].interactive = true;
