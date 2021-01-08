@@ -52,9 +52,8 @@ class StaticToken extends PIXI.Sprite {
     }
 
     attentionOff() {
-        this.icon.visible = false;
         automa.ticker.remove(this.getAttention);
-        this.icon.visible = false
+        this.icon.visible = false;
     }
 
     toogle() {
