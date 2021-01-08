@@ -312,29 +312,7 @@
   	const paradoxTokens = [];
     const paradoxPositions = [{x: 1345, y: 521}, {x: 1417, y: 672}, {x: 1345, y: 660}]
 
-    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), "Power Plant", {x: 549, y: 861}, 0, true, 3);
-    powerPlantBack.text.position = {x: 85, y: 170};
-    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), "Factory", {x: 728, y: 861}, 0, true, 3);
-    factoryBack.text.position = {x: 85, y: 170};
-    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), "Habitat", {x: 907, y: 861}, 0, true, 3);
-    habitatBack.text.position = {x: 85, y: 170};
-    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), "Lab", {x: 1086, y: 861}, 0, true, 3);
-    labBack.text.position = {x: 85, y: 170};
-    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), "-2", {x: 1291, y: 861}, 0, true, 3);
-    anomalyBack.text.position = {x: 85, y: 170};
-
-    const breakthroughBack = new PIXI.Sprite(PIXI.Texture.from('images/BreakthroughIcon.png'));
-    breakthroughBack.x = 16;
-    breakthroughBack.y = 891;
-    breakthroughBack.visible = false;
-
-
-    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), "Superproject", {x: 169, y: 859}, 0, true, 3);
-    superProjectBack.text.position = {x: 175, y: 165};
-
-    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), "Exosuit", {x: 1125, y: 43}, 0, true, 6);
-    exoSuitBack.text.position = {x: 105, y: 95};
-
+    const noIcon = new PIXI.Sprite();
     const powerPlantIcon = new PIXI.Sprite(PIXI.Texture.from('images/powerplantIcon.png'));
     const factoryIcon = new PIXI.Sprite(PIXI.Texture.from('images/factoryIcon.png'));
     const habitatIcon = new PIXI.Sprite(PIXI.Texture.from('images/habitatIcon.png'));
@@ -348,6 +326,30 @@
         icons[i].visible = false;
         icons[i].anchor.set(0.5);
     }
+
+    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), powerPlantIcon, "Power Plant", {x: 549, y: 861}, 0, true, 3);
+    powerPlantBack.text.position = {x: 85, y: 170};
+    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), factoryIcon, "Factory", {x: 728, y: 861}, 0, true, 3);
+    factoryBack.text.position = {x: 85, y: 170};
+    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), habitatIcon, "Habitat", {x: 907, y: 861}, 0, true, 3);
+    habitatBack.text.position = {x: 85, y: 170};
+    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), labIcon, "Lab", {x: 1086, y: 861}, 0, true, 3);
+    labBack.text.position = {x: 85, y: 170};
+    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), noIcon, "-2", {x: 1291, y: 861}, 0, true, 3);
+    anomalyBack.text.position = {x: 85, y: 170};
+
+    const breakthroughBack = new PIXI.Sprite(PIXI.Texture.from('images/BreakthroughIcon.png'));
+    breakthroughBack.x = 16;
+    breakthroughBack.y = 891;
+    breakthroughBack.visible = false;
+
+
+    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), noIcon, "Superproject", {x: 169, y: 859}, 0, true, 3);
+    superProjectBack.text.position = {x: 175, y: 165};
+
+    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), noIcon, "Exosuit", {x: 1125, y: 43}, 0, true, 6);
+    exoSuitBack.text.position = {x: 105, y: 95};
+
 
     let skipReboot = false;
 
@@ -425,16 +427,6 @@
 
     button1.visible = false;
     button0.visible = false;
-
-    let targetIcon;
-    function blowUpIcon() {
-    	debugger;
-    	if( targetIcon.scale.x >= 2 ) {
-    		targetIcon.scale.set( 1.5 );
-    	} else {
- 		   	targetIcon.scale.set( targetIcon.scale.x + 0.05 );
- 		}
-    }
 
     function button2Pressed() {
 
@@ -711,7 +703,7 @@
     function acceptAction() {
         action = 0;
         icons.forEach(icon => icon.visible = false);        
-        automa.ticker.remove(blowUpIcon)
+        automa.ticker.remove(blowUpIcon);
         if (!finalTimeTravel) tokens[dice - 2].advance();
         button1.visible = true;
         button1.label.text = 'Next\nBot Action';

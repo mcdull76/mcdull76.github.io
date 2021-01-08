@@ -1,9 +1,11 @@
 class StaticToken extends PIXI.Sprite {
 
-    constructor(texture, name, pos, status, counter, limit) {
+    constructor(texture, icon, name, pos, status, counter, limit) {
         super(texture);
 
         this.limit = limit;
+
+        this.icon = icon;
 
         this.name = name;
         this.x = pos.x;
@@ -31,6 +33,26 @@ class StaticToken extends PIXI.Sprite {
                 automa.ticker.remove(this.tokenChanger);
             }
         }
+
+        this.getAttention = () => {
+            if( this.icon.scale.x >= 2 ) {
+                this.icon.scale.set( 1.4 );
+                this.icon.visible = false;
+            } else {
+                this.icon.scale.set( targetIcon.scale.x + 0.05 );
+                this.icon.visible = true;
+            }
+
+        }
+    }
+
+    attentionOn() {
+        automa.ticker.add(this.getAttention);
+    }
+
+    attentionOff() {
+        this.icon.visible = false;
+        automa.ticker.remove(this.getAttention);
     }
 
     toogle() {
