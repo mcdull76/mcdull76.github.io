@@ -514,9 +514,7 @@
         	// Take Habitat
  			// ask if space is free
             actionText.text += "CONSTRUCT\na HABITAT\n";
-            habitatIcon.visible = true;
-            targetIcon = habitatIcon;
-            automa.ticker.add(blowUpIcon);
+            habitatBack.attentionOn();
             button0.visible = true;
             button0.label.text = "Construct Spot\nFree";
             button0.settings.onTap = () => spaceFree();
@@ -702,8 +700,7 @@
 
     function acceptAction() {
         action = 0;
-        icons.forEach(icon => icon.visible = false);        
-        automa.ticker.remove(blowUpIcon);
+        icons.forEach(icon => icon.visible = false);
         if (!finalTimeTravel) tokens[dice - 2].advance();
         button1.visible = true;
         button1.label.text = 'Next\nBot Action';
@@ -725,7 +722,8 @@
         exoSuitBack.remove();
 
         if (action === 1) {
-           if (habitatBack.number < habitatBack.limit) {
+	       	habitatBack.attentionOff();
+        	if (habitatBack.number < habitatBack.limit) {
            		// Need to insert code to ask for construction VP
 	            actionText.text += "Take Habitat\n";
 	            habitatBack.add(1);
