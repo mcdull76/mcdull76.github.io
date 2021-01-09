@@ -467,7 +467,7 @@
         } else if (phase.number === 4) {
             actionText.text = "WARP PHASE\n";
             for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
-                actionText.text += "Era " + i+1 + ": " + warpTokensLog[i] + " warp token(s)\n";
+                actionText.text += "Era " + (i+1) + ": " + warpTokensLog[i] + " warp token(s)\n";
             }
             actionText.text += "\nSelect your warp tiles!";
             actionText.visible = true;
