@@ -878,17 +878,31 @@
     }
 
     function spaceOccupied() {
-        if( action === 10 ) {
+        if ( action === 1 ) {
+            habitatBack.attentionOff();
+            failedAction();
+        } else if ( action === 3 ) {
+            superProjectBack.attentionOff();
+            failedAction();
+        } else if ( action === 6 ) {
+            powerPlantBack.attentionOff();
+            failedAction();
+        } else if ( action === 8 ) {
+            factoryBack.attentionOff();
+            failedAction();
+        } else if ( action === 10 ) {
             actionText.text += "No Recurit Space\n";
             action = 12;
             performAction();
-        }
-    	if( action === 10.5 ) {
+        } else if ( action === 10.5 ) {
     		actionText.text += "No Genius.\n";
 	        exoSuitBack.add();
 			action = 12;
 			performAction();
-    	} else {
+    	} else if ( action === 11 ) {
+            labBack.attentionOff();
+            failedAction();
+        else {
     		failedAction();
     	}
     }
