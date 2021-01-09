@@ -770,6 +770,17 @@
 			        researchCounter[ randomShape ].decrease(1);
 			        actionText.text += "Remove a\n" + researchItem[randomShape] + " Breakthrough\n";
 
+                    let breakthroughCount = 0;
+                    for( i = 0; i < researchCounter.length; i++ ) {
+                        breakthroughCount += researchCounter[i].number;
+                    }
+                    if( breakthroughCount === 0 ) {
+                        for( i = 0; i < researchCounter.length; i++ ) {
+                            researchCounter[i].visible = false;
+                        }
+                    }
+                    breakthroughBack.visible = false;
+
 		       		// Need to insert code to ask for Superproject VP       		
 		            actionText.text += "Take Superproject\n";
 		            superProjectBack.add(1);
@@ -902,6 +913,10 @@
     	} else if ( action === 11 ) {
             labBack.attentionOff();
             failedAction();
+        } else if ( action === 12 ) {
+            breakthroughBack.attentionOff();
+            failedAction();
+        }
         else {
     		failedAction();
     	}
