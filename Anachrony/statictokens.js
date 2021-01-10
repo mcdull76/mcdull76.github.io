@@ -171,6 +171,7 @@ class OuterFrame extends StaticToken {
             this.steps += 1;
             if ( this.steps > totalCount ) this.steps = 0;
         }
+    }
 
     attentionOn() {
         this.delta = 0.01;
