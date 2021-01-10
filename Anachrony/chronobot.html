@@ -653,6 +653,7 @@
         }
         if (number === 7) {
         	// Recruit
+            workersFrame.attentionOn();
             actionText.text += "Recruit Action\n"
             button0.visible = true;
             button0.label.text = "Recruit Spot\nFree";
@@ -822,6 +823,7 @@
         }
         if (action === 7) {
         	// Recurit
+            workersFrame.attentionOff();
             actionText.text += "Take Worker by\ntapping on board\n";
             adminToken.interactive = true;
             engineerToken.interactive = true;
@@ -903,6 +905,8 @@
         } else if ( action === 6 ) {
             powerPlantBack.attentionOff();
             failedAction();
+        } else if ( action === 7 ) {
+            workersFrame.attentionOff();
         } else if ( action === 8 ) {
             factoryBack.attentionOff();
             failedAction();
