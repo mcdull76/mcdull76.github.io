@@ -141,9 +141,7 @@ class ResourceToken extends StaticToken {
 class ParadoxToken extends StaticToken {
 
     constructor(texture, pos, status) {
-        super(texture, 0, "Paradox", pos, status, true, 25);
-
-        this.counter = false;
+        super(texture, 0, "Paradox", pos, status, false, 1);
 
         this.tokenChanger = () => {
             this.alpha += this.delta;
@@ -156,5 +154,77 @@ class ParadoxToken extends StaticToken {
     }
 }
 
+class OuterFrame extends StaticToken {
+    constructor(texture, pos, status) {
+        super(texture, 0, "OuterFrame", pos, status, false, 1);
 
+        this.steps = 0;
 
+        this.getAttention = () => {
+            let totalCount = 360;
+            let colorArray = hsvToRGB2( this.steps * 360 / totalCount, 1, 1);
+            let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
+
+            //add tint code here
+            this.tint = color;
+
+            this.steps += 1;
+            if ( this.steps > totalCount ) this.steps = 0;
+        }
+
+    attentionOn() {
+        this.delta = 0.01;
+        automa.ticker.add(this.getAttention);
+        this.visible = true;
+    }
+
+    attentionOff() {
+        automa.ticker.remove(this.getAttention);
+        this.visible = false;
+    }
+
+}
+
+function hsvToRGB2(hue, saturation, value) {
+    var hi;
+    var f;
+    var p;
+    var q;
+    var t;
+
+    while (hue < 0) {
+    hue += 360;
+    }
+    hue = hue % 360;
+
+    saturation = saturation < 0 ? 0
+    : saturation > 1 ? 1
+    : saturation;
+
+    value = value < 0 ? 0
+    : value > 1 ? 1
+    : value;
+
+    value *= 255;
+    hi = (hue / 60 | 0) % 6;
+    f = hue / 60 - hi;
+    p = value * (1 -           saturation) | 0;
+    q = value * (1 -      f  * saturation) | 0;
+    t = value * (1 - (1 - f) * saturation) | 0;
+    value |= 0;
+
+    switch (hi) {
+    case 0:
+      return [value, t, p];
+    case 1:
+      return [q, value, p];
+    case 2:
+      return [p, value, t];
+    case 3:
+      return [p, q, value];
+    case 4:
+      return [t, p, value];
+    case 5:
+      return [value, p, q];
+    }
+}

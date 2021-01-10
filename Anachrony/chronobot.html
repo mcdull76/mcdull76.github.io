@@ -266,6 +266,8 @@
         value.setNext(states[stateTransition[key]])
     }
 
+    const noIcon = new PIXI.Sprite();
+
     const tokens = [];
 
     const workerPositions = [{x: 974, y: 34}, {x: 974, y: 167}, {x: 974, y: 302}, {x: 974, y: 436}]
@@ -279,6 +281,8 @@
     const engineerToken = new WorkerToken(engineer_texture, "Engineer", workerPositions[2], 0);
     const scientistToken = new WorkerToken(scientist_texture, "Scientist", workerPositions[3], 0);
 
+    const workersFrame = new OuterFrame(PIXI.Texture.from('images/WorkersOuterFrame.png'), {x: 970, y: 31}, 0);
+
     const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
     const uranium_texture = PIXI.Texture.from('images/uranium.png');
@@ -289,6 +293,8 @@
     const goldToken = new ResourceToken(gold_texture, "Gold", resourcePositions[2], 0);
     const titaniumToken = new ResourceToken(titanium_texture, "Titanium", resourcePositions[3], 0);
     const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
+
+    const resourcesFrame = new OuterFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), noIcon, "ResourceOuterFrame", {x: 799, y: 30}, 0);
 /*
 // remove supply, no longer have supply in v2.0 
     const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
@@ -312,7 +318,6 @@
   	const paradoxTokens = [];
     const paradoxPositions = [{x: 1345, y: 521}, {x: 1417, y: 672}, {x: 1345, y: 660}]
 
-    const noIcon = new PIXI.Sprite();
     const powerPlantIcon = new PIXI.Sprite(PIXI.Texture.from('images/powerplantIcon.png'));
     const factoryIcon = new PIXI.Sprite(PIXI.Texture.from('images/factoryIcon.png'));
     const habitatIcon = new PIXI.Sprite(PIXI.Texture.from('images/habitatIcon.png'));
@@ -1007,7 +1012,7 @@
         }
 
         for (let j = 1; j <= 3; j++) {
-             const newToken = new ParadoxToken(PIXI.Texture.from('images/paradox90.png'), paradoxPositions[j - 1], 0, false, 1);
+             const newToken = new ParadoxToken(PIXI.Texture.from('images/paradox90.png'), paradoxPositions[j - 1], 0);
              if (j === 2) newToken.angle = 180;
              paradoxTokens.push(newToken);
              board.addChild(newToken);
@@ -1017,11 +1022,13 @@
         board.addChild(adminToken);
         board.addChild(engineerToken);
         board.addChild(scientistToken);
+        board.addChild(WorkersOuterFrame);
 
         board.addChild(neutroniumToken);
         board.addChild(uraniumToken);
         board.addChild(goldToken);
         board.addChild(titaniumToken);
+        board.addChild(ResourceOuterFrame);
 
         board.addChild(timetravelToken);
 
