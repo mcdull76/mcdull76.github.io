@@ -85,11 +85,6 @@
     	<label>Skip Reboot</label>
     </div>
     <BR>
-    <div class="">
-    	<input type="checkbox" name="skipReboot" id="skipReboot">
-    	<label>The Chronobot takes one additional turn after you have passed.</label>
-    </div>
-    <BR>
     <div>
     	<label>Minimum number of Chronobot's Actions: </label>
     	<select class="myselect" id="MinActionValue" onchange="">
@@ -99,6 +94,13 @@
     		<option value="6">6</option>
     	</select>
     </div>
+<!--
+    <BR>
+    <div class="">
+        <input type="checkbox" name="additionalTurn" id="additionalTurn">
+        <label>The Chronobot takes one additional turn after you have passed.</label>
+    </div>
+-->
     <div style="text-align: right">
       <button name="cancel" class="button" onclick="modalS.style.display = 'none'" >Cancel</button>
       <button name="ok" class="button" onclick="valueSelected()" >OK</button>
@@ -358,9 +360,6 @@
 
     const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), noIcon, "Exosuit", {x: 1125, y: 43}, 0, true, 6);
     exoSuitBack.text.position = {x: 105, y: 95};
-
-
-    let skipReboot = false;
 
     const advancePath = new PIXI.Sprite(PIXI.Texture.from('images/advancePath.png'));
     advancePath.x = 505;
@@ -630,9 +629,6 @@
         }
         if (number === 5) {  
         	// Mine
-
-        	// BUG: 3 resources have 1+, pick the last resource, +5vp, then I cannot pick the second resource.
-
             actionText.text += "Mine Action\n";
             button0.visible = true;
             button0.label.text = "Mine Spot\nFree";
@@ -725,7 +721,7 @@
         actionText.text = "";
         button1.settings.onTap = () => button1Pressed();
         botActions += 1;
-        if (botActions >= 3) button2.enable();
+        if (botActions >= minActionNum) button2.enable();
         if (exoSuitBack.number === 0) {
             if (finalTimeTravel) {                
                 finalTimeTravel = false;

@@ -39,6 +39,7 @@ const stateNames =
         11: "Construct Lab",
         12: "Research"};
 
+let skipReboot = false;
 function toggleSkipReboot() {
     // advance token if it is at Reboot
     for (var i = 0; i < tokens.length; i++) {
@@ -89,6 +90,8 @@ function keySelected(){
         } );
     selector2.disabled = false;
 }
+
+let minActionNum = 3;
 
 function valueSelected(){
     const selector1 = document.getElementById("Key");
@@ -170,10 +173,11 @@ function valueSelected(){
 
     // skip Reboot
     if( skipReboot !== document.getElementById("skipReboot").checked ) {
-        skipReboot = ! skipReboot;
+        skipReboot = !skipReboot;
         toggleSkipReboot();
     }
 
+    minActionNum = parseInt(document.getElementById("MinActionValue").value);
 
     modalS.style.display = 'none'
 }

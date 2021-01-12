@@ -161,6 +161,7 @@ class OuterFrame extends StaticToken {
         this.steps = 0;
 
         this.getAttention = () => {
+            debugger;
             let totalCount = 360;
             let colorArray = hsvToRGB2( this.steps * 360 / totalCount, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
