@@ -162,14 +162,14 @@ class OuterFrame extends StaticToken {
 
         this.getAttention = () => {
             let totalCount = 360;
-            let colorArray = hsvToRGB2( hueCounter / totalCount * 360, 1, 1);
+            let colorArray = hsvToRGB2( this.hueCounter / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
 
             //add tint code here
             this.tint = color;
 
-            hueCounter += 1;
-            if ( hueCounter > totalCount ) hueCounter = 0;
+            this.hueCounter += 1;
+            if ( this.hueCounter > totalCount ) this.hueCounter = 0;
 
             if( this.scale.x >= 1 ) {
                 this.scale.set( 0.9 );
