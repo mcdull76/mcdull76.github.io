@@ -171,6 +171,12 @@ class OuterFrame extends StaticToken {
             hueCounter += 1;
             if ( hueCounter > totalCount ) hueCounter = 0;
 
+            if( this.scale.x >= 1 ) {
+                this.scale.set( 0.9 );
+            } else {
+                this.scale.set( 1.1 );
+            }
+
         }
     }
 
@@ -183,6 +189,7 @@ class OuterFrame extends StaticToken {
     attentionOff() {
         automa.ticker.remove(this.getAttention);
         this.visible = false;
+        this.scale.set( 1 );
     }
 
 }
