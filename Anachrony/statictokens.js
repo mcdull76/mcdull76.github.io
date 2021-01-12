@@ -158,18 +158,19 @@ class OuterFrame extends StaticToken {
     constructor(texture, pos, status) {
         super(texture, 0, "OuterFrame", pos, status, false, 1);
 
-        this.steps = 0;
+        this.hueCounter = 0;
 
         this.getAttention = () => {
             let totalCount = 360;
-            let colorArray = hsvToRGB2( this.steps * 360 / totalCount, 1, 1);
+            let colorArray = hsvToRGB2( hueCounter / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
 
             //add tint code here
             this.tint = color;
 
-            this.steps += 1;
-            if ( this.steps > totalCount ) this.steps = 0;
+            hueCounter += 1;
+            if ( hueCounter > totalCount ) hueCounter = 0;
+
         }
     }
 
