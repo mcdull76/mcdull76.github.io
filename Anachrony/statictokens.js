@@ -171,7 +171,7 @@ class OuterFrame extends StaticToken {
             this.textureArray.push( textureTinted );
         }
 
-        this.animatedSprite = new PIXI.AnimatedSprite(textureArray);
+        this.animatedSprite = new PIXI.AnimatedSprite(this.textureArray);
         this.animatedSprite.visible = false;
 
         this.getAttention = () => {
