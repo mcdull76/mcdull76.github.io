@@ -166,19 +166,12 @@ class OuterFrame extends StaticToken {
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
 
             //add tint code here
-            this.tint = color;
+            //this.tint = color;
 
             automa.renderer.render(this);
 
             this.hueCounter += 1;
             if ( this.hueCounter > totalCount ) this.hueCounter = 0;
-
-            if( this.scale.x >= 1 ) {
-                this.scale.set( 0.9 );
-            } else {
-                this.scale.set( 1.1 );
-            }
-
         }
     }
 
