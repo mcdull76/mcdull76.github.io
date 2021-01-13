@@ -168,6 +168,8 @@ class OuterFrame extends StaticToken {
             //add tint code here
             this.tint = color;
 
+            renderer.render(this);
+
             this.hueCounter += 1;
             if ( this.hueCounter > totalCount ) this.hueCounter = 0;
 
