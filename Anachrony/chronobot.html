@@ -650,7 +650,6 @@
         }
         if (number === 7) {
         	// Recruit
-            workersFrame.attentionOn();
             actionText.text += "Recruit Action\n"
             button0.visible = true;
             button0.label.text = "Recruit Spot\nFree";
@@ -714,6 +713,8 @@
     }
 
     function acceptAction() {
+        workersFrame.attentionOff();
+        resourcesFrame.attentionOff();
         action = 0;
         icons.forEach(icon => icon.visible = false);
         if (!finalTimeTravel) tokens[dice - 2].advance();
@@ -797,6 +798,7 @@
         }
         if (action === 5) {
         	// Mine
+            resourcesFrame.attentionOn();
             actionText.text += "\nTake Resources by\ntapping on board\n";
             neutroniumToken.interactive = true;
             uraniumToken.interactive = true;
@@ -820,7 +822,7 @@
         }
         if (action === 7) {
         	// Recurit
-            workersFrame.attentionOff();
+            workersFrame.attentionOn();
             actionText.text += "Take Worker by\ntapping on board\n";
             adminToken.interactive = true;
             engineerToken.interactive = true;
@@ -904,6 +906,7 @@
             failedAction();
         } else if ( action === 7 ) {
             workersFrame.attentionOff();
+            failedAction();
         } else if ( action === 8 ) {
             factoryBack.attentionOff();
             failedAction();
@@ -920,7 +923,6 @@
             labBack.attentionOff();
             failedAction();
         } else if ( action === 12 ) {
-            breakthroughBack.attentionOff();
             failedAction();
         }
         else {
