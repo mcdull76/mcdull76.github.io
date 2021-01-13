@@ -799,12 +799,18 @@
         if (action === 5) {
         	// Mine
             resourcesFrame.attentionOn();
-            actionText.text += "\nTake Resources by\ntapping on board\n";
+            actionText.text += "\nTake 2 Resources by\ntapping on board\n";
             neutroniumToken.interactive = true;
             uraniumToken.interactive = true;
             goldToken.interactive = true;
             titaniumToken.interactive = true;
             selectResources = 0;
+
+            /*
+            button1.label.text="Continue (2)";
+            button1.visible = true;
+            button1.settings.onTap = () => acceptAction();                  
+            */
             button1.visible = false;
         }
         if (action === 6) {
