@@ -166,9 +166,10 @@ class OuterFrame extends StaticToken {
         for ( var i = 0; i < totalCount; i++ ) {
             let colorArray = hsvToRGB2( this.hueCounter / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
-            texture.tint = color;
+            let textureTinted = texture.clone();
+            textureTinted.tint = color
 
-            this.textureArray.push( texture );
+            this.textureArray.push( textureTinted );
         }
 
         this.animatedSprite = new PIXI.AnimatedSprite(this.textureArray);
