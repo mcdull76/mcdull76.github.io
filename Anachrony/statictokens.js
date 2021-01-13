@@ -160,31 +160,37 @@ class OuterFrame extends StaticToken {
 
         this.hueCounter = 0;
 
-        this.getAttention = () => {
+        this.textureArray = [];
+
+        for ( var i = 0; i < this.ueCouner; i++ ) {
             let totalCount = 360;
             let colorArray = hsvToRGB2( this.hueCounter / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
+            let textureTinted = texture.tint = color;
 
-            //add tint code here
-            //this.tint = color;
+            this.textureArray.push( textureTinted );
+        }
 
-            automa.renderer.render(this);
+        this.animatedSprite = new PIXI.AnimatedSprite(textureArray);
+        this.animatedSprite.visible = false;
 
+        this.getAttention = () => {
             this.hueCounter += 1;
             if ( this.hueCounter > totalCount ) this.hueCounter = 0;
         }
     }
 
     attentionOn() {
-        this.delta = 0.01;
-        automa.ticker.add(this.getAttention);
-        this.visible = true;
+        //automa.ticker.add(this.getAttention);
+        this.animatedSprite.currentFrame = 0;
+        this.animatedSprite.visible = true;
+        this.animatedSprite.play();
     }
 
     attentionOff() {
-        automa.ticker.remove(this.getAttention);
+        //automa.ticker.remove(this.getAttention);
+        this.animatedSprite.stop();
         this.visible = false;
-        this.scale.set( 1 );
     }
 
 }
