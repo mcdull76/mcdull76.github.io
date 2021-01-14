@@ -173,11 +173,14 @@ class OuterFrame extends StaticToken {
         }
 
         this.animatedSprite = new PIXI.AnimatedSprite(this.textureArray);
+        this.animatedSprite.animationSpeed = 2;
         this.animatedSprite.visible = false;
 
         this.getAttention = () => {
             this.hueCounter += 1;
             if ( this.hueCounter > totalCount ) this.hueCounter = 0;
+
+            this.render
         }
     }
 
