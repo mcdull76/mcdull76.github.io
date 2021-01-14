@@ -185,6 +185,7 @@ class OuterFrame extends StaticToken {
     }
 
     attentionOn() {
+        this.visible = true;
         this.animatedSprite.visible = true;
         this.animatedSprite.gotoAndPlay(0);
         // automa.ticker.add(this.getAttention);
@@ -193,6 +194,7 @@ class OuterFrame extends StaticToken {
     attentionOff() {
         this.animatedSprite.stop();
         this.animatedSprite.visible = false;
+        this.visible = false;
         // automa.ticker.remove(this.getAttention);
     }
 
