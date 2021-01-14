@@ -154,17 +154,14 @@ class ParadoxToken extends StaticToken {
     }
 }
 
-class OuterFrame extends StaticToken {
-    constructor(texture, pos, status) {
-        super(texture, 0, "OuterFrame", pos, status, false, 1);
-
-        this.hueCounter = 0;
+class RainbowFrame extends PIXI.AnimatedSprite {
+    constructor(texture, pos) {
 
         this.textureArray = [];
 
         let totalCount = 360;
         for ( var i = 0; i < totalCount; i++ ) {
-            let colorArray = hsvToRGB2( this.hueCounter / totalCount * 360, 1, 1);
+            let colorArray = hsvToRGB2( i / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
             let textureTinted = texture.clone();
             textureTinted.tint = color
@@ -172,29 +169,23 @@ class OuterFrame extends StaticToken {
             this.textureArray.push( textureTinted );
         }
 
-        this.animatedSprite = new PIXI.AnimatedSprite(this.textureArray);
-        this.animatedSprite.animationSpeed = 2;
-        this.animatedSprite.visible = false;
+        super(this.textureArray);
 
-        this.getAttention = () => {
-            this.hueCounter += 1;
-            if ( this.hueCounter > totalCount ) this.hueCounter = 0;
+        this.x = pos.x;
+        this.y = pos.y;
 
-            this.render
-        }
+        this.animationSpeed = 2;
+        this.visible = true;
+        this.gotoAndStop(0);
     }
 
     attentionOn() {
-        this.visible = true;
-        this.animatedSprite.visible = true;
-        this.animatedSprite.gotoAndPlay(0);
+        this.gotoAndPlay(0);
         // automa.ticker.add(this.getAttention);
     }
 
     attentionOff() {
-        this.animatedSprite.stop();
-        this.animatedSprite.visible = false;
-        this.visible = false;
+        this.gotoAndStop(0);
         // automa.ticker.remove(this.getAttention);
     }
 

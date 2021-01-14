@@ -283,7 +283,7 @@
     const engineerToken = new WorkerToken(engineer_texture, "Engineer", workerPositions[2], 0);
     const scientistToken = new WorkerToken(scientist_texture, "Scientist", workerPositions[3], 0);
 
-    const workersFrame = new OuterFrame(PIXI.Texture.from('images/WorkersOuterFrame.png'), {x: 970, y: 31}, 0);
+    const workersFrame = new RainbowFrame(PIXI.Texture.from('images/WorkersOuterFrame.png'), {x: 970, y: 31});
 
     const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
@@ -296,7 +296,7 @@
     const titaniumToken = new ResourceToken(titanium_texture, "Titanium", resourcePositions[3], 0);
     const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
 
-    const resourcesFrame = new OuterFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 0, y: 0}, 0);
+    const resourcesFrame = new RainbowFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 0, y: 0});
     //const resourcesFrame = new OuterFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 799, y: 30}, 0);
 /*
 // remove supply, no longer have supply in v2.0 
@@ -1032,14 +1032,12 @@
         board.addChild(engineerToken);
         board.addChild(scientistToken);
         board.addChild(workersFrame);
-        board.addChild(workersFrame.animatedSprite);
 
         board.addChild(neutroniumToken);
         board.addChild(uraniumToken);
         board.addChild(goldToken);
         board.addChild(titaniumToken);
         board.addChild(resourcesFrame);
-        board.addChild(resourcesFrame.animatedSprite);
 
         board.addChild(timetravelToken);
 
