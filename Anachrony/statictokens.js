@@ -169,11 +169,14 @@ class RainbowFrame extends PIXI.Sprite {
 
         this.rainbowEffect = () => {
 
-            this.sCounter += this.delta;
 
-            if( this.sCounter >= this.sMax ) {
-                this.sCounter = 0;
+            if( this.sCounter >= this.sMax && this.delta > 0 ) {
+                this.delta = -1 / 30;
+            } else if ( this.sCounter < 0 && this.delta < 0 ) {
+                this.delta = 1 / 60;
             }
+
+            this.sCounter += this.delta;
 
             let colorArray = hsvToRGB2( 0, this.sCounter, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
@@ -183,7 +186,7 @@ class RainbowFrame extends PIXI.Sprite {
     }
 
     attentionOn() {
-        this.delta = 1 / (global_steps * 2); //complete a cycle in 2 seconds
+        this.delta = 1 / 60;
         automa.ticker.add(this.rainbowEffect);
 
     }
