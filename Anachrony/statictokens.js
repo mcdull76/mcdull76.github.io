@@ -154,11 +154,10 @@ class ParadoxToken extends StaticToken {
     }
 }
 
-class RainbowFrame extends PIXI.AnimatedSprite {
+class RainbowFrame extends PIXI.Sprite {
     constructor(texture, pos) {
 
         let textureArray = [];
-        let totalCount = 360;
         for ( var i = 0; i < totalCount; i++ ) {
             let colorArray = hsvToRGB2( i / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
@@ -168,24 +167,40 @@ class RainbowFrame extends PIXI.AnimatedSprite {
             textureArray.push( textureTinted );
         }
 
-        super(textureArray);
+        super(texture);
 
         this.x = pos.x;
         this.y = pos.y;
 
-        this.animationSpeed = 2;
         this.visible = true;
-        this.gotoAndStop(0);
+
+        this.hueCounter = 0;
+        this.totalCount = 360;
+
+        this.rainbowEffect = () => {
+
+            this.hueCounter += this.delta;
+
+            if( this.hueCounter >= this.totalCount ) {
+                this.hueCounter = 0;
+            }
+
+            let colorArray = hsvToRGB2( this.hueCounter / this.totalCount * 360, 1, 1);
+            let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
+            this.tint = color;
+        }
+
     }
 
+
+
     attentionOn() {
-        this.gotoAndPlay(0);
-        // automa.ticker.add(this.getAttention);
+        this.delta = 1;
+        automa.ticker.add(this.rainbowEffect);
     }
 
     attentionOff() {
-        this.gotoAndStop(0);
-        // automa.ticker.remove(this.getAttention);
+        automa.ticker.remove(this.rainbowEffect);
     }
 
 }
