@@ -91,7 +91,9 @@ const modalI = document.getElementById("myModal");
 
 function helpAsked(){
     //window.alert(infotext[action]);
+    /*
     const infoP = document.getElementById("infotext");
     infoP.innerText = infotext[action];
     modalI.style.display = "block";
+    */
 }
