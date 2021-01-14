@@ -162,8 +162,8 @@ class RainbowFrame extends PIXI.AnimatedSprite {
         for ( var i = 0; i < totalCount; i++ ) {
             let colorArray = hsvToRGB2( i / totalCount * 360, 1, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
+            texture.tint = color;
             let textureTinted = texture.clone();
-            textureTinted.tint = color
 
             textureArray.push( textureTinted );
         }
