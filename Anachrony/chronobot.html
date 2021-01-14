@@ -185,6 +185,7 @@
                     button1.visible = true;
                     button1.settings.onTap = () => acceptAction();            		
             	} else if (selectResources >= 2) {
+\                   resourcesFrame.attentionOff();
                     neutroniumToken.interactive = false;
                     uraniumToken.interactive = false;
                     goldToken.interactive = false;
@@ -195,8 +196,9 @@
                 }
             } else if (action === 7) {
                 if( ! this.setCollectionComplete ) {
-
     	        	actionText.text += "took " + targetToken.name + "\n";
+                    geniusWorkerFrame.attentionOff();
+                    workersFrame.attentionOff();
                     adminToken.interactive = false;
                     engineerToken.interactive = false;
                     scientistToken.interactive = false;
@@ -210,6 +212,7 @@
                 }
             } else if (action === 10 || action === 10.5) {
 	        	actionText.text += "took " + targetToken.name + "\n";
+                geniusWorkerFrame.attentionOff();
                 geniusToken.interactive = false;
                 //+1vp
                 points.increase(1);
@@ -864,6 +867,7 @@
         }
         if (action === 10) {
         	// Recurit Genius / Research
+            geniusWorkerFrame.attentionOn();
             actionText.text += "Take Genius by\ntapping on board\n";
             geniusToken.interactive = true;
             button1.label.text = "No Genius\nAvailable";
@@ -923,16 +927,20 @@
             powerPlantBack.attentionOff();
             failedAction();
         } else if ( action === 7 ) {
+            geniusWorkerFrame.attentionOff();
             workersFrame.attentionOff();
             failedAction();
         } else if ( action === 8 ) {
             factoryBack.attentionOff();
             failedAction();
         } else if ( action === 10 ) {
+            geniusWorkerFrame.attentionOff();
+            workersFrame.attentionOff();
             actionText.text += "No Recurit Space\n";
             action = 12;
             performAction();
         } else if ( action === 10.5 ) {
+            geniusWorkerFrame.attentionOff();
     		actionText.text += "No Genius.\n";
 	        exoSuitBack.add();
 			action = 12;
