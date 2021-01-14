@@ -183,7 +183,7 @@ class RainbowFrame extends PIXI.Sprite {
     }
 
     attentionOn() {
-        this.delta = 0.1;
+        this.delta = 1 / (global_steps * 2); //complete a cycle in 2 seconds
         automa.ticker.add(this.rainbowEffect);
 
     }
