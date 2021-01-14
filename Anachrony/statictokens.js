@@ -157,8 +157,7 @@ class ParadoxToken extends StaticToken {
 class RainbowFrame extends PIXI.AnimatedSprite {
     constructor(texture, pos) {
 
-        this.textureArray = [];
-
+        let textureArray = [];
         let totalCount = 360;
         for ( var i = 0; i < totalCount; i++ ) {
             let colorArray = hsvToRGB2( i / totalCount * 360, 1, 1);
@@ -166,10 +165,10 @@ class RainbowFrame extends PIXI.AnimatedSprite {
             let textureTinted = texture.clone();
             textureTinted.tint = color
 
-            this.textureArray.push( textureTinted );
+            textureArray.push( textureTinted );
         }
 
-        super(this.textureArray);
+        super(textureArray);
 
         this.x = pos.x;
         this.y = pos.y;
