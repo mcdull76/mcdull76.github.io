@@ -723,6 +723,7 @@
     }
 
     function acceptAction() {
+        geniusWorkerFrame.attentionOff();
         workersFrame.attentionOff();
         resourcesFrame.attentionOff();
         action = 0;
@@ -838,6 +839,7 @@
         }
         if (action === 7) {
         	// Recurit
+            geniusWorkerFrame.attentionOn();
             workersFrame.attentionOn();
             actionText.text += "Take Worker by\ntapping on board\n";
             adminToken.interactive = true;

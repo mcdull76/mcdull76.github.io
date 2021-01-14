@@ -164,28 +164,26 @@ class RainbowFrame extends PIXI.Sprite {
 
         this.visible = true;
 
-        this.hueCounter = 0;
-        this.totalCount = 360;
+        this.sCounter = 0;
+        this.sMax = 1;
 
         this.rainbowEffect = () => {
 
-            this.hueCounter += this.delta;
+            this.sCounter += this.delta;
 
-            if( this.hueCounter >= this.totalCount ) {
-                this.hueCounter = 0;
+            if( this.sCounter >= this.sMax ) {
+                this.sCounter = 0;
             }
 
-            let colorArray = hsvToRGB2( this.hueCounter / this.totalCount * 360, 1, 1);
+            let colorArray = hsvToRGB2( 0, this.sCounter, 1);
             let color = colorArray[0] * 65536 + colorArray[1] * 256 + colorArray[2];
             this.tint = color;
         }
 
     }
 
-
-
     attentionOn() {
-        this.delta = 2;
+        this.delta = 0.1;
         automa.ticker.add(this.rainbowEffect);
 
     }
@@ -193,7 +191,7 @@ class RainbowFrame extends PIXI.Sprite {
     attentionOff() {
         automa.ticker.remove(this.rainbowEffect);
         this.tint = 0xFFFFFF;
-        this.hueCounter = 0;
+        this.sCounter = 0;
     }
 
 }
