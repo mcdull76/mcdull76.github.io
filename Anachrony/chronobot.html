@@ -194,17 +194,20 @@
                     button1.settings.onTap = () => acceptAction();
                 }
             } else if (action === 7) {
-	        	actionText.text += "took " + targetToken.name + "\n";
-                adminToken.interactive = false;
-                engineerToken.interactive = false;
-                scientistToken.interactive = false;
-                geniusToken.interactive = false;
-                //+1vp
-                points.increase(1);
-                actionText.text += "\nRecruit bonus\n+1 VP\n"
+                if( ! this.setCollectionComplete ) {
 
-                button1.label.text="Continue";
-                button1.settings.onTap = () => acceptAction();
+    	        	actionText.text += "took " + targetToken.name + "\n";
+                    adminToken.interactive = false;
+                    engineerToken.interactive = false;
+                    scientistToken.interactive = false;
+                    geniusToken.interactive = false;
+                    //+1vp
+                    points.increase(1);
+                    actionText.text += "\nRecruit bonus\n+1 VP\n"
+
+                    button1.label.text="Continue";
+                    button1.settings.onTap = () => acceptAction();
+                }
             } else if (action === 10 || action === 10.5) {
 	        	actionText.text += "took " + targetToken.name + "\n";
                 geniusToken.interactive = false;
@@ -283,7 +286,11 @@
     const engineerToken = new WorkerToken(engineer_texture, "Engineer", workerPositions[2], 0);
     const scientistToken = new WorkerToken(scientist_texture, "Scientist", workerPositions[3], 0);
 
-    const workersFrame = new RainbowFrame(PIXI.Texture.from('images/WorkersOuterFrame.png'), {x: 970, y: 31});
+    const workerFrameTexture = PIXI.BaseTexture.from('images/WorkersOuterFrame.png');
+    const geniusWorkerTexture = new PIXI.Texture( workerFrameTexture, PIXI.Rectangle(0,0,86,130) );
+    const otherWorkersTexture = new PIXI.Texture( workerFrameTexture, PIXI.Rectangle(0,131,86,388) );
+    const geniusWorkerFrame = new RainbowFrame(geniusWorkerTexture, {x: 970, y: 31});
+    const workersFrame = new RainbowFrame(otherWorkersTexture, {x: 970, y: 161});
 
     const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
@@ -296,8 +303,7 @@
     const titaniumToken = new ResourceToken(titanium_texture, "Titanium", resourcePositions[3], 0);
     const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
 
-    const resourcesFrame = new RainbowFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 0, y: 0});
-    //const resourcesFrame = new OuterFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 799, y: 30}, 0);
+    const resourcesFrame = new RainbowFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 799, y: 30});
 /*
 // remove supply, no longer have supply in v2.0 
     const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
@@ -1031,6 +1037,7 @@
         board.addChild(adminToken);
         board.addChild(engineerToken);
         board.addChild(scientistToken);
+        board.addChild(geniusWorkerFrame);
         board.addChild(workersFrame);
 
         board.addChild(neutroniumToken);

@@ -185,12 +185,15 @@ class RainbowFrame extends PIXI.Sprite {
 
 
     attentionOn() {
-        this.delta = 1;
+        this.delta = 2;
         automa.ticker.add(this.rainbowEffect);
+
     }
 
     attentionOff() {
         automa.ticker.remove(this.rainbowEffect);
+        this.tint = 0xFFFFFF;
+        this.hueCounter = 0;
     }
 
 }
