@@ -289,9 +289,12 @@
     const workerFrameTexture = PIXI.BaseTexture.from('images/WorkersOuterFrame.png');
     const geniusWorkerTexture = new PIXI.Texture( workerFrameTexture, PIXI.Rectangle(0,0,86,130) );
     const otherWorkersTexture = new PIXI.Texture( workerFrameTexture, PIXI.Rectangle(0,131,86,388) );
+    const geniusWorkerFrame = new RainbowFrame(geniusWorkerTexture, {x: 0, y: 31});
+    const workersFrame = new RainbowFrame(otherWorkersTexture, {x: 100, y: 161});
+/*
     const geniusWorkerFrame = new RainbowFrame(geniusWorkerTexture, {x: 970, y: 31});
     const workersFrame = new RainbowFrame(otherWorkersTexture, {x: 970, y: 161});
-
+*/
     const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
     const uranium_texture = PIXI.Texture.from('images/uranium.png');
