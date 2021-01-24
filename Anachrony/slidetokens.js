@@ -1,4 +1,12 @@
+/*
+    SlideToken
 
+    Sprite that move along the predefine path
+    texture: PIXI.Texture
+    startState: array index of position and transitions
+    positions: array of predefine path {x,y}
+    transition: array of index number indicate {from_index: next_index}
+*/
 
 class SlideToken extends PIXI.Sprite {
 
@@ -32,6 +40,15 @@ class SlideToken extends PIXI.Sprite {
                 automa.ticker.remove(this.tokenMover);
             }
         }
+
+        this.tokenFadeOut = () => {
+            if( (this.alpha - 0.01) > 0 ) {
+                this.alpha -= 0.01;
+            } else {
+                automa.ticker.remove(this.tokenFadeOut);
+            }
+
+        }
     }
 
     advance(){
@@ -47,5 +64,7 @@ class SlideToken extends PIXI.Sprite {
         automa.ticker.add(this.tokenMover);
     }
 
-
+    fadeOut() {
+        automa.ticker.add(this.tokenFadeout);
+    }
 }

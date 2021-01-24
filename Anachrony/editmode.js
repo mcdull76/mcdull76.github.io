@@ -17,12 +17,13 @@ const options =
         "bh":[0,1,2,3],
         "bl":[0,1,2,3],
         "ba":[0,1,2,3],
-        "bs":[0,1,2],
+        "bs":[0,1,2,3],
         "exo":[0,1,2,3,4,5,6],
         "xt":[0,1,2,3,4,5,6],
         "hc":[0,1,2,3,4,5,6,7],
         "hs":[0,1,2,3,4,5,6,7],
-        "ht":[0,1,2,3,4,5,6,7]
+        "ht":[0,1,2,3,4,5,6,7],
+        "background":["BG-TheWorld", "BG-Chronossus"]
     };
 
 const stateNames =
@@ -134,22 +135,23 @@ function valueSelected(){
             btSquareCounter.set(parseInt(selector2.value));
             break;
         case "bp":
-            powerPlantBack.set(parseInt(selector2.value));
+            powerPlantBack.editModeSet(parseInt(selector2.value));
             break;
         case "bf":
-            factoryBack.set(parseInt(selector2.value));
+            factoryBack.editModeSet(parseInt(selector2.value));
             break;
         case "bl":
-            labBack.set(parseInt(selector2.value));
+            labBack.editModeSet(parseInt(selector2.value));
             break;
         case "bh":
-            habitatBack.set(parseInt(selector2.value));
+            habitatBack.editModeSet(parseInt(selector2.value));
             break;
         case "ba":
-            anomalyBack.set(parseInt(selector2.value));
+//            anomalyBack.set(parseInt(selector2.value));
+            anomaly.editModeSet(parseInt(selector2.value));
             break;
         case "bs":
-            superProjectBack.set(parseInt(selector2.value));
+            superProjectBack.editModeSet(parseInt(selector2.value));
             break;
         case "exo":
             exoSuitBack.set(parseInt(selector2.value));
@@ -167,10 +169,31 @@ function valueSelected(){
                 if( tokens[tokenNumber].state.name === parseInt(selector2.value) + 1) break; // avoid infinite loop
             }
             break;
+        case "background":
+        debugger;
+            board.texture = loader.resources["images/" + selector2.value + ".png"].texture;
+            break;
         default:
             break;
     }
 
+    // Variable Anomaly
+    if( document.getElementById("VarAnomalies").checked ) {
+        if( ! VarAnomalies ) {
+            const tempVP = [], tempVPTexture = [];
+            for( let i = 1; i <= 4; i++ ) {
+                tempVP.push( -i );
+                tempVPTexture.push( loader.resources["images/VictoryPointTokenNeg" + i + ".png"].texture );
+            }
+            anomaly.updateSLP( tempVP, tempVPTexture, loader.resources["images/VPHightlighter.png"].texture );
+        }
+    } else {
+        if( VarAnomalies ) {
+            anomaly.updateSLP( [-2], [loader.resources["images/VictoryPointTokenNeg2.png"].texture], loader.resources["images/VPHightlighter.png"].texture );
+        }
+    }
+    VarAnomalies = document.getElementById("VarAnomalies").checked;
+ 
     // skip Reboot
     if( skipReboot !== document.getElementById("skipReboot").checked ) {
         skipReboot = !skipReboot;

@@ -16,6 +16,8 @@
     <script src="slidetokens.js"></script>
     <script src="counter.js"></script>
     <script src="button.js"></script>
+    <script src="RainbowFrame.js"></script>
+    <script src="paradox.js"></script>
     <script src="autoScale.js"></script>
     <title>Chronobot</title>
 </head>
@@ -70,6 +72,7 @@
       <option value="ht"># Breakthroughs Triangle</option>
       <option value="hs"># Breakthroughs Square</option>
       <option value="points">Points</option>
+      <option value="background">Background Image</option>
     </select>
       &emsp;
     <select class= "myselect" id="Value" disabled>
@@ -157,32 +160,40 @@
         }
 
         validateParadoxes(){
-            if (paradoxTokens[0].number>0 && paradoxTokens[1].number>0 &&
-                paradoxTokens[2].number>0 && anomalyBack.number<3){
-                for(let j=1;j<=3;j++){
-                    paradoxTokens[j-1].remove();
-                }
-                actionText.text += "Gain an Anomaly\n"
-                anomalyBack.add();
+            if ( paradox.isFull() ) {
+                if ( anomaly.belowLimit() ) {
+                    paradox.emptyAll();
 
-            	if( warptileNumber < maxWarpTile) {
-	            	// indexOfMaxValue will return 1+ as 0 is handled by the prevous if statement
-	            	let indexOfMaxValue = warpTokensLog.indexOf(Math.max(...warpTokensLog));
-	            	if( indexOfMaxValue < era.number - 1 ) {
-	            		// have warp tile in the past
-		            	actionText.text += "Remove Warp tile\nfrom Era " + (indexOfMaxValue + 1) + "\n";
-		            	warpTokensLog[indexOfMaxValue] -= 1;
-		                warptileNumber += 1;
-		            }
-	            }
+                    actionText.text += "Gain an Anomaly\n"
+                    anomaly.add();
+
+                	if( warptileNumber < maxWarpTile) {
+    	            	// indexOfMaxValue will return 1+ as 0 is handled by the prevous if statement
+    	            	let indexOfMaxValue = warpTokensLog.indexOf(Math.max(...warpTokensLog));
+    	            	if( indexOfMaxValue < era.number - 1 ) {
+    	            		// have warp tile in the past
+    		            	actionText.text += "Remove Warp tile\nfrom Era " + (indexOfMaxValue + 1) + "\n";
+    		            	warpTokensLog[indexOfMaxValue] -= 1;
+    		                warptileNumber += 1;
+    		            }
+    	            }
+                } else {
+                    actionText.text += "Anomaly is Full\n"
+                    paradox.emptyAll();                    
+                    failedAction();
+                }
 
             }
         }
 
-        checkIfReady(targetToken) {
-			if (action === 5){
+        checkIfReady(target) {
+            if (action === 1 || action === 3 || action === 6 || action === 8 || action === 11) {
+                button1.label.text = "Continue";
+                button1.settings.onTap = () => acceptAction();
+                button1.visible = true;
+            } else if (action === 5){
 				if ( ! this.setCollectionComplete ) {
-		        	actionText.text += "took " + targetToken.name + "\n";
+		        	actionText.text += "took " + target.name + "\n";
 					selectResources +=1;
 				}
             	if (selectResources === 1) {
@@ -201,7 +212,7 @@
                 }
             } else if (action === 7) {
                 if( ! this.setCollectionComplete ) {
-    	        	actionText.text += "took " + targetToken.name + "\n";
+    	        	actionText.text += "took " + target.name + "\n";
                     geniusWorkerFrame.attentionOff();
                     workersFrame.attentionOff();
                     adminToken.interactive = false;
@@ -216,7 +227,7 @@
                     button1.settings.onTap = () => acceptAction();
                 }
             } else if (action === 10 || action === 10.5) {
-	        	actionText.text += "took " + targetToken.name + "\n";
+	        	actionText.text += "took " + target.name + "\n";
                 geniusWorkerFrame.attentionOff();
                 geniusToken.interactive = false;
                 //+1vp
@@ -243,12 +254,32 @@
     automa.stage.scale.y=global_scaling;
 
     let loader = PIXI.Loader.shared;
-    loader.add('images/BG-The-World.png');
+    loader.add('images/BG-TheWorld.png');
+    loader.add('images/BG-Chronossus.png');    
     loader.add('images/Chronobot-2.0-board.png');
     loader.add('images/sidepanel-up.png');
     loader.add('images/sidepanel-down.png');
+
+    loader.add("images/anomaly.png");
+    for( let i = 1; i <= 4; i++ ) {
+        loader.add("images/VictoryPointTokenNeg" + i + ".png");
+    }
+    loader.add("images/VPHightlighter.png");
+
+    loader.add('images/power.png');
+    loader.add('images/factories.png');
+    loader.add('images/habitats.png');
+    loader.add('images/lab.png');
+    for( let i = 0; i <= 8; i++ ) {
+        loader.add("images/VictoryPointToken" + i + ".png");
+    }
+
+    loader.add("images/superproject.png");
+
     loader.onComplete.add(startAutoma);
     loader.load();
+
+    const board = new Board(PIXI.Texture.EMPTY);
 
     const maxWarpTile = 8;
     let warptileNumber = maxWarpTile;
@@ -257,8 +288,6 @@
     let action = 0;
     let selectResources = 0;
     let finalTimeTravel = false;
-
-    const paradoxDieValue = [0, 1, 1, 1, 1, 2];
 
     const aiDiceValue = [2, 3, 3, 4, 4, 5];
 
@@ -279,7 +308,7 @@
         value.setNext(states[stateTransition[key]])
     }
 
-    const noIcon = new PIXI.Sprite();
+    const noIcon = new PIXI.Sprite(PIXI.Texture.EMPTY);
 
     const tokens = [];
 
@@ -301,8 +330,8 @@
     const geniusWorkerFrame = new RainbowFrame(geniusWorkerTexture, {x: 0, y: 31});
     const workersFrame = new RainbowFrame(otherWorkersTexture, {x: 100, y: 161});
 */
-    const geniusWorkerFrame = new RainbowFrame(geniusWorkerTexture, {x: 970, y: 31});
-    const workersFrame = new RainbowFrame(otherWorkersTexture, {x: 970, y: 161});
+    const geniusWorkerFrame = new WhiteRedRainbowFrame(geniusWorkerTexture, {x: 970, y: 31});
+    const workersFrame = new WhiteRedRainbowFrame(otherWorkersTexture, {x: 970, y: 161});
 
     const resourcePositions = [{x: 828, y: 58}, {x: 828, y: 191}, {x: 828, y: 326}, {x: 828, y: 460}]
     const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
@@ -315,7 +344,7 @@
     const titaniumToken = new ResourceToken(titanium_texture, "Titanium", resourcePositions[3], 0);
     const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
 
-    const resourcesFrame = new RainbowFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 799, y: 30});
+    const resourcesFrame = new WhiteRedRainbowFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 799, y: 30});
 /*
 // remove supply, no longer have supply in v2.0 
     const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
@@ -336,8 +365,6 @@
     const timeTravelPoints = [0,2,4,6,8,10,12];
 
 
-  	const paradoxTokens = [];
-    const paradoxPositions = [{x: 1345, y: 521}, {x: 1417, y: 672}, {x: 1345, y: 660}]
 
     const powerPlantIcon = new PIXI.Sprite(PIXI.Texture.from('images/powerplantIcon.png'));
     const factoryIcon = new PIXI.Sprite(PIXI.Texture.from('images/factoryIcon.png'));
@@ -357,24 +384,23 @@
     superprojectIcon.anchor.set(0.5);
 
 
-    const powerPlantBack = new StaticToken(PIXI.Texture.from('images/power.png'), powerPlantIcon, "Power Plant", {x: 549, y: 861}, 0, true, 3);
-    powerPlantBack.text.position = {x: 85, y: 170};
-    const factoryBack = new StaticToken(PIXI.Texture.from('images/factories.png'), factoryIcon, "Factory", {x: 728, y: 861}, 0, true, 3);
-    factoryBack.text.position = {x: 85, y: 170};
-    const habitatBack = new StaticToken(PIXI.Texture.from('images/habitats.png'), habitatIcon, "Habitat", {x: 907, y: 861}, 0, true, 3);
-    habitatBack.text.position = {x: 85, y: 170};
-    const labBack = new StaticToken(PIXI.Texture.from('images/lab.png'), labIcon, "Lab", {x: 1086, y: 861}, 0, true, 3);
-    labBack.text.position = {x: 85, y: 170};
-    const anomalyBack = new StaticToken(PIXI.Texture.from('images/anomaly.png'), noIcon, "-2", {x: 1291, y: 861}, 0, true, 3);
-    anomalyBack.text.position = {x: 85, y: 170};
+    const powerPlantBack = new TokenWithScores(loader.resources["images/power.png"].texture, powerPlantIcon, "Power Plant", {x: 549, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    
+    const factoryBack = new TokenWithScores(loader.resources["images/factories.png"].texture, factoryIcon, "Factory", {x: 728, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    const habitatBack = new TokenWithScores(loader.resources["images/habitats.png"].texture, habitatIcon, "Habitat", {x: 907, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    
+    const labBack = new TokenWithScores(loader.resources["images/lab.png"].texture, labIcon, "Lab", {x: 1086, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
 
     const breakthroughBack = new PIXI.Sprite(PIXI.Texture.from('images/BreakthroughIcon.png'));
     breakthroughBack.x = 16;
     breakthroughBack.y = 891;
     breakthroughBack.visible = false;
 
+    let VarAnomalies = false;
+    const anomalyTexture = loader.resources["images/anomaly.png"].texture;
+    const anomaly = new TokenWithScores( anomalyTexture, noIcon, "Anomaly", {x: 1291, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png") );
 
-    const superProjectBack = new StaticToken(PIXI.Texture.from('images/superproject.png'), superprojectIcon, "Superproject", {x: 169, y: 859}, 0, true, 3);
+    const superProjectBack = new TokenWithScores(loader.resources['images/superproject.png'].texture, superprojectIcon, "Superproject", {x: 169, y: 859}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
     superProjectBack.text.position = {x: 175, y: 165};
 
     const exoSuitBack = new StaticToken(PIXI.Texture.from('images/exosuit.png'), noIcon, "Exosuit", {x: 1125, y: 43}, 0, true, 6);
@@ -423,6 +449,7 @@
     actionText.position = {x: 125, y: 250};
     actionText.visible = false;
 
+    const paradox = new Paradox();
 
     button0 = new Button({
         label: 'Action space\nfree',
@@ -457,6 +484,9 @@
 
     function button2Pressed() {
 
+        // once game started disable switching to varialbe Anomalies
+        // document.getElementById("VarAnomalies").disabled = true;
+
         button1.enable();
 
         if (phase.number === 1) {
@@ -471,10 +501,10 @@
             actionText.text = "PARADOX PHASE\n";
             actionText.text += "Chronobot rolls\n for Paradoxes last \n add Paradoxes\n on board by tapping\n ";
             actionText.visible = true;
-            for (let j = 1; j <= 3; j++) {
-                paradoxTokens[j - 1].interactive = true;
-            }
+            paradox.activateTokens();
 
+            button1.label.text = "Roll\nParadox Dice";
+            button1.settings.onTap = () => button1Pressed();
             button2.label.text = "Done \nNext Phase";
             button2.settings.onTap = () => waitForUser();
         } else if (phase.number === 3) {
@@ -514,7 +544,10 @@
     }
 
     function button1Pressed() {
-        if (phase.number === 5) {
+        if (phase.number === 2) {
+            rollResult = paradoxDieValue();
+
+        } else if (phase.number === 5) {
 	        if (exoSuitBack.number > 0) {
 	            dice = aiDiceValue[Math.floor(Math.random() * 6)];
 	            actionText.text = "Chronobot rolled a " + dice.toString() + "\n This means:\n\n";
@@ -529,12 +562,37 @@
 			}
         } else if (phase.number === 6) {
             const btVp = btSquareCounter.number + btTriangleCounter.number + btCircleCounter.number
-                + 2*  Math.min(btSquareCounter.number,btTriangleCounter.number,btCircleCounter.number);
-            actionText.text = "Game ended\n with "+btVp.toString()+" VPs \nfor Breakthrough tiles,\n" +
-                    timeTravelPoints[timetravelToken.state]+ " Time Travel VPs\n"+
-          " we have " +
-                (btVp + points.number + timeTravelPoints[timetravelToken.state]).toString() +
-          " VPs\n on the board.\n\n Add VP for buildings\nfor final score!";
+                + 2 *  Math.min(btSquareCounter.number,btTriangleCounter.number,btCircleCounter.number);
+            let totalVP = 0;
+            actionText.text = "Game ended\n\n";
+            actionText.text += "Gain: " + points.number + " VPs\n";
+            totalVP += points.number;
+
+            actionText.text += "Breakthrough: "+ btVp.toString() +" VPs,\n";
+            totalVP += btVp;
+            
+            actionText.text += "Time Travel: " + timeTravelPoints[timetravelToken.state] + " VPs\n";
+            totalVP += timeTravelPoints[timetravelToken.state];
+            
+            actionText.text += "Power Plant: " + powerPlantBack.getTotalVP() + " VPs\n";
+            totalVP += powerPlantBack.getTotalVP();
+            
+            actionText.text += "Factory: " + factoryBack.getTotalVP() + " VPs\n";
+            totalVP += factoryBack.getTotalVP();
+            
+            actionText.text += "Life Support: " + habitatBack.getTotalVP() + " VPs\n";
+            totalVP += habitatBack.getTotalVP();
+            
+            actionText.text += "Lab: " + labBack.getTotalVP() + " VPs\n";
+            totalVP += labBack.getTotalVP();
+
+            actionText.text += "Superproject: " + superProjectBack.getTotalVP() + " VPs\n";
+            totalVP += superProjectBack.getTotalVP();
+
+            actionText.text += "Anomaly: " + anomaly.getTotalVP() + " VPs\n";
+            totalVP += anomaly.getTotalVP();
+            
+            actionText.text += "\nTotal: " + totalVP.toString() + " VPs.";
             actionText.visible = true;
             button1.visible = false;
             button2.visible = false;
@@ -595,7 +653,7 @@
     }
         if (number === 4) { 
         	// Remove Anomaly
-            if (anomalyBack.number === 0) {
+            if (anomaly.number === 0) {
                 actionText.text += "No Anomalies\n";
                 failedAction();
             } else if ( neutroniumToken.number >= 1 ||
@@ -617,7 +675,7 @@
 	            		if( tempNumber > maxCount ) {
 	            			resourcesToBeRemove = [];
 	            			resourcesToBeRemove.push( resourcesTokens[i] );
-	            			maxCount = resourcesTokens[i].number;
+	            			maxCount = tempNumber;
 	            		} else if( tempNumber === maxCount ) {
 	            			if (!( removedResource > 0 && resourcesTokens[i] === neutroniumToken )) {
 	            				//exclude Neutronium
@@ -638,7 +696,7 @@
 					}
 				}
 
-                anomalyBack.remove();
+                anomaly.remove();
             } else {
                 actionText.text += "No Ressources\nto remove Anomaly\n";
                 failedAction();
@@ -755,6 +813,7 @@
     function spaceFree() {
     	actionText.text += "Place Exosuit!\n";
         exoSuitBack.remove();
+        if (action !== 5) button1.visible = true;
 
         if (action === 1) {
 	       	habitatBack.attentionOff();
@@ -762,8 +821,7 @@
            		// Need to insert code to ask for construction VP
 	            actionText.text += "Take Habitat\n";
 	            habitatBack.add(1);
-	            button1.label.text = "Continue";
-	            button1.settings.onTap = () => acceptAction();
+                button1.visible = false;
             } else {
                 actionText.text += "max. Habitats\nreached\n";
                 failedAction();
@@ -807,8 +865,7 @@
 		       		// Need to insert code to ask for Superproject VP       		
 		            actionText.text += "Take Superproject\n";
 		            superProjectBack.add(1);
-		            button1.label.text = "Continue";
-		            button1.settings.onTap = () => acceptAction();
+                    button1.visible = false;
 	        	}
 			} else {
                 actionText.text += "max. Superproject\nreached\n";
@@ -838,8 +895,7 @@
            		// Need to insert code to ask for construction VP
 	            actionText.text += "Take Power Plant\n";
 	            powerPlantBack.add(1);
-	            button1.label.text = "Continue";
-	            button1.settings.onTap = () => acceptAction();
+                button1.visible = false;
             } else { 
                 actionText.text += "max. Power Plants\nreached\n";
                 failedAction();
@@ -863,8 +919,7 @@
            		// Need to insert code to ask for construction VP
 	            actionText.text += "Take Factory\n";
 	            factoryBack.add(1);
-	            button1.label.text = "Continue";
-	            button1.settings.onTap = () => acceptAction();
+                button1.visible = false;
             } else { 
                 actionText.text += "max. Factories\nreached\n";
                 failedAction();
@@ -885,8 +940,7 @@
            		// Need to insert code to ask for construction VP
 				actionText.text += "Take Lab\n";
 				labBack.add(1);
-				button1.label.text = "Continue";
-				button1.settings.onTap = () => acceptAction();
+                button1.visible = false;
 			} else {
                 actionText.text += "max. Labs\nreached\n"
                 failedAction();
@@ -909,7 +963,6 @@
         }
 
         button0.visible = false;
-        if (action !== 5) button1.visible = true;
 
     }
 
@@ -966,9 +1019,7 @@
         actionText.visible = false;
 
         if (phase.number === 2) {
-            for (let j = 1; j <= 3; j++) {
-                paradoxTokens[j - 1].interactive = false;
-            }
+            paradox.deactivateTokens();
             phase.increase(1);
             button2Pressed();
         } else if (phase.number === 3) {
@@ -977,7 +1028,7 @@
         } else if (phase.number === 4) {
             // draw 0-2 tokens
 
-            let draw = paradoxDieValue[Math.floor(Math.random() * 6)];
+            let draw = paradox.rollParadoxDice();
             if (draw > warptileNumber) draw = warptileNumber;
             warptileNumber -= draw;
 			warpTokensLog.push(draw);
@@ -1028,8 +1079,9 @@
         buttonPanel.x = 1480;
         buttonPanel.y = 700;
 
-        const background_image = loader.resources['images/BG-The-World.png'].texture;
-        const board = new Board(background_image);
+        //const background_image = loader.resources['images/BG-TheWorld.png'].texture;
+        //const board = new Board(background_image);
+        board.texture = loader.resources['images/BG-TheWorld.png'].texture;
         board.x = 0;
         board.y = 0;
 
@@ -1045,12 +1097,7 @@
             board.addChild(newToken);
         }
 
-        for (let j = 1; j <= 3; j++) {
-             const newToken = new ParadoxToken(PIXI.Texture.from('images/paradox90.png'), paradoxPositions[j - 1], 0);
-             if (j === 2) newToken.angle = 180;
-             paradoxTokens.push(newToken);
-             board.addChild(newToken);
-        }
+        paradox.init(board);
 
         board.addChild(geniusToken);
         board.addChild(adminToken);
@@ -1067,14 +1114,37 @@
 
         board.addChild(timetravelToken);
 
+        const tempVP = [], tempVPTexture = [];
+        for( let i = 0; i <= 8; i++ ) {
+            tempVP.push( i );
+            tempVPTexture.push( loader.resources["images/VictoryPointToken" + i + ".png"].texture );
+        }
+        powerPlantBack.texture = loader.resources["images/power.png"].texture;
+        powerPlantBack.init( tempVP.slice(1,5), tempVPTexture.slice(1,5) );
         board.addChild(powerPlantBack);
+
+        factoryBack.texture = loader.resources["images/factories.png"].texture;
+        factoryBack.init( tempVP.slice(1,4), tempVPTexture.slice(1,4) );
         board.addChild(factoryBack);
+
+        habitatBack.texture = loader.resources["images/habitats.png"].texture;
+        habitatBack.init( tempVP.slice(1,4), tempVPTexture.slice(1,4) );
         board.addChild(habitatBack);
+
+        labBack.texture = loader.resources["images/lab.png"].texture;
+        labBack.init( tempVP.slice(0,5), tempVPTexture.slice(0,5) );        
         board.addChild(labBack);
-        board.addChild(anomalyBack);
+
+        superProjectBack.texture = loader.resources["images/superproject.png"].texture;
+        superProjectBack.init( tempVP.slice(4,9), tempVPTexture.slice(4,9), TOP_LEFT, VERTICAL );
+
         board.addChild(superProjectBack);
         board.addChild(exoSuitBack);
         board.addChild(cogWheelIcon);
+
+        anomaly.texture = loader.resources["images/anomaly.png"].texture;
+        anomaly.init( [-2], [loader.resources["images/VictoryPointTokenNeg2.png"].texture] );
+        board.addChild(anomaly);
 
         board.addChild(breakthroughBack);
         board.addChild(btCircleCounter);
