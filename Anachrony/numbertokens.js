@@ -58,6 +58,75 @@ class State {
 
 }
 
+class ChronossusState {
+    constructor( name, pos, parent, actionTexture = PIXI.Texture.WHITE, actionPos = {x:0, y:0}, actionFunc = function() {} ) {
+
+        this.name = name;
+        this.position = pos;
+
+        this.tokens = [];
+        this.parent = parent;
+        this.action = actionFunc;
+
+        this.actionImage = new PIXI.Sprite(actionTexture);
+        this.actionImage.interactive = false;
+        this.actionImage.anchor = {x: .5, y:.5};
+        this.actionImage.x = actionPos.x;
+        this.actionImage.y = actionPos.y;
+    }
+
+    addToken( token ) {
+        this.tokens.push( token );
+    }
+
+    removeToken( token ) {
+        const tempArray = [];
+        const arrayCount = this.tokens.length;
+
+        for( let i = 0; i < arrayCount; i++ ) {
+            let tempToken = this.tokens.shift();
+            if( tempToken !== token ) {
+                tempArray.push( tempToken );
+            }            
+        }
+        this.tokens = tempArray;
+        return token;
+    }
+
+    resolve() {
+        switch (this.tokens.length) {
+            case 3:
+                const removedToken = this.removeTOken( this.tokens[1] );
+                removedToken.advance();
+                // no need break
+            case 2:
+                this.tokens[0].zIndex = 10;
+                this.tokens[1].zIndex = 20;
+                this.tokens[0].resize(size_left);
+                this.tokens[1].resize(size_right);
+                break;
+            case 1:
+                this.tokens[0].resize(size_normal);
+                break;
+        }
+    }
+
+    getTextureId() {
+        return this.actionImage.texture.textureCacheIds[0];
+    }
+
+    setAction( actionTexture, actionPos, actionFunc ) {
+        this.actionImage.texture = actionTexture;
+        this.actionImage.x = actionPos.x;
+        this.actionImage.y = actionPos.y;
+        this.action = window[this.getTextureId().substr(0, this.getTextureId().length - 4)];
+    }
+
+    performAction( status = PERFORM_ACTION, kwargs ) {
+        this.action( this.parent, this, status, kwargs );
+    }
+} 
+
 
 class Token extends PIXI.Container {
 
@@ -157,4 +226,29 @@ class Token extends PIXI.Container {
         automa.ticker.add(this.tokenMover);
 
     }
+}
+
+class ChronossusToken extends Token {
+    constructor(name, texture, startState, stateTransition) {
+        super(name, texture, startState);
+        delete this.next;
+        this.stateTransition = stateTransition;
+    }
+
+    advance() {
+        //clean up current state
+        this.state.removeToken(this);
+        this.state.resolve();
+        // get next state
+        this.state = this.stateTransition.get( this.state );
+        this.state.addToken(this);
+        this.state.resolve();
+        this.target = this.state.position;
+        this.delta.x = ((this.target.x - this.x) / this.steps);
+        this.delta.y = ((this.target.y - this.y) / this.steps);
+
+        automa.ticker.add(this.tokenMover);
+
+    }
+
 }

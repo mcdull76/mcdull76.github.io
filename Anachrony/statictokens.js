@@ -128,13 +128,14 @@ class ResourceToken extends StaticToken {
             if (Math.abs(this.targetAlpha - this.alpha) < Math.abs(this.delta)) {
                 this.alpha = this.targetAlpha;
                 automa.ticker.remove(this.tokenChanger);
-                Board.prototype.validateResources();
+//                Board.prototype.validateResources();
             }
         }
    }
 
     set(value){
-        StaticToken.prototype.set.call(this,value);
+        super.set(value);
+//        StaticToken.prototype.set.call(this,value);
         Board.prototype.checkIfReady(this);
     }
 

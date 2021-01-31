@@ -1,6 +1,6 @@
 let global_scaling = 1;
 const defaultW = 1480+250;
-const defaultH = 1080;
+const defaultH = 1080+182;
 
 window.onresize = autoScale;
 

@@ -7,8 +7,8 @@ class Button extends PIXI.NineSlicePlane {
         /** Contains settings for the button */
         this.settings = {
             // Default values
-            width: 200,
-            height: 100,
+            width: 250,
+            height: 125,
 
             x: 0,
             y: 0,
@@ -23,7 +23,10 @@ class Button extends PIXI.NineSlicePlane {
             activeTint: 0xAAAAAA,
 
             //overStroke: '#225588',
-            activeStroke: '#114477'
+            activeStroke: '#114477',
+
+            wordWrap: true, 
+            wordWrapWidth: 210 
         }
 
         // The button's state.
@@ -37,8 +40,10 @@ class Button extends PIXI.NineSlicePlane {
 
 
         // Main text on the button
-        this.label = new PIXI.Text(settings.label)
+        this.label = new PIXI.Text(this.settings.label, {  wordWrap: true, wordWrapWidth: (this.width - this.leftWidth - this.rightWidth) });
         this.label.anchor  = {x:0.5, y:0.5};
+        this.label.style.wordWrap = true;
+        this.label.style.wordWrapWidth = 210;
         this.addChild(this.label);
 
         // Update visual appearance
@@ -122,10 +127,12 @@ class Button extends PIXI.NineSlicePlane {
 
         //this.label.text = this.settings.label
         this.label.style = {
+            ...this.label.style,
             fontSize: this.settings.fontSize + 'px',
             fill: '#ffffff',
             stroke: stroke,
-            strokeThickness: this.settings.strokeThickness,
+            strokeThickness: this.settings.strokeThickness
+//            wordWrap: true, wordWrapWidth: (this.width - this.leftWidth - this.rightWidth)
         }
 
         this.onResize()

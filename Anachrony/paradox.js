@@ -43,6 +43,13 @@ class Paradox {
         }				
 	}
 
+    add() {
+        if( this.paradoxCount < this.paradoxTokens.length ) {
+            this.paradoxTokens[ this.paradoxCount ].add();
+            this.paradoxCount += 1;            
+        }
+    }
+
 	isFull() {
 		let rv = true;
         for (let i = 0; i < this.paradoxTokens.length; i++) {

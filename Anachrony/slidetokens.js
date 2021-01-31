@@ -29,7 +29,6 @@ class SlideToken extends PIXI.Sprite {
         this.target = {x: 0, y:0};
         this.delta = {x: 0, y:0};
 
-
         this.tokenMover = () => {
             this.x += this.delta.x;
             this.y += this.delta.y;
@@ -41,14 +40,16 @@ class SlideToken extends PIXI.Sprite {
             }
         }
 
-        this.tokenFadeOut = () => {
-            if( (this.alpha - 0.01) > 0 ) {
-                this.alpha -= 0.01;
-            } else {
-                automa.ticker.remove(this.tokenFadeOut);
-            }
+    }
 
+
+    tokenFadeOut() {
+        if( (this.alpha - 0.01) > 0 ) {
+            this.alpha -= 0.01;
+        } else {
+            automa.ticker.remove(this.tokenFadeOut);
         }
+
     }
 
     advance(){

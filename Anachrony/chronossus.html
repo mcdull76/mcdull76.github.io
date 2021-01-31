@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" type="image/png" sizes="180x180" href="favicon-180.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
+
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+    <script src="https://filters.pixijs.download/v3.1.1/pixi-filters.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+    <script src="./resources/en.js"></script>
+    <script src="./resources/zh_TW.js"></script>
+    <script type="text/javascript" src="language.js"></script>
+    <script src="numbertokens.js"></script>
+    <script src="statictokens.js"></script>
+    <script src="slidetokens.js"></script>
+    <script src="counter.js"></script>
+    <script src="button.js"></script>
+    <script src="RainbowFrame.js"></script>
+    <script src="paradox.js"></script>
+    <script src="randomizer.js"></script>
+    <script src="autoScale.js"></script>
+    <title>Chronossus</title>
+</head>
+
+<body style="padding:0;margin:0">
+
+<canvas id="mycanvas"></canvas>
+<!-- The Modals -->
+<!--InfoWindow-->
+<div id="myModal" class="modalI">
+
+  <!-- Modal content -->
+  <div class="modalI-content">
+    <p id="infotext"></p>
+    <div style="text-align: right">
+      <button name="OK" class="button" onclick="modalI.style.display = 'none'" >OK</button>
+    </div>
+  </div>
+
+</div>
+
+<!--SelectWindow-->
+
+<div id="myModal2" class="modalS">
+
+  <!-- Modal content -->
+  <div class="modalS-content">
+    <div class = "selections">
+    <select class="myselect" id="Key" onchange="keySelected()">
+      <option value="none">---</option>
+      <option value="t2">Position Token 2</option>
+      <option value="t3">Position Token 3</option>
+      <option value="t4">Position Token 4</option>
+      <option value="t5">Position Token 5</option>
+      <option value="rn"># Neutronium</option>
+      <option value="ru"># Uranium</option>
+      <option value="rg"># Gold</option>
+      <option value="rt"># Titanium</option>
+      <option value="wg"># Geniuses</option>
+      <option value="wa"># Admins</option>
+      <option value="we"># Engineers</option>
+      <option value="ws"># Scientists</option>
+      <option value="xt">Position Time Travel Track</option>
+      <option value="exo"># Exosuits</option>
+      <option value="bp"># Power Plants</option>
+      <option value="bf"># Factories</option>
+      <option value="bh"># Habitats</option>
+      <option value="bl"># Labs</option>
+      <option value="ba"># Anomalies</option>
+      <option value="bs"># Superprojects</option>
+      <option value="hc"># Breakthroughs Circle</option>
+      <option value="ht"># Breakthroughs Triangle</option>
+      <option value="hs"># Breakthroughs Square</option>
+      <option value="points">Points</option>
+      <option value="background">Background Image</option>
+      <option value="s1">Slot I</option>
+      <option value="s2">Slot II</option>
+      <option value="s3">Slot III</option>
+    </select>
+      &emsp;
+    <select class= "myselect" id="Value" disabled>
+    </select>
+    </div>
+    <BR>
+    <div><label>MODULE</label></div><BR>
+    <div>
+    	<input type="checkbox" name="VarAnomalies" id="VarAnomalies">
+    	<label>Variable Anomalies</label>
+    </div>
+    <div>
+    	<label>INCREASING THE DIFFICULTY</label>
+    </div>
+    <BR>
+<!--
+    <div class="">
+    	<input type="checkbox" name="skipReboot" id="skipReboot">
+    	<label>Skip Reboot</label>
+    </div>
+    <BR>
+-->
+    <div>
+    	<label>Minimum number of Chronobot's Actions: </label>
+    	<select class="myselect" id="MinActionValue" onchange="">
+    		<option value="3">3</option>
+    		<option value="4">4</option>
+    		<option value="5">5</option>
+    		<option value="6">6</option>
+    	</select>
+    </div>
+<!--
+    <BR>
+    <div class="">
+        <input type="checkbox" name="additionalTurn" id="additionalTurn">
+        <label>The Chronobot takes one additional turn after you have passed.</label>
+    </div>
+-->
+    <div style="text-align: right">
+      <button name="cancel" class="button" onclick="modalS.style.display = 'none'" >Cancel</button>
+      <button name="ok" class="button" onclick="valueSelected()" >OK</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="ChronossusEditMode.js"></script>
+<script src="ChronossusInfoText.js"></script>
+<script type="text/javascript" src="Chronossus_Action.js"></script>
+<script>
+
+
+    const global_steps = 30;
+
+	updateScale()
+
+    class Board extends PIXI.Sprite{
+
+        constructor(texture) {
+            super(texture);
+	        this.setCollectionComplete = false;
+            this.sortableChildren = true;
+        }
+
+
+        validateWorkers(){
+            if (scientistToken.number>0 && engineerToken.number>0 && adminToken.number>0 && geniusToken.number>0) {
+            	this.setCollectionComplete = true;
+                scientistToken.remove();
+                engineerToken.remove();
+                adminToken.remove();
+                geniusToken.remove();
+                points.increase(5);
+                actionText.text += "Complete Worker Set, gain 5 VP.\n";
+            }
+            this.setCollectionComplete = false;
+        }
+
+/*
+        validateResources(){
+            if (neutroniumToken.number>0 && uraniumToken.number>0 && goldToken.number>0 && titaniumToken.number>0) {
+            	this.setCollectionComplete = true;
+                neutroniumToken.remove();
+                uraniumToken.remove();
+                goldToken.remove();
+                titaniumToken.remove();
+                points.increase(5);
+                actionText.text += "Complete Resource Set, gain 5 VP\n";
+            }
+            this.setCollectionComplete = false;
+        }
+*/
+
+        validateParadoxes(){
+            if ( paradox.isFull() ) {
+                actionText.text += "Paradox is full. ";
+                button1.disable();
+                paradox.deactivateTokens();
+
+                paradox.emptyAll();
+                actionText.text += "Remove all Paradox ";
+                if ( anomaly.belowLimit() ) {
+
+                    actionText.text += "and gain an Anomaly";
+                    button2.disable();
+                    anomaly.add();
+
+                	if( warptileNumber < maxWarpTile) {
+    	            	// indexOfMaxValue will return 1+ as 0 is handled by the prevous if statement
+    	            	let indexOfMaxValue = warpTokensLog.indexOf(Math.max(...warpTokensLog));
+    	            	if( indexOfMaxValue < era.number - 1 ) {
+    	            		// have warp tile in the past
+    		            	actionText.text += ", then remove a Warp tile from Era " + (indexOfMaxValue + 1);
+    		            	warpTokensLog[indexOfMaxValue] -= 1;
+    		                warptileNumber += 1;
+    		            } else {
+                            actionText.text += ", but no Warp tile to remove.";
+                        }
+    	            }
+                    actionText.text += "\n";
+                } else {
+                    actionText.text += "but Anomaly is Full. "
+                    failedAction();
+                }
+
+            }
+        }
+
+        checkIfReady(target) {
+            if( phase.number === PARADOX_PHASE ) {
+                button2.enable();
+            } else if( phase.number === ACTION_ROUNDS ) {
+                tokens[dice - 2].state.performAction( CHECK_IF_READY, {"target": target} );
+
+            }
+/*
+            if (action === 1 || action === 3 || action === 6 || action === 8 || action === 11) {
+                button1.label.text = "Continue";
+                button1.settings.onTap = () => acceptAction();
+                button1.visible = true;
+            } else if (action === 5){
+            } else if (action === 7) {
+            tokens[dice - 2].state.performAction( CHECK_IF_READY, {"target": target} );
+
+                if( ! this.setCollectionComplete ) {
+    	        	actionText.text += "Took " + target.name;
+                    geniusWorkerFrame.attentionOff();
+                    workersFrame.attentionOff();
+                    adminToken.interactive = false;
+                    engineerToken.interactive = false;
+                    scientistToken.interactive = false;
+                    geniusToken.interactive = false;
+                    //+1vp
+                    points.increase(1);
+                    actionText.text += " and gain 1 VP\n"
+
+                    button1.label.text="Continue";
+                    button1.settings.onTap = () => acceptAction();
+                }
+
+            } else if (action === 10 || action === 10.5) {
+            tokens[dice - 2].state.performAction( CHECK_IF_READY, {"target": target} );
+
+	        	actionText.text += "took " + target.name + "\n";
+                geniusWorkerFrame.attentionOff();
+                geniusToken.interactive = false;
+                //+1vp
+                points.increase(1);
+                actionText.text += "\nRecruit bonus\n+1 VP\n"
+
+                button1.label.text="Continue";
+                button1.settings.onTap = () => acceptAction();            	
+ 
+            }
+*/
+        }
+    }
+
+    const canvas = document.getElementById('mycanvas');
+
+    const automa = new PIXI.Application({
+        view: canvas,
+        width: defaultW * global_scaling,
+        height: defaultH * global_scaling,
+        resolution: 1,
+        autoDensity: true
+    });
+
+    automa.stage.scale.x=global_scaling;
+    automa.stage.scale.y=global_scaling;
+
+    let loader = PIXI.Loader.shared;
+    loader.add('images/BG-TheWorld.png');
+    loader.add('images/BG-Chronossus.png');    
+    loader.add('images/Chronossus-board.png');
+    loader.add('images/SidePanel.png', "images/SidePanel.json");
+
+    loader.add("images/anomaly.png");
+    for( let i = 1; i <= 4; i++ ) {
+        loader.add("images/VictoryPointTokenNeg" + i + ".png");
+    }
+    loader.add("images/VPHightlighter.png");
+
+    loader.add('images/power.png');
+    loader.add('images/factories.png');
+    loader.add('images/habitats.png');
+    loader.add('images/lab.png');
+    for( let i = 0; i <= 8; i++ ) {
+        loader.add("images/VictoryPointToken" + i + ".png");
+    }
+
+    loader.add("images/superproject.png");
+
+    loader.add("images/ActionTiles.png", "images/ActionTiles.json");
+    const defaultActionTextures = ["B01.png","B02.png","C02A.png","B04.png","B05.png",
+                                   "B06.png","B07.png","C01A.png","C03A.png","B10.png",
+                                   "B11.png",          "B12.png","B13.png","B14.png"];
+    const defaultActionTexturePos = [{x: 91, y: 214}, {x: 252, y: 214}, {x: 413, y: 214}, {x: 574, y: 214}, {x: 733, y: 214},
+                                     {x: 91, y: 379}, {x: 252, y: 379}, {x: 413, y: 379}, {x: 574, y: 379}, {x: 733, y: 379},
+                                     {x: 91, y: 709},                   {x: 413, y: 709}, {x: 574, y: 709}, {x: 733, y: 709}];
+    const defaultActionFunctions = [];
+    for( let i = 0; i < defaultActionTextures.length; i++ ) {
+        defaultActionFunctions.push( function() {} );
+    }
+    loader.add("images/Tokens.png", "images/Tokens.json");
+
+    loader.onComplete.add(startAutoma);
+    loader.load();
+
+    const board = new Board(PIXI.Texture.EMPTY);
+
+    const backdropTop = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    const bottomPanelTop = new PIXI.Sprite(PIXI.Texture.EMPTY);
+
+    const maxWarpTile = 8;
+    let warptileNumber = maxWarpTile;
+    let botActions = 0;
+    let dice = 1;
+    let action = 0;
+    let selectResources = 0;
+    let passing = false;
+
+    const aiDiceValue = [2, 3, 3, 4, 4, 5];
+
+    const states = [];
+    const statePos = [{x: 91, y: 118}, {x: 250, y: 118}, {x: 412, y: 118}, {x: 574, y: 118}, {x: 733, y: 118},
+	  		          {x: 91, y: 475}, {x: 250, y: 475}, {x: 412, y: 475}, {x: 574, y: 475}, {x: 733, y: 475},
+			          {x: 91, y: 613},                   {x: 412, y: 613}, {x: 574, y: 613}, {x: 733, y: 613}];
+    const stateTransition = [{13:12, 12:8, 8:10, 10:14, 14:13},
+                            {1:2, 2:3, 3:4, 4:5, 5:1},
+                            {7:8, 8:12, 12:11, 11:6, 6:7},
+							{10:14, 14:13, 13:9, 9:10}];
+    const stateStart = [13, 1, 7, 10];
+
+    const stateImgPos = [{x: 91, y: 118}, {x: 250, y: 118}, {x: 412, y: 118}, {x: 574, y: 118}, {x: 733, y: 118},
+                         {x: 91, y: 475}, {x: 250, y: 475}, {x: 412, y: 475}, {x: 574, y: 475}, {x: 733, y: 475},
+                         {x: 91, y: 613},                   {x: 412, y: 613}, {x: 574, y: 613}, {x: 733, y: 613}];
+
+
+    // need to recode how to use the states as we have two 4 different path now.
+    for (let i = 1; i <= 14; i++) {
+        states[i] = new ChronossusState( i, statePos[i-1], board );
+    }
+    const tokenPath = [];
+    for( let i = 0; i < stateTransition.length; i++ ) {
+        const thisPath = new Map();
+        tokenPath.push( thisPath );
+        for( let fromStateNum of Object.keys(stateTransition[i]) ) {
+            thisPath.set( states[fromStateNum], states[stateTransition[i][fromStateNum]] );
+        }
+    }
+
+/*
+
+    for (let i = 1; i <= 14; i++) {
+        states[i] = new State(i, statePos[i - 1]);
+    }
+
+    for (const [key, value] of Object.entries(states)) {
+        value.setNext(states[stateTransition[key]])
+    }
+*/
+    const noIcon = new PIXI.Sprite(PIXI.Texture.EMPTY);
+
+    const tokens = [];
+
+    const workerPositions = [{x: 1044, y: 34}, {x: 1044, y: 167}, {x: 1044, y: 302}, {x: 1044, y: 436}]
+
+    const genius_texture = PIXI.Texture.from('images/genius.png');
+    const admin_texture = PIXI.Texture.from('images/admin.png');
+    const engineer_texture = PIXI.Texture.from('images/engineer.png');
+    const scientist_texture = PIXI.Texture.from('images/scientist.png');
+    const geniusToken = new WorkerToken(genius_texture, "Genius", workerPositions[0], 0);
+    const adminToken = new WorkerToken(admin_texture, "Administrator", workerPositions[1], 0);
+    const engineerToken = new WorkerToken(engineer_texture, "Engineer", workerPositions[2], 0);
+    const scientistToken = new WorkerToken(scientist_texture, "Scientist", workerPositions[3], 0);
+
+    const workerFrameTexture = PIXI.BaseTexture.from('images/WorkersOuterFrame.png');
+    const geniusWorkerTexture = new PIXI.Texture( workerFrameTexture, new PIXI.Rectangle(0,0,86,130) );
+    const otherWorkersTexture = new PIXI.Texture( workerFrameTexture, new PIXI.Rectangle(0,131,86,387) );
+/*
+    const geniusWorkerFrame = new RainbowFrame(geniusWorkerTexture, {x: 0, y: 31});
+    const workersFrame = new RainbowFrame(otherWorkersTexture, {x: 100, y: 161});
+*/
+    const geniusWorkerFrame = new WhiteRedRainbowFrame(geniusWorkerTexture, {x: 1040, y: 31});
+    const workersFrame = new WhiteRedRainbowFrame(otherWorkersTexture, {x: 1040, y: 161});
+
+    const resourcePositions = [{x: 898, y: 58}, {x: 898, y: 191}, {x: 898, y: 326}, {x: 898, y: 460}]
+    const neutronium_texture = PIXI.Texture.from('images/neutronium.png');
+    const uranium_texture = PIXI.Texture.from('images/uranium.png');
+    const gold_texture = PIXI.Texture.from('images/gold.png');
+    const titanium_texture = PIXI.Texture.from('images/titanium.png');
+    const neutroniumToken = new ResourceToken(neutronium_texture, "Neutronium", resourcePositions[0], 0);
+    const uraniumToken = new ResourceToken(uranium_texture, "Uranium", resourcePositions[1], 0);
+    const goldToken = new ResourceToken(gold_texture, "Gold", resourcePositions[2], 0);
+    const titaniumToken = new ResourceToken(titanium_texture, "Titanium", resourcePositions[3], 0);
+    const resourcesTokens = [neutroniumToken, uraniumToken, goldToken, titaniumToken];
+
+    const resourcesFrame = new WhiteRedRainbowFrame(PIXI.Texture.from('images/ResourceOuterFrame.png'), {x: 869, y: 30});
+/*
+// remove supply, no longer have supply in v2.0 
+    const supplyPositions = {0: {x: 743, y: 350}, 1: {x: 810, y: 315}, 2: {x: 878, y: 315}, 3: {x: 945, y: 315}};
+    const supplyTransitions = {0: 1, 1: 2, 2: 3, 3: 3};
+    const supplyToken = new SlideToken(PIXI.Texture.from('images/supply.png'), 0, supplyPositions, supplyTransitions);
+    const supplyNeed = [5, 6, 7, 7];
+    const supplyPoints = [0,2,5,8];
+// remove supple end
+*/
+
+    const timetravelPositions = {
+        0: {x: 868, y: 719}, 1: {x: 936, y: 719}, 2: {x: 1002, y: 719}, 3: {x: 1070, y: 719},
+        4: {x: 1136, y: 719}, 5: {x: 1204, y: 719}, 6: {x: 1270, y: 719}
+    };
+    const timetravelTransitions = {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 6};
+    const timetravelToken = new SlideToken(PIXI.Texture.from('images/timetravel.png'), 0,
+        timetravelPositions, timetravelTransitions);
+    const timeTravelPoints = [0,2,4,6,8,10,12];
+
+
+
+    const powerPlantIcon = new PIXI.Sprite(PIXI.Texture.from('images/powerplantIcon.png'));
+    const factoryIcon = new PIXI.Sprite(PIXI.Texture.from('images/factoryIcon.png'));
+    const habitatIcon = new PIXI.Sprite(PIXI.Texture.from('images/habitatIcon.png'));
+    const labIcon = new PIXI.Sprite(PIXI.Texture.from('images/labIcon.png'));
+    const icons = [powerPlantIcon,factoryIcon,habitatIcon,labIcon];
+    for (let i=0; i<=3; i++) {
+        icons[i].x = 636 + i * 179;
+        icons[i].y = 959;
+        icons[i].visible = false;
+        icons[i].anchor.set(0.5);
+    }
+    const superprojectIcon = new PIXI.Sprite(PIXI.Texture.from('images/SuperprojectIcon.png'));
+    superprojectIcon.x = 344;
+    superprojectIcon.y = 959;
+    superprojectIcon.visible = false;
+    superprojectIcon.anchor.set(0.5);
+
+
+    const powerPlantBack = new TokenWithScores(loader.resources["images/power.png"].texture, powerPlantIcon, "Power Plant", {x: 549, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    
+    const factoryBack = new TokenWithScores(loader.resources["images/factories.png"].texture, factoryIcon, "Factory", {x: 728, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    const habitatBack = new TokenWithScores(loader.resources["images/habitats.png"].texture, habitatIcon, "Habitat", {x: 907, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    
+    const labBack = new TokenWithScores(loader.resources["images/lab.png"].texture, labIcon, "Lab", {x: 1086, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+
+    const breakthroughBack = new PIXI.Sprite(PIXI.Texture.from('images/BreakthroughIcon.png'));
+    breakthroughBack.x = 16;
+    breakthroughBack.y = 891;
+    breakthroughBack.visible = false;
+
+    let VarAnomalies = false;
+    const anomalyTexture = loader.resources["images/anomaly.png"].texture;
+    const anomaly = new TokenWithScores( anomalyTexture, noIcon, "Anomaly", {x: 1291, y: 861}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png") );
+
+    const superProjectBack = new TokenWithScores(loader.resources['images/superproject.png'].texture, superprojectIcon, "Superproject", {x: 169, y: 859}, 0, true, 3, PIXI.Texture.from("images/VPHightlighter.png"));
+    superProjectBack.text.position = {x: 175, y: 165};
+
+    const exoSuitBack = new StaticToken(PIXI.Texture.from('images/ChronossueHex.png'), noIcon, "Exosuit", {x: 1196, y: 43}, 0, true, 6);
+    exoSuitBack.text.position = {x: 105, y: 95};
+
+/*
+    const advancePath = new PIXI.Sprite(PIXI.Texture.from('images/advancePath.png'));
+    advancePath.x = 505;
+    advancePath.y = 501;
+    advancePath.visible = skipReboot;
+
+    const normalPath = new PIXI.Sprite(PIXI.Texture.from('images/normalPath.png'));
+    normalPath.x = 505;
+    normalPath.y = 501;
+    normalPath.visible = ! skipReboot;
+*/
+
+    const textPanelEnlargeBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, { x:1480, y:1080 }, [220,220,220], [67,54,86], global_steps * 4);
+    textPanelEnlargeBTN.on('pointerdown', toggleTextPanel );
+    textPanelEnlargeBTN.anchor = { x:1, y:0 };
+    textPanelEnlargeBTN.interactive = true;
+
+    const textPanelShrinkBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:0}, [220,220,220], [67,54,86], global_steps * 4);
+    textPanelShrinkBTN.on('pointerdown', toggleTextPanel );
+    textPanelShrinkBTN.anchor = { x:1, y:0 };
+    textPanelShrinkBTN.interactive = true;
+    textPanelShrinkBTN.visible = false;
+
+    const scrollUpBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1400, y:1250}, [100,100,100], [67,54,86], global_steps * 10);
+//    scrollUpBTN.on('pointerdown', scrollTextUp);
+    scrollUpBTN.anchor = { x:1, y:0 };
+    scrollUpBTN.interactive = true;
+    scrollUpBTN.visible = false;
+
+    const scrollDownBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:80}, [150,150,140], [67,54,86], global_steps * 10);
+//    scrollDownBTN.on('pointerdown', scrollTextDown);
+    scrollDownBTN.anchor = { x:1, y:0 };
+    scrollDownBTN.interactive = true;
+    scrollDownBTN.visible = false;
+
+	const cogWheelIcon = new PIXI.Sprite(PIXI.Texture.from('images/cogwheel.png'));
+	cogWheelIcon.on('pointerdown',editRequested );
+	cogWheelIcon.x = 1412;
+	cogWheelIcon.y = 8;
+	cogWheelIcon.interactive = true;
+
+	const points = new Counter({x: 140, y: 185}, 0, 999);
+
+    const energyCoreIcon = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    energyCoreIcon.anchor = {x: 0.5, y: 0.5};
+    const energyCore = new Counter({x: 140, y: 252}, 5, 999);
+
+    const energyCoreExhaustedIcon = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    energyCoreExhaustedIcon.anchor = {x: 0.5, y: 0.5};
+    const energyCoreExhausted = new Counter({x:140, y: 316}, 5, 5);
+
+    const energyCorePool = new energyCoreBag( energyCore, energyCoreExhausted );
+
+    const fluxCoreIcon = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    fluxCoreIcon.anchor = {x: 0.5, y: 0.5};
+    const fluxCore = new Counter({x: 140, y: 380}, 1, 999);
+
+    const fluxCoreExhaustedIcon = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    fluxCoreExhaustedIcon.anchor = {x: 0.5, y: 0.5};
+    const fluxCoreExhausted = new Counter({x: 140, y: 444}, 3, 3);
+
+    const era = new Counter({x: 220, y: 52}, 1, 10);
+    const phase = new Counter({x: 220, y: 110}, 1, 6);
+    const btCircleCounter = new Counter({x: 90, y: 925}, 0, 9);
+    btCircleCounter.scale.set(.7);
+    btCircleCounter.visible = false;
+    const btTriangleCounter = new Counter({x: 90, y: 959}, 0, 9);
+    btTriangleCounter.scale.set(.7);
+    btTriangleCounter.visible = false;
+    const btSquareCounter = new Counter({x: 90, y: 993}, 0, 9);
+    btSquareCounter.scale.set(.7);
+    btSquareCounter.visible = false;
+    const researchCounter = [btCircleCounter,btTriangleCounter,btSquareCounter];
+    const researchItem = ["Circle", "Triangle", "Square"];
+
+    // warp token count of each era. warpTokensLog[era.number -1]
+    const warpTokensLog = [];
+    actionText = new PIXI.Text( getText("txt_anachrony") + ": " + getText("txt_chronossus_module") + "\n", {
+        fontFamily: 'Arial',
+        fontSize: 24, fontWeight: 'normal', fill: 0x433656, align: 'left',
+        wordWrap: true, wordWrapWidth: 1200
+    });
+    actionText.anchor = {x: 0, y: 1};
+    actionText.position = {x: 125, y: 1250};
+    actionText.visible = true;
+
+    reminder = new PIXI.Text( getText("txt_reminder_greeting"), {
+        fontFamily: 'Arial',
+        fontSize: 24, fontWeight: 'normal', fill: 0xFF0000, align: 'center',
+        wordWrap: true, wordWrapWidth: 250
+    });
+    reminder.anchor = {x: 0.5, y: 1};
+    reminder.position = {x: 125, y: 875};
+    reminder.visible = true;
+
+    const paradox = new Paradox();
+
+    button0 = new Button({
+        label: 'Action space\nfree',
+        width: 250,
+        height: 125,
+        x: 125,
+        y: 68,
+        onTap: () => spaceFree()
+    })
+
+
+    button1 = new Button({
+        label: 'Next\nBot Action',
+        width: 250,
+        height: 125,
+        x: 125,
+        y: 193,
+        onTap: () => button1Pressed()
+    })
+
+    button2 = new Button({
+        label: 'Next Phase',
+        width: 250,
+        height: 125,
+        x: 125,
+        y: 318,
+        onTap: () => button2Pressed()
+    })
+
+    button1.visible = false;
+    button0.visible = false;
+
+    function getInfoTextlead() {
+        let leadingText = era.number + "." + phase.number + "." + botActions.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + ": ";
+        botActions++;
+        return leadingText;
+    }
+
+    function button2Pressed() {
+
+        // once game started disable switching to varialbe Anomalies
+        // document.getElementById("VarAnomalies").disabled = true;
+
+        button1.enable();
+        botActions = 0;
+
+        if (phase.number === 1) {
+            actionText.text += getInfoTextlead() + getText("txt_phase1") + "\n";
+            phase.set(2);
+            button2Pressed();
+        } else if (phase.number === 2) {
+        	/*
+        	use the button to perform digital roll
+        	click the roll button to roll the paradox die and assign token
+        	need to keep track of paradox token amount and skip rolling is take Anomaly and remove one warp token 
+        	*/
+            actionText.text += getInfoTextlead() + getText("txt_phase2") + "\n";
+            let warpTokenCount = 0;
+            reminder.text = "";
+            for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
+                reminder.text += getText("txt_B2P_01",[ (i+1), warpTokensLog[i] ]);
+                reminder.text += "\n";
+                warpTokenCount += warpTokensLog[i];
+            }
+            if( warpTokenCount === 0 ) {
+                reminder.text += "\n" + getText("txt_B2P_02");
+                actionText.text += getInfoTextlead() + getText("txt_B2P_03") + "\n";
+                button1.disable();
+            } else {
+                reminder.text += "\n" + getText("txt_B2P_04");
+                paradox.activateTokens();
+            }
+
+            button1.visible = true;
+            button1.label.text = getText("txt_BTN1_01");
+            button1.settings.onTap = () => button1Pressed();
+            button2.label.text = getText("txt_BTN2_01");
+            button2.settings.onTap = () => waitForUser();
+        } else if (phase.number === 3) {
+            actionText.text += getInfoTextlead() + getText("txt_phase3") + "\n";
+            button1.visible = false;
+/*
+            let exoNumber = 6;
+            if (era.number > 4) exoNumber = 4;
+*/
+            let exoNumber, baseDrawAmount = 3;
+            if( era.number > 4 ) baseDrawAmount = 2;
+
+            const drawResultMap = energyCorePool.draw( baseDrawAmount );
+            exoNumber = baseDrawAmount + drawResultMap.get(ENERGY_CORE);
+
+            actionText.text += getInfoTextlead() + getText("txt_B2P_05", [drawResultMap.get(ENERGY_CORE), drawResultMap.get(ENERGY_CORE_EXHAUSTED), exoNumber.toString()]) + "\n";
+            reminder.text = getText("txt_B2P_06") + "\n";
+
+            exoSuitBack.set(exoNumber);
+            button2.label.text = getText("txt_BTN2_01");
+            button2.settings.onTap = () => waitForUser();
+
+        } else if (phase.number === 4) {
+            actionText.text += getInfoTextlead() + getText("txt_phase4") + "\n";
+            reminder.text = "";
+            for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
+                reminder.text += getText("txt_B2P_01", [ (i+1), warpTokensLog[i] ] ) + "\n";
+            }
+            reminder.text += getText("txt_B2P_07") + "\n";
+
+            button2.label.text = "Done";
+            button2.settings.onTap = () => waitForUser();
+        } else if (phase.number === 5) {
+            actionText.text += getInfoTextlead() + getText("txt_phase5") + "\n";            
+            reminder.text = getText("txt_B2P_08");
+            reminder.visible = true;
+
+            button1.visible = true;
+            button1.label.text = getText("txt_BTN1_02");
+
+            button2.label.text = getText("txt_BTN2_01");
+            button2.disable();
+            //botActions = 0;
+            button2.settings.onTap = () => waitForUser();
+        } else if (phase.number === 6) {
+            actionText.text += getInfoTextlead() + getText("txt_phase6") + "\n";
+            button2.label.text = "Okay\nNext Era";
+            button2.settings.onTap = () => waitForUser();
+
+        }
+    }
+
+    function button1Pressed() {
+        if (phase.number === 2) {
+            let rollResult = paradox.rollParadoxDice();
+            actionText.text += getInfoTextlead() + getText("txt_B1P_01", [rollResult]);
+
+            switch (rollResult) {
+                case 0:
+                    actionText.text += getText("txt_B1P_02") ;
+                    break;
+                case 1:
+                case 2:
+                    actionText.text += getText("txt_B1P_03", [rollResult]) ;
+                    break;
+            }
+
+            let tokenNum = 0;
+            for( let i = 0; i < rollResult; i++ ) {
+                paradox.add();
+            }
+            board.validateParadoxes();
+            actionText.text += "\n";
+
+        } else if (phase.number === 5) {
+            dice = aiDiceValue[Math.floor(Math.random() * 6)];
+            actionText.text += getInfoTextlead() + getText("txt_B1P_04", [dice.toString()]);
+            if (exoSuitBack.number > 0) {
+                performAction();
+            } else {
+                const nextAction = tokens[dice - 2].state.getTextureId();
+                if( actionNeedExosuit[ nextAction ] ) {
+                    //pass
+                    actionText.text += getText("txt_B1P_05", [getText(nextAction)]);            
+                    passing = true;
+                    acceptAction()
+                } else {
+                    performAction();                    
+                } 
+
+            }
+/*
+	        if (exoSuitBack.number > 0) {
+	            dice = aiDiceValue[Math.floor(Math.random() * 6)];
+	            actionText.text += getInfoTextlead() + "Chronossus rolled a [" + dice.toString() + "] ";
+	            action = tokens[dice - 2].state.name;
+	            performAction();
+	        } else if (!passing) {
+                action = 2;
+                passing = true;
+                performAction();	            
+			}
+*/
+        } else if (phase.number === 6) {
+            proceedEndGame();
+//            alert( "warning! some is calling button1Pressed at pahse 6.");
+        }
+    }
+
+    function proceedEndGame() {
+        endGameScoring();
+        button1.visible = false;
+        button2.visible = false;
+        if( board.visible ) {
+            toggleTextPanel();
+        }
+
+    }
+
+    function endGameScoring() {
+        //pop up the actionText to review the full record.
+
+        const btVp = btSquareCounter.number + btTriangleCounter.number + btCircleCounter.number
+            + 2 *  Math.min(btSquareCounter.number,btTriangleCounter.number,btCircleCounter.number);
+        let totalVP = 0;
+        actionText.text += "\n" + getText("txt_EGS_01") + "\n";
+        actionText.text += getText("txt_EGS_02", [points.number]) + "\n";
+        totalVP += points.number;
+
+        actionText.text += getText("txt_EGS_03", [btVp.toString()]) + "\n";
+        totalVP += btVp;
+        
+        actionText.text += getText("txt_EGS_04", [timeTravelPoints[timetravelToken.state]]) + "\n";
+        totalVP += timeTravelPoints[timetravelToken.state];
+        
+        actionText.text += "Power Plant: " + powerPlantBack.getTotalVP() + " VPs\n";
+        totalVP += powerPlantBack.getTotalVP();
+        
+        actionText.text += "Factory: " + factoryBack.getTotalVP() + " VPs\n";
+        totalVP += factoryBack.getTotalVP();
+        
+        actionText.text += "Life Support: " + habitatBack.getTotalVP() + " VPs\n";
+        totalVP += habitatBack.getTotalVP();
+        
+        actionText.text += "Lab: " + labBack.getTotalVP() + " VPs\n";
+        totalVP += labBack.getTotalVP();
+
+        actionText.text += "Superproject: " + superProjectBack.getTotalVP() + " VPs\n";
+        totalVP += superProjectBack.getTotalVP();
+
+        actionText.text += "Anomaly: " + anomaly.getTotalVP() + " VPs\n";
+        totalVP += anomaly.getTotalVP();
+        
+        actionText.text += "\nTotal: " + totalVP.toString() + " VPs.";
+
+        reminder.text = "Nice Game.";        
+    }
+
+    function performAction() {
+        button2.disable();
+        tokens[dice - 2].state.performAction( PERFORM_ACTION );
+    }
+
+    function acceptAction() {
+        tokens[dice - 2].state.performAction( ACCEPT_ACTION );
+
+
+/*
+        geniusWorkerFrame.attentionOff();
+        workersFrame.attentionOff();
+        resourcesFrame.attentionOff();
+        icons.forEach(icon => icon.visible = false);
+
+        if(! passing) {
+            tokens[dice - 2].state.performAction( ACCEPT_ACTION );
+            tokens[dice - 2].advance();
+        }
+
+//        action = 0;
+        button1.visible = true;
+        button1.label.text = 'Next\nBot Action';
+//        actionText.text = "";
+        button1.settings.onTap = () => button1Pressed();
+//        botActions += 1;
+        if (botActions >= minActionNum) button2.enable();
+        if (exoSuitBack.number === 0) {
+            if (passing) {                
+                passing = false;
+                button1.disable();
+                button2.enable();
+            }
+        }
+*/
+    }
+
+    function spaceFree() {
+
+        tokens[dice - 2].state.performAction( SPACE_FREE );
+
+
+
+    }
+
+    function failedAction() {
+    	actionText.text += getText("txt_FA_01");
+    	points.increase(1);
+        button0.visible = false;
+        button1.label.text = getText("txt_BTN1_03");
+        button1.settings.onTap = () => acceptAction();    	
+    }
+
+    function spaceOccupied() {
+        tokens[dice - 2].state.performAction( SPACE_OCCUPIED );
+    }
+
+    function waitForUser() {
+        button2.settings.onTap = () => button2Pressed();
+
+        switch (phase.number) {
+            case PREPARATION_PHASE:
+            case PARADOX_PHASE:
+                paradox.deactivateTokens();
+                phase.increase(1);
+                botActions = 0;
+                button2Pressed();
+                break;
+            case 3: 
+        }
+        if (phase.number === 2) {
+        } else if (phase.number === 3) {
+            phase.increase(1);
+            botActions = 0;
+            button2Pressed();
+        } else if (phase.number === 4) {
+            // draw 0-2 tokens
+
+            let draw = paradox.rollParadoxDice();
+            if (draw > warptileNumber) draw = warptileNumber;
+            warptileNumber -= draw;
+			warpTokensLog.push(draw);
+            actionText.text += getInfoTextlead() + getText("txt_WFU_01", [draw.toString()]) + "\n";
+
+            phase.set(4.5);
+            button2.label.text = getText("txt_BTN2_01");
+            button2.settings.onTap = () => waitForUser();
+        } else if (phase.number === 4.5) {
+            phase.number = 4;
+            phase.increase(1);
+            botActions = 0;
+            button2Pressed();
+        } else if (phase.number === 5) {
+            reminder.text = getText("txt_WFU_02") + "\n";
+            if (era.number === 4) reminder.text += "\n" + getText("txt_WFU_03");
+            phase.increase(1);
+            botActions = 0;
+            if (era.number >= 5) {
+                button1.label.text = getText("txt_BTN1_04");
+                button1.enable();
+            }
+            else button1.visible = false;
+            button2Pressed();
+            if (era.number === 7) button2.disable();
+        } else if (phase.number === 6) {
+            if (era.number === 7) {
+                proceedEndGame();
+            } else {
+                phase.set(1);
+                button1.visible = false;
+                era.increase(1);
+                button2Pressed();
+            }
+        }
+    }
+
+
+    function startAutoma() {
+
+        const panel = new PIXI.Sprite(loader.resources['images/SidePanel.png'].textures["SidePanelBaseTexture.png"]);
+        panel.interactive = true;
+        //panel.hitArea = new PIXI.Rectangle(10,150,240,700);
+        panel.on('pointerdown', helpAsked);
+        panel.x = 1480;
+        panel.y = 0;
+        const buttonPanel = new PIXI.Sprite(loader.resources['images/SidePanel.png'].textures["SidePanelBTNBaseTexture.png"]);
+        buttonPanel.x = 1480;
+        buttonPanel.y = 882;
+
+        bottomPanelTop.texture = loader.resources['images/SidePanel.png'].textures["BottomPanelTopTexture.png"];
+        bottomPanelTop.x = 0;
+        bottomPanelTop.y = 1080;
+
+        const backdrop = new PIXI.Sprite( loader.resources['images/SidePanel.png'].textures["MainPanelBaseTexture.png"] );
+        backdrop.position = {x:0, y:0};
+
+        backdropTop.texture = loader.resources['images/SidePanel.png'].textures["MainPanelBaseTopTexture.png"];
+        backdrop.position = {x:0, y:0};
+
+        //const background_image = loader.resources['images/BG-TheWorld.png'].texture;
+        //const board = new Board(background_image);
+        board.texture = loader.resources['images/BG-Chronossus.png'].texture;
+        board.x = 0;
+        board.y = 0;
+
+        const stateActionLayer = new PIXI.Container();
+        for( let i = 1; i < states.length; i++ ) {
+            states[i].setAction(loader.resources["images/ActionTiles.png"].textures[defaultActionTextures[i-1]], defaultActionTexturePos[i-1], defaultActionFunctions[i-1]);
+            stateActionLayer.addChild(states[i].actionImage);
+        }
+        board.addChild(stateActionLayer);
+
+        const action_frame = new PIXI.Sprite(loader.resources['images/Chronossus-board.png'].texture);
+
+        board.addChild(action_frame);
+/*
+        board.addChild(advancePath);
+        board.addChild(normalPath);
+*/
+/*
+        for (let i = 2; i <= 5; i++) {
+            const newToken = new Token(i, loader.resources["images/Tokens.png"].textures["Token" + i.toString() + ".png"], states[stateStart[i - 2]]);
+            tokens.push(newToken);
+            board.addChild(newToken);
+        }
+
+*/
+        for( let i = 2; i <= 5; i++ ) {
+            const newToken = new ChronossusToken( i, loader.resources["images/Tokens.png"].textures["Token" + i.toString() + ".png"], states[stateStart[i - 2]], tokenPath[i-2] );
+            tokens.push(newToken);
+            board.addChild(newToken);
+        }
+
+        paradox.init(board);
+
+        board.addChild(geniusToken);
+        board.addChild(adminToken);
+        board.addChild(engineerToken);
+        board.addChild(scientistToken);
+        board.addChild(geniusWorkerFrame);
+        board.addChild(workersFrame);
+
+        board.addChild(neutroniumToken);
+        board.addChild(uraniumToken);
+        board.addChild(goldToken);
+        board.addChild(titaniumToken);
+        board.addChild(resourcesFrame);
+
+        board.addChild(timetravelToken);
+
+        const tempVP = [], tempVPTexture = [];
+        for( let i = 0; i <= 8; i++ ) {
+            tempVP.push( i );
+            tempVPTexture.push( loader.resources["images/VictoryPointToken" + i + ".png"].texture );
+        }
+        powerPlantBack.texture = loader.resources["images/power.png"].texture;
+        powerPlantBack.init( tempVP.slice(1,5), tempVPTexture.slice(1,5) );
+        board.addChild(powerPlantBack);
+
+        factoryBack.texture = loader.resources["images/factories.png"].texture;
+        factoryBack.init( tempVP.slice(1,4), tempVPTexture.slice(1,4) );
+        board.addChild(factoryBack);
+
+        habitatBack.texture = loader.resources["images/habitats.png"].texture;
+        habitatBack.init( tempVP.slice(1,4), tempVPTexture.slice(1,4) );
+        board.addChild(habitatBack);
+
+        labBack.texture = loader.resources["images/lab.png"].texture;
+        labBack.init( tempVP.slice(0,5), tempVPTexture.slice(0,5) );        
+        board.addChild(labBack);
+
+        superProjectBack.texture = loader.resources["images/superproject.png"].texture;
+        superProjectBack.init( tempVP.slice(4,9), tempVPTexture.slice(4,9), TOP_LEFT, VERTICAL );
+
+        board.addChild(superProjectBack);
+        board.addChild(exoSuitBack);
+        board.addChild(cogWheelIcon);
+
+        anomaly.texture = loader.resources["images/anomaly.png"].texture;
+        anomaly.init( [-2], [loader.resources["images/VictoryPointTokenNeg2.png"].texture] );
+        board.addChild(anomaly);
+
+        board.addChild(breakthroughBack);
+        board.addChild(btCircleCounter);
+        board.addChild(btTriangleCounter);
+        board.addChild(btSquareCounter);
+
+        textPanelShrinkBTN.texture = loader.resources["images/SidePanel.png"].textures["shrink.png"];
+        textPanelEnlargeBTN.texture = loader.resources["images/SidePanel.png"].textures["enlarge.png"];
+        scrollUpBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollBTN.png"];
+        scrollUpBTN.angle = 180;
+        scrollDownBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollBTN.png"];
+        scrollUpBTN.attentionOn();
+        scrollDownBTN.attentionOn();
+
+        backdrop.addChild(actionText);
+        backdrop.addChild(backdropTop);
+        backdrop.addChild(bottomPanelTop);
+        backdrop.addChild(scrollDownBTN);
+        backdrop.addChild(scrollUpBTN);
+        backdrop.addChild(textPanelEnlargeBTN);
+        backdrop.addChild(textPanelShrinkBTN);
+
+        buttonPanel.addChild(button2);
+        buttonPanel.addChild(button1);
+        buttonPanel.addChild(button0);
+
+        energyCoreIcon.texture = loader.resources["images/SidePanel.png"].textures["SidePanelPowerCoreTexture.png"];
+        energyCoreIcon.position = {x:185, y:252};
+        energyCoreExhaustedIcon.texture = loader.resources["images/SidePanel.png"].textures["SidePanelPowerCoreExTexture.png"];
+        energyCoreExhaustedIcon.position = {x:185, y:316};
+        fluxCoreIcon.texture = loader.resources["images/SidePanel.png"].textures["SidePanelFluxCoreTexture.png"];
+        fluxCoreIcon.position = {x:185, y:380};
+        fluxCoreExhaustedIcon.texture = loader.resources["images/SidePanel.png"].textures["SidePanelFluxCoreExTexture.png"];
+        fluxCoreExhaustedIcon.position = {x:185, y:444};
+
+        panel.addChild(points);
+        panel.addChild(era);
+        panel.addChild(phase);
+        panel.addChild(reminder);
+        panel.addChild(energyCore);
+        panel.addChild(energyCoreExhausted);
+        panel.addChild(fluxCore);
+        panel.addChild(fluxCoreExhausted);
+        panel.addChild(energyCoreIcon);
+        panel.addChild(energyCoreExhaustedIcon);
+        panel.addChild(fluxCoreIcon);
+        panel.addChild(fluxCoreExhaustedIcon);
+
+
+
+        board.addChild(powerPlantIcon);
+        board.addChild(factoryIcon);
+        board.addChild(habitatIcon);
+        board.addChild(labIcon);
+        board.addChild(superprojectIcon);
+
+
+        automa.stage.addChild(backdrop);
+        automa.stage.addChild(board);
+        automa.stage.addChild(panel);
+        automa.stage.addChild(buttonPanel);
+
+
+        phase.set(3);
+        button2.label.text = getText("txt_BTN2_02");
+
+    }
+
+</script>
+</body>
+</html>
