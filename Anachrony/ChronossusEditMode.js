@@ -352,24 +352,39 @@ function toggleTextPanel() {
 */
 }
 
-function scrollTextUp() {
+actionTextSetting = {
+    delta: {x:0, y:0},
+    defaultPos: {x: 125, y: 1250},
 
+}
+
+function scrollTextUp() {
+    actionText.delta.y = -1;
+    automa.ticker.add( scrollActionText );
 }
 
 function scrollTextDown() {
-
+    actionText.delta.y = 1;
+    automa.ticker.add( scrollActionText );
 }
 
-function scrollTextSetY( delta ) {
-
+function scrollActionText( ) {
+    alert( actionText.y + ", " + actionText.default.y );
+    actionText.y += actionText.delta.y;
+    if( actionText.y < 100 || (actionText.y - actionText.height) > actionText.default.y ) {
+        //stop
+        scrollTextOff();
+    }
 }
 
 function scrollTextOff() {
-
+    actionText.delta.y = 0;
+    automa.ticker.remove( scrollActionText );
 }
 
 function scollTextReset() {
-
+    actionText.delta.y = actionText.y - actionText.default.y;
+    automa.ticker.add( scrollActionText );
 }
 
 function textPanelFadeInOut() {

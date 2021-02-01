@@ -131,7 +131,9 @@
 <script type="text/javascript" src="Chronossus_Action.js"></script>
 <script>
 
-
+    let global_scaling = 1;
+    const defaultW = 1480+250;
+    const defaultH = 1080+182;
     const global_steps = 30;
 
 	updateScale()
@@ -483,14 +485,15 @@
     textPanelShrinkBTN.interactive = true;
     textPanelShrinkBTN.visible = false;
 
-    const scrollUpBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1400, y:1250}, [100,100,100], [67,54,86], global_steps * 10);
-//    scrollUpBTN.on('pointerdown', scrollTextUp);
-    scrollUpBTN.anchor = { x:1, y:0 };
+    const scrollUpBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:80}, [100,100,100], [67,54,86], global_steps * 10);
+    scrollUpBTN.on('pointerdown', scrollTextUp );
+    scrollUpBTN.anchor = { x:0, y:1 };
     scrollUpBTN.interactive = true;
     scrollUpBTN.visible = false;
+    scrollUpBTN.angle = 180;
 
-    const scrollDownBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:80}, [150,150,140], [67,54,86], global_steps * 10);
-//    scrollDownBTN.on('pointerdown', scrollTextDown);
+    const scrollDownBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:1182}, [150,150,140], [67,54,86], global_steps * 10);
+    scrollDownBTN.on('pointerdown', scrollTextDown );
     scrollDownBTN.anchor = { x:1, y:0 };
     scrollDownBTN.interactive = true;
     scrollDownBTN.visible = false;
@@ -1020,7 +1023,6 @@
         textPanelShrinkBTN.texture = loader.resources["images/SidePanel.png"].textures["shrink.png"];
         textPanelEnlargeBTN.texture = loader.resources["images/SidePanel.png"].textures["enlarge.png"];
         scrollUpBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollBTN.png"];
-        scrollUpBTN.angle = 180;
         scrollDownBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollBTN.png"];
         scrollUpBTN.attentionOn();
         scrollDownBTN.attentionOn();

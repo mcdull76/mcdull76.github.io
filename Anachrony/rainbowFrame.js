@@ -23,6 +23,8 @@ class RainbowFrame extends PIXI.Sprite {
         this.sCounter = 0; //saturation counter
         this.sMax = 1;
 
+        this.settings = {};
+
         this.rainbowEffect = () => {
             this.delta = 0.5;
 

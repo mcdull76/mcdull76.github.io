@@ -20,13 +20,16 @@ function construction( structure, structureName, status ) {
             button1.settings.onTap = () => spaceOccupied();
             break;
         case SPACE_FREE:
-        reminder.text = "Place Exosuit!\n";
-        exoSuitBack.remove();
-        button0.visible = false;
+            reminder.text = "Place Exosuit!\n";
+            exoSuitBack.remove();
+            button0.visible = false;
             button1.visible = true;
             structure.attentionOff();
             if (structure.number < structure.limit) {
                 // Need to insert code to ask for construction VP
+                if( ! board.visible ) {
+                    textPanelFadeInOut();
+                }
                 reminder.text = "Take a " + structureName + " with higher VP";
                 structure.add(1);
                 button1.visible = false;
@@ -313,7 +316,7 @@ function genericSpaceOccupied() {
                 When using the Recruit Genius/Research Action, perform a Recruit Action only if a Genius is available.
                 If no Genius is available, perform a Research Action instead.
                 */
-                actionText.text += "Recruit Genius. "
+                actionText.text += "Recruit Genius or Research. "
                 reminder.text = "Any Genius available"
                 button0.label.text = "Have Genius";
                 button0.settings.onTap = () => spaceFree();
@@ -339,7 +342,7 @@ function genericSpaceOccupied() {
                 failedAction();
                 break;
             case CHECK_IF_READY:
-                actionText.text += "took " + target.name;
+                actionText.text += "took " + kwargs["target"].name;
                 geniusWorkerFrame.attentionOff();
                 geniusToken.interactive = false;
                 //+1vp
