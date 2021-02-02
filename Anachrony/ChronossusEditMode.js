@@ -306,7 +306,7 @@ function valueSelected() {
         }
     } else {
         if( VarAnomalies ) {
-            anomaly.updateSLP( [-2], [loader.resources["images/VictoryPointTokenNeg2.png"].texture], loader.resources["images/VPHightlighter.png"].texture );
+            anomaly.updateSLP( [-3], [loader.resources["images/VictoryPointTokenNeg3.png"].texture], loader.resources["images/VPHightlighter.png"].texture );
         }
     }
     VarAnomalies = document.getElementById("VarAnomalies").checked;
@@ -338,7 +338,35 @@ function editRequested(){
 
 
 let boardFadeOut = true;
+
+const boardSetting = {
+    alphaDelta: -1 / (global_steps * 2)
+}
+
+const actionTextSetting = {
+    delta: {x:0, y:0},
+    defaultPos: {x: 125, y: 1220}
+}
+
+const curtainSetting = {
+    delta: {x:0, y:0},
+    defaultPos: {x:0, y:0}
+}
+
 function toggleTextPanel() {
+    boardSetting.alphaDelta = -1 / (global_steps * 2);
+    curtainSetting.delta.y = - board.height /  (global_steps * 2);
+
+    if( ! boardFadeOut ) {
+        board.visible = true;
+        textPanelEnlargeBTN.visible = true;
+        scrollUpBTN.visible = false;
+        scrollDownBTN.visible = false;
+        boardSetting.alphaDelta = Math.abs(boardSetting.alphaDelta);
+        curtainSetting.delta.y = Math.abs(curtainSetting.delta.y);
+    }
+
+
     automa.ticker.add( textPanelFadeInOut );
 /*
     if( boardFadeOut ) { 
@@ -352,54 +380,40 @@ function toggleTextPanel() {
 */
 }
 
-actionTextSetting = {
-    delta: {x:0, y:0},
-    defaultPos: {x: 125, y: 1250},
-
-}
-
 function scrollTextUp() {
-    actionText.delta.y = -1;
+    actionTextSetting.delta.y = -1;
     automa.ticker.add( scrollActionText );
 }
 
 function scrollTextDown() {
-    actionText.delta.y = 1;
+    actionTextSetting.delta.y = 1;
     automa.ticker.add( scrollActionText );
 }
 
 function scrollActionText( ) {
-    alert( actionText.y + ", " + actionText.default.y );
-    actionText.y += actionText.delta.y;
-    if( actionText.y < 100 || (actionText.y - actionText.height) > actionText.default.y ) {
+    if( actionText.y + actionTextSetting.delta.y < actionTextSetting.defaultPos.y || (actionText.y + actionTextSetting.delta.y - actionText.height) > 40 ) {
         //stop
         scrollTextOff();
+    } else {
+        actionText.y += actionTextSetting.delta.y;
     }
 }
 
 function scrollTextOff() {
-    actionText.delta.y = 0;
+    actionTextSetting.delta.y = 0;
     automa.ticker.remove( scrollActionText );
 }
 
 function scollTextReset() {
-    actionText.delta.y = actionText.y - actionText.default.y;
+    actionTextSetting.delta.y = actionText.y - actionTextSetting.defaultPos.y;
     automa.ticker.add( scrollActionText );
 }
 
 function textPanelFadeInOut() {
-    let delta = -0.01;
-    if( ! boardFadeOut ) {
-        board.visible = true;
-        textPanelEnlargeBTN.visible = true;
-        scrollUpBTN.visible = false;
-        scrollDownBTN.visible = false;
-        delta = +0.01;
-    }
-
-    board.alpha += delta;
-    bottomPanelTop.alpha += delta;
-    textPanelEnlargeBTN.alpha += delta;
+    board.alpha += boardSetting.alphaDelta;
+//    bottomPanelTop.alpha += delta;
+    textPanelEnlargeBTN.alpha += boardSetting.alphaDelta;
+    curtainMask.y += curtainSetting.delta.y;
 
     if( boardFadeOut ) {
         if( board.alpha < 0 ) {

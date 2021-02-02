@@ -11,6 +11,7 @@
     <script src="https://pixijs.download/release/pixi.min.js"></script>
     <script src="https://filters.pixijs.download/v3.1.1/pixi-filters.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+    <script type="text/javascript" src="constant.js"></script>
     <script src="./resources/en.js"></script>
     <script src="./resources/zh_TW.js"></script>
     <script type="text/javascript" src="language.js"></script>
@@ -134,7 +135,6 @@
     let global_scaling = 1;
     const defaultW = 1480+250;
     const defaultH = 1080+182;
-    const global_steps = 30;
 
 	updateScale()
 
@@ -175,14 +175,15 @@
         }
 */
 
-        validateParadoxes(){
+        validateParadoxes() {
+
             if ( paradox.isFull() ) {
-                actionText.text += "Paradox is full. ";
+                actionText.text += "Received the third Paradox. ";
                 button1.disable();
                 paradox.deactivateTokens();
 
                 paradox.emptyAll();
-                actionText.text += "Remove all Paradox ";
+                actionText.text += "Return all Paradox to the supply ";
                 if ( anomaly.belowLimit() ) {
 
                     actionText.text += "and gain an Anomaly";
@@ -200,6 +201,12 @@
     		            } else {
                             actionText.text += ", but no Warp tile to remove.";
                         }
+                        // draw wrap count list
+                        reminder.text = "";
+                        for( var i = 0; i < warpTokensLog.length && i < era.number; i++ ) {
+                            reminder.text += getText("txt_B2P_01",[ (i+1), warpTokensLog[i] ]) + "\n";
+                        }
+
     	            }
                     actionText.text += "\n";
                 } else {
@@ -313,8 +320,9 @@
 
     const board = new Board(PIXI.Texture.EMPTY);
 
-    const backdropTop = new PIXI.Sprite(PIXI.Texture.EMPTY);
-    const bottomPanelTop = new PIXI.Sprite(PIXI.Texture.EMPTY);
+//    const backdropTop = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    const curtainMask = new PIXI.Sprite( PIXI.Texture.EMPTY );
+//    const bottomPanelTop = new PIXI.Sprite(PIXI.Texture.EMPTY);
 
     const maxWarpTile = 8;
     let warptileNumber = maxWarpTile;
@@ -474,6 +482,7 @@
     normalPath.visible = ! skipReboot;
 */
 
+
     const textPanelEnlargeBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, { x:1480, y:1080 }, [220,220,220], [67,54,86], global_steps * 4);
     textPanelEnlargeBTN.on('pointerdown', toggleTextPanel );
     textPanelEnlargeBTN.anchor = { x:1, y:0 };
@@ -487,10 +496,9 @@
 
     const scrollUpBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:80}, [100,100,100], [67,54,86], global_steps * 10);
     scrollUpBTN.on('pointerdown', scrollTextUp );
-    scrollUpBTN.anchor = { x:0, y:1 };
+    scrollUpBTN.anchor = { x:1, y:0 };
     scrollUpBTN.interactive = true;
     scrollUpBTN.visible = false;
-    scrollUpBTN.angle = 180;
 
     const scrollDownBTN = new colorChangingSpirit(PIXI.Texture.EMPTY, {x:1480, y:1182}, [150,150,140], [67,54,86], global_steps * 10);
     scrollDownBTN.on('pointerdown', scrollTextDown );
@@ -546,13 +554,13 @@
         wordWrap: true, wordWrapWidth: 1200
     });
     actionText.anchor = {x: 0, y: 1};
-    actionText.position = {x: 125, y: 1250};
+    actionText.position = actionTextSetting.defaultPos;
     actionText.visible = true;
 
     reminder = new PIXI.Text( getText("txt_reminder_greeting"), {
         fontFamily: 'Arial',
         fontSize: 24, fontWeight: 'normal', fill: 0xFF0000, align: 'center',
-        wordWrap: true, wordWrapWidth: 250
+        wordWrap: true, wordWrapWidth: 246
     });
     reminder.anchor = {x: 0.5, y: 1};
     reminder.position = {x: 125, y: 875};
@@ -633,7 +641,7 @@
             }
 
             button1.visible = true;
-            button1.label.text = getText("txt_BTN1_01");
+            button1.label.text = getText("txt_BTN1_01"); //roll paradox die
             button1.settings.onTap = () => button1Pressed();
             button2.label.text = getText("txt_BTN2_01");
             button2.settings.onTap = () => waitForUser();
@@ -920,17 +928,23 @@
         panel.y = 0;
         const buttonPanel = new PIXI.Sprite(loader.resources['images/SidePanel.png'].textures["SidePanelBTNBaseTexture.png"]);
         buttonPanel.x = 1480;
-        buttonPanel.y = 882;
+        buttonPanel.y = panel.height;
 
+/*
         bottomPanelTop.texture = loader.resources['images/SidePanel.png'].textures["BottomPanelTopTexture.png"];
         bottomPanelTop.x = 0;
         bottomPanelTop.y = 1080;
+*/
 
         const backdrop = new PIXI.Sprite( loader.resources['images/SidePanel.png'].textures["MainPanelBaseTexture.png"] );
         backdrop.position = {x:0, y:0};
 
-        backdropTop.texture = loader.resources['images/SidePanel.png'].textures["MainPanelBaseTopTexture.png"];
-        backdrop.position = {x:0, y:0};
+        const curtain = new PIXI.Sprite( loader.resources['images/SidePanel.png'].textures["MainPanelBaseTexture.png"] );
+        curtain.position = {x:0, y:0};
+
+        curtainMask.texture = loader.resources['images/SidePanel.png'].textures["CurtainMask.png"];
+        curtainMask.position = {x:0, y:0};
+        curtain.mask = curtainMask;
 
         //const background_image = loader.resources['images/BG-TheWorld.png'].texture;
         //const board = new Board(background_image);
@@ -1012,7 +1026,7 @@
         board.addChild(cogWheelIcon);
 
         anomaly.texture = loader.resources["images/anomaly.png"].texture;
-        anomaly.init( [-2], [loader.resources["images/VictoryPointTokenNeg2.png"].texture] );
+        anomaly.init( [-3], [loader.resources["images/VictoryPointTokenNeg3.png"].texture] );
         board.addChild(anomaly);
 
         board.addChild(breakthroughBack);
@@ -1022,14 +1036,15 @@
 
         textPanelShrinkBTN.texture = loader.resources["images/SidePanel.png"].textures["shrink.png"];
         textPanelEnlargeBTN.texture = loader.resources["images/SidePanel.png"].textures["enlarge.png"];
-        scrollUpBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollBTN.png"];
-        scrollDownBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollBTN.png"];
+        scrollUpBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollUpBTN.png"];
+        scrollDownBTN.texture = loader.resources["images/SidePanel.png"].textures["ScrollDownBTN.png"];
         scrollUpBTN.attentionOn();
         scrollDownBTN.attentionOn();
 
         backdrop.addChild(actionText);
-        backdrop.addChild(backdropTop);
-        backdrop.addChild(bottomPanelTop);
+        backdrop.addChild(curtainMask, curtain);
+//        backdrop.addChild(curtainMask );
+//        backdrop.addChild(bottomPanelTop);
         backdrop.addChild(scrollDownBTN);
         backdrop.addChild(scrollUpBTN);
         backdrop.addChild(textPanelEnlargeBTN);

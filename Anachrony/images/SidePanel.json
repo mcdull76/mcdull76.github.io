@@ -1,9 +1,33 @@
 {
   "frames": {
-    "MainPanelBaseTexture.png": {
+    "CurtainMask.png": {
       "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 1480,
+        "h": 2342
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
         "x": 0,
         "y": 0,
+        "w": 1480,
+        "h": 2342
+      },
+      "sourceSize": {
+        "w": 1480,
+        "h": 2342
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "MainPanelBaseTexture.png": {
+      "frame": {
+        "x": 2,
+        "y": 2348,
         "w": 1480,
         "h": 1262
       },
@@ -26,8 +50,8 @@
     },
     "SidePanelBaseTexture.png": {
       "frame": {
-        "x": 1480,
-        "y": 0,
+        "x": 1486,
+        "y": 2,
         "w": 250,
         "h": 882
       },
@@ -50,8 +74,8 @@
     },
     "SidePanelBTNBaseTexture.png": {
       "frame": {
-        "x": 1480,
-        "y": 882,
+        "x": 1486,
+        "y": 888,
         "w": 250,
         "h": 380
       },
@@ -72,24 +96,48 @@
         "y": 0.5
       }
     },
-    "BottomPanelTopTexture.png": {
+    "ScrollDownBTN.png": {
       "frame": {
-        "x": 0,
-        "y": 1262,
-        "w": 1480,
-        "h": 59
+        "x": 1486,
+        "y": 1272,
+        "w": 72,
+        "h": 72
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 1480,
-        "h": 59
+        "w": 72,
+        "h": 72
       },
       "sourceSize": {
-        "w": 1480,
-        "h": 182
+        "w": 72,
+        "h": 72
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ScrollUpBTN.png": {
+      "frame": {
+        "x": 1562,
+        "y": 1272,
+        "w": 72,
+        "h": 72
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 72,
+        "h": 72
       },
       "pivot": {
         "x": 0.5,
@@ -98,18 +146,18 @@
     },
     "enlarge.png": {
       "frame": {
-        "x": 1480,
-        "y": 1262,
-        "w": 68,
-        "h": 56
+        "x": 1638,
+        "y": 1272,
+        "w": 72,
+        "h": 72
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 2,
-        "y": 11,
-        "w": 68,
-        "h": 56
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 72
       },
       "sourceSize": {
         "w": 72,
@@ -122,18 +170,18 @@
     },
     "shrink.png": {
       "frame": {
-        "x": 1548,
-        "y": 1262,
-        "w": 68,
-        "h": 56
+        "x": 1486,
+        "y": 1348,
+        "w": 72,
+        "h": 72
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 2,
-        "y": 11,
-        "w": 68,
-        "h": 56
+        "x": 0,
+        "y": 0,
+        "w": 72,
+        "h": 72
       },
       "sourceSize": {
         "w": 72,
@@ -144,48 +192,48 @@
         "y": 0.5
       }
     },
-    "ScrollBTN.png": {
+    "SidePanelPowerCoreExTexture.png": {
       "frame": {
-        "x": 1616,
-        "y": 1262,
-        "w": 60,
-        "h": 60
+        "x": 1562,
+        "y": 1348,
+        "w": 58,
+        "h": 50
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 6,
-        "y": 6,
-        "w": 60,
-        "h": 60
+        "x": 0,
+        "y": 0,
+        "w": 58,
+        "h": 50
       },
       "sourceSize": {
-        "w": 72,
-        "h": 72
+        "w": 58,
+        "h": 50
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "cogwheel.png": {
+    "SidePanelPowerCoreTexture.png": {
       "frame": {
-        "x": 1676,
-        "y": 1262,
-        "w": 52,
-        "h": 52
+        "x": 1624,
+        "y": 1348,
+        "w": 58,
+        "h": 50
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 4,
-        "y": 4,
-        "w": 52,
-        "h": 52
+        "x": 0,
+        "y": 0,
+        "w": 58,
+        "h": 50
       },
       "sourceSize": {
-        "w": 60,
-        "h": 60
+        "w": 58,
+        "h": 50
       },
       "pivot": {
         "x": 0.5,
@@ -194,8 +242,8 @@
     },
     "SidePanelFluxCoreExTexture.png": {
       "frame": {
-        "x": 1676,
-        "y": 1314,
+        "x": 1686,
+        "y": 1348,
         "w": 26,
         "h": 50
       },
@@ -218,8 +266,8 @@
     },
     "SidePanelFluxCoreTexture.png": {
       "frame": {
-        "x": 1702,
-        "y": 1314,
+        "x": 1562,
+        "y": 1402,
         "w": 26,
         "h": 50
       },
@@ -233,78 +281,6 @@
       },
       "sourceSize": {
         "w": 26,
-        "h": 50
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SidePanelPowerCoreExTexture.png": {
-      "frame": {
-        "x": 1480,
-        "y": 1318,
-        "w": 58,
-        "h": 50
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 58,
-        "h": 50
-      },
-      "sourceSize": {
-        "w": 58,
-        "h": 50
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "MainPanelBaseTopTexture.png": {
-      "frame": {
-        "x": 0,
-        "y": 1322,
-        "w": 1480,
-        "h": 59
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 1480,
-        "h": 59
-      },
-      "sourceSize": {
-        "w": 1480,
-        "h": 1080
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SidePanelPowerCoreTexture.png": {
-      "frame": {
-        "x": 1538,
-        "y": 1318,
-        "w": 58,
-        "h": 50
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 58,
-        "h": 50
-      },
-      "sourceSize": {
-        "w": 58,
         "h": 50
       },
       "pivot": {
@@ -319,8 +295,8 @@
     "image": "SidePanel.png",
     "format": "RGBA8888",
     "size": {
-      "w": 1730,
-      "h": 1381
+      "w": 1738,
+      "h": 3612
     },
     "scale": 1
   }

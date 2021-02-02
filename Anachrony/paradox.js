@@ -7,12 +7,13 @@
 class Paradox {
 
 	constructor() {
-		this.paradoxCount = 0;
+        this.maxParadox = 3;
+//		this.paradoxCount = 0;
 		this.paradoxTokens = [];
 
 		const paradoxPositions = [{x: 1345, y: 521}, {x: 1417, y: 672}, {x: 1345, y: 660}];
 		
-        for (let j = 1; j <= 3; j++) {
+        for (let j = 1; j <= this.maxParadox; j++) {
              const newToken = new ParadoxToken(PIXI.Texture.from('images/paradox90.png'), paradoxPositions[j - 1], 0);
              if (j === 2) newToken.angle = 180;
              this.paradoxTokens.push(newToken);
@@ -44,23 +45,26 @@ class Paradox {
 	}
 
     add() {
-        if( this.paradoxCount < this.paradoxTokens.length ) {
-            this.paradoxTokens[ this.paradoxCount ].add();
-            this.paradoxCount += 1;            
+        if( this.paradoxCount() < this.maxParadox ) {
+            this.paradoxTokens[ this.paradoxCount() ].add();
         }
     }
 
-	isFull() {
-		let rv = true;
+    paradoxCount() {
+        let rv = 0;
         for (let i = 0; i < this.paradoxTokens.length; i++) {
-        	rv = ( this.paradoxTokens[i].number > 0 ) && rv; 
-        }				
+            if ( this.paradoxTokens[i].number > 0 ) rv++; 
+        }               
         return rv;
+    }
+
+	isFull() {
+        return (this.paradoxCount() >= this.maxParadox);
 	}
 
 	emptyAll() {
         for (let i = 0; i < this.paradoxTokens.length; i++) {
-        	this.paradoxTokens[i].remove(); 
+        	this.paradoxTokens[i].remove();
         }						
 	}
 }
